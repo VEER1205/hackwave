@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PaisaBuddy - Financial Literacy Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      :root {
+        --primary-color: #60a5fa;
+        --secondary-color: #1f2937;
+        --text-color: #e5e7eb;
+        --bg-color: #111827;
+        --card-bg-color: #374151;
+        --border-radius: 8px;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+          0 2px 4px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .header {
+        background-color: var(--card-bg-color);
+        padding: 1.5rem 0;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary-color);
+      }
+
+      .brand-name {
+        color: var(--primary-color);
+      }
+
+      .money-bar {
+        background-color: #2b3542;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-color);
+      }
+
+      .hero {
+        text-align: center;
+        padding: 4rem 0;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        color: #9ca3af;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        padding-bottom: 4rem;
+      }
+
+      .course-card {
+        background-color: var(--card-bg-color);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: var(--shadow-md);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+          0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      }
+
+      .course-info {
+        flex-grow: 1;
+      }
+
+      .course-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .course-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+      }
+
+      .course-price {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #9ca3af;
+        margin-bottom: 1rem;
+      }
+
+      .course-description {
+        color: #d1d5db;
+        margin-bottom: 1.5rem;
+      }
+
+      .course-actions {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .enroll-btn,
+      .view-btn,
+      .test-btn {
+        display: inline-block;
+        width: 100%;
+        padding: 0.75rem;
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .enroll-btn {
+        background-color: var(--primary-color);
+        color: var(--bg-color);
+      }
+
+      .enroll-btn:hover {
+        background-color: #3b82f6;
+      }
+
+      .view-btn {
+        background-color: #10b981;
+        color: var(--bg-color);
+      }
+
+      .view-btn:hover {
+        background-color: #059669;
+      }
+
+      .test-btn {
+        background-color: #f59e0b; /* Yellow/Orange for the test button */
+        color: var(--bg-color);
+      }
+
+      .test-btn:hover {
+        background-color: #d97706;
+      }
+
+      /* Modal Styling */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding-top: 60px;
+      }
+
+      .modal-content {
+        background-color: var(--card-bg-color);
+        color: var(--text-color);
+        margin: 5% auto;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        position: relative;
+      }
+
+      .close-btn {
+        color: #9ca3af;
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .modal-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .modal-message {
+        font-size: 1rem;
+        color: #d1d5db;
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-notes h3,
+      .modal-videos h3,
+      .suggestions h3,
+      .test-modal-content h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .modal-notes ul,
+      .modal-notes ol {
+        padding-left: 20px;
+        list-style-type: disc;
+      }
+
+      .modal-notes ul li,
+      .modal-notes ol li {
+        margin-bottom: 0.5rem;
+      }
+
+      .modal-videos,
+      .suggestions .suggestion-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .modal-videos iframe,
+      .suggestions .suggestion-list iframe {
+        width: 100%;
+        height: 315px;
+        border-radius: var(--border-radius);
+      }
+
+      .modal-btn {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        background-color: var(--primary-color);
+        color: var(--bg-color);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .modal-btn:hover {
+        background-color: #3b82f6;
+      }
+
+      /* Test Modal specific styles */
+      .test-modal-content {
+        padding: 2rem;
+      }
+
+      .question {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background-color: #2b3542;
+        border-radius: var(--border-radius);
+      }
+
+      .question h4 {
+        margin-bottom: 0.75rem;
+        color: var(--primary-color);
+      }
+
+      .options label {
+        display: block;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+      }
+
+      .options label:hover {
+        background-color: #4a5568;
+      }
+
+      .correct-answer {
+        color: #10b981;
+      }
+
+      .incorrect-answer {
+        color: #ef4444;
+      }
+      
+      .submit-test-btn {
+          background-color: #f59e0b;
+          color: white;
+          width: 100%;
+          padding: 0.75rem;
+          border-radius: var(--border-radius);
+          border: none;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          margin-top: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+        .course-actions {
+            flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <div class="logo">🪙 <span class="brand-name">PaisaBuddy</span></div>
+          <div class="money-bar">
+            <span class="money-icon">💰</span>
+            <span id="saved-money"></span>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main class="main-content">
+      <div class="container">
+        <div class="hero">
+          <h1>Master Your Financial Future</h1>
+          <p>
+            Comprehensive financial literacy courses to help you build wealth,
+            manage debt, and secure your financial independence.
+          </p>
+        </div>
+        <div class="courses-grid" id="courses-grid"></div>
+      </div>
+    </main>
+
+    <div id="course-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('course-modal')">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-message"></p>
+        <div id="modal-notes" class="modal-notes"></div>
+        <div id="modal-videos" class="modal-videos"></div>
+        <div id="suggestions" class="suggestions"></div>
+        <button class="modal-btn" onclick="closeModal('course-modal')">OK</button>
+      </div>
+    </div>
+
+    <div id="test-modal" class="modal">
+      <div class="modal-content test-modal-content">
+        <span class="close-btn" onclick="closeModal('test-modal')">&times;</span>
+        <h2 id="test-modal-title"></h2>
+        <div id="test-questions"></div>
+        <button class="submit-test-btn" onclick="submitTest()">Submit Test</button>
+      </div>
+    </div>
+
+    <script>
+      const initialMoney = 50000;
+      let userMoney = parseInt(localStorage.getItem('userMoney')) || initialMoney;
+      const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses')) || {};
+
+      const moneyDisplay = document.getElementById("saved-money");
+      const coursesGrid = document.getElementById("courses-grid");
+      const courseModal = document.getElementById("course-modal");
+      const testModal = document.getElementById("test-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalMessage = document.getElementById("modal-message");
+      const modalNotes = document.getElementById("modal-notes");
+      const modalVideos = document.getElementById("modal-videos");
+      const suggestionsSection = document.getElementById("suggestions");
+      const testModalTitle = document.getElementById("test-modal-title");
+      const testQuestionsContainer = document.getElementById("test-questions");
+      let currentCourse = null;
+
+      function updateMoneyDisplay() {
+        moneyDisplay.textContent = `${userMoney} VC`;
+        localStorage.setItem('userMoney', userMoney);
+      }
+
+      const coursesData = [
+        {
+          title: "Budgeting and Saving",
+          icon: "💰",
+          description: "Learn to create and stick to a budget, track expenses, and build an emergency fund.",
+          price: 500,
+          notes: `
+            <h3>Key Concepts</h3>
+            <ul>
+              <li>**The 50/30/20 Rule:** 50% for Needs, 30% for Wants, 20% for Savings/Debt.</li>
+              <li>**Zero-Based Budgeting:** Every dollar is assigned a purpose.</li>
+              <li>**Emergency Fund:** Aim for 3-6 months of living expenses.</li>
+            </ul>
+            <h3>Practical Steps</h3>
+            <ol>
+              <li>Track every expense for one month to understand your spending habits.</li>
+              <li>Categorize your expenses to identify areas for improvement.</li>
+              <li>Automate your savings to ensure consistency.</li>
+            </ol>
+          `,
+          videos: ["https://www.youtube.com/embed/5U7zB83y810", "https://www.youtube.com/embed/S_B7WwT7L7c"],
+          suggestions: [{ title: "Budgeting for Beginners", videoUrl: "https://www.youtube.com/embed/14Q1lI3n6eY" }],
+          test: [
+            {
+              question: "What is the 50/30/20 budgeting rule?",
+              options: ["50% savings, 30% needs, 20% wants", "50% needs, 30% wants, 20% savings/debt", "50% wants, 30% needs, 20% savings"],
+              answer: "50% needs, 30% wants, 20% savings/debt"
+            },
+            {
+              question: "What is a key purpose of an emergency fund?",
+              options: ["To buy luxury items", "To invest in stocks", "To cover unexpected expenses"],
+              answer: "To cover unexpected expenses"
+            },
+            {
+              question: "What does Zero-Based Budgeting mean?",
+              options: ["Budgeting with no income", "Assigning every dollar a purpose", "Budgeting without tracking expenses"],
+              answer: "Assigning every dollar a purpose"
+            }
+          ]
+        },
+        {
+          title: "Debt Management",
+          icon: "💳",
+          description: "Discover strategies to pay off debt efficiently, including the avalanche and snowball methods.",
+          price: 750,
+          notes: `
+            <h3>Debt Payoff Strategies</h3>
+            <ul>
+              <li>**Debt Snowball:** Pay off smallest debts first for motivational wins.</li>
+              <li>**Debt Avalanche:** Pay off highest-interest debts first to save money.</li>
+            </ul>
+            <h3>Understanding Debt</h3>
+            <ul>
+              <li>**Good Debt vs. Bad Debt:** Mortgages vs. high-interest credit card debt.</li>
+              <li>**Credit Utilization:** Keep this low to improve your credit score.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/e6-Iq7k9a6o", "https://www.youtube.com/embed/zS9t2W1nFss"],
+          suggestions: [{ title: "How to Get Out of Debt Fast", videoUrl: "https://www.youtube.com/embed/2_9D90WwR1o" }],
+          test: [
+            {
+              question: "Which debt payoff method focuses on paying the smallest debts first?",
+              options: ["Debt Avalanche", "Debt Snowball", "Debt Consolidation"],
+              answer: "Debt Snowball"
+            },
+            {
+              question: "What is the primary benefit of the Debt Avalanche method?",
+              options: ["It gives you quick wins", "It saves the most money on interest", "It is the easiest method"],
+              answer: "It saves the most money on interest"
+            }
+          ]
+        },
+        {
+          title: "Understanding Credit",
+          icon: "📈",
+          description: "Learn how credit scores are calculated, how to build a good score, and how to read your credit report.",
+          price: 1000,
+          notes: `
+            <h3>FICO Score Components</h3>
+            <ul>
+              <li>**Payment History (35%):** The most important factor.</li>
+              <li>**Amounts Owed (30%):** How much of your available credit you're using.</li>
+              <li>**Length of Credit History (15%):** The older your accounts, the better.</li>
+              <li>**New Credit (10%):** Opening too many new accounts can be a red flag.</li>
+              <li>**Credit Mix (10%):** Having both revolving and installment credit.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/g2g-nJ36104", "https://www.youtube.com/embed/qF-uN7n12eU"],
+          suggestions: [{ title: "How to Build an Excellent Credit Score", videoUrl: "https://www.youtube.com/embed/I05l_wXn_O8" }],
+          test: [
+            {
+              question: "What is the most important factor in a FICO credit score?",
+              options: ["Credit Mix", "Amounts Owed", "Payment History"],
+              answer: "Payment History"
+            },
+            {
+              question: "What is a good strategy to improve your credit utilization?",
+              options: ["Max out all your credit cards", "Keep your credit card balances low", "Close old credit accounts"],
+              answer: "Keep your credit card balances low"
+            }
+          ]
+        },
+        {
+          title: "Investing Basics",
+          icon: "📊",
+          description: "A beginner's guide to stocks, bonds, mutual funds, and the power of compound interest.",
+          price: 1500,
+          notes: `
+            <h3>Investing Principles</h3>
+            <ul>
+              <li>**Diversification:** Don't put all your eggs in one basket.</li>
+              <li>**Compound Interest:** The magic of earning returns on your returns.</li>
+              <li>**Dollar-Cost Averaging:** Investing a fixed amount regularly.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/fD3yY85q9eI", "https://www.youtube.com/embed/8oMko_Yp05U"],
+          suggestions: [{ title: "The Ultimate Guide to Investing for Beginners", videoUrl: "https://www.youtube.com/embed/q2l24GqLq1o" }],
+          test: [
+            {
+              question: "What is the term for earning returns on your returns?",
+              options: ["Simple Interest", "Compounding", "Diversification"],
+              answer: "Compounding"
+            },
+            {
+              question: "What is the primary benefit of diversification in investing?",
+              options: ["It guarantees high returns", "It reduces overall risk", "It simplifies tax filings"],
+              answer: "It reduces overall risk"
+            }
+          ]
+        },
+        {
+          title: "Taxes",
+          icon: "🧾",
+          description: "Demystify the tax system. Understand tax brackets, deductions, and how to file your taxes.",
+          price: 1200,
+          notes: `
+            <h3>Tax Fundamentals</h3>
+            <ul>
+              <li>**Tax Brackets:** Understand the progressive tax system.</li>
+              <li>**Deductions vs. Credits:** Deductions reduce taxable income; credits reduce tax owed.</li>
+              <li>**W-4 and W-2 Forms:** Learn what they are and how to use them.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/gU9Hj2n5E7c", "https://www.youtube.com/embed/1Jc99iS_1rQ"],
+          suggestions: [{ title: "Taxes 101: The Basics of Filing Your Taxes", videoUrl: "https://www.youtube.com/embed/rK6p11dM3R8" }],
+          test: [
+            {
+              question: "What is the difference between a tax deduction and a tax credit?",
+              options: ["Deductions are for individuals, credits are for businesses", "Deductions reduce taxable income, credits reduce tax owed", "Deductions are only for state taxes, credits for federal taxes"],
+              answer: "Deductions reduce taxable income, credits reduce tax owed"
+            }
+          ]
+        },
+        {
+          title: "Retirement Planning",
+          icon: "🧘",
+          description: "Plan for your golden years by exploring different retirement accounts and savings strategies.",
+          price: 2000,
+          notes: `
+            <h3>Retirement Accounts</h3>
+            <ul>
+              <li>**401(k):** Employer-sponsored plan.</li>
+              <li>**IRA (Individual Retirement Account):** Can be traditional or Roth.</li>
+            </ul>
+            <h3>Planning Tips</h3>
+            <ul>
+              <li>Start saving as early as possible.</li>
+              <li>Take advantage of employer matching contributions.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/b87l1-yE6tA", "https://www.youtube.com/embed/9BqTjF23cEw"],
+          suggestions: [{ title: "Retirement Planning for Millennials", videoUrl: "https://www.youtube.com/embed/2_p6c0zF9oY" }],
+          test: [
+            {
+              question: "What is a key benefit of starting retirement savings early?",
+              options: ["It lets you retire later", "It allows you to take advantage of compound interest", "It is only for high-income earners"],
+              answer: "It allows you to take advantage of compound interest"
+            },
+            {
+              question: "What is an IRA?",
+              options: ["Individual Revenue Account", "Interest Rate Agreement", "Individual Retirement Account"],
+              answer: "Individual Retirement Account"
+            }
+          ]
+        },
+        {
+          title: "Financial Planning for Life's Milestones",
+          icon: "🏡",
+          description: "Prepare for major life events like buying a home, getting married, or having children.",
+          price: 1800,
+          notes: `
+            <h3>Key Milestones</h3>
+            <ul>
+              <li>**Home Ownership:** Saving for a down payment, understanding mortgages.</li>
+              <li>**Marriage:** Combining finances, creating a joint budget.</li>
+              <li>**Higher Education:** Saving with 529 plans, navigating student loans.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/3tL_uQx6S4Q", "https://www.youtube.com/embed/l5MhW25P2iQ"],
+          suggestions: [{ title: "How to Financially Prepare for a New Baby", videoUrl: "https://www.youtube.com/embed/zHkEw9p0f1g" }],
+          test: [
+            {
+              question: "What is a key financial step before buying a home?",
+              options: ["Getting a car loan", "Saving for a down payment", "Buying new furniture"],
+              answer: "Saving for a down payment"
+            },
+            {
+              question: "What are 529 plans primarily used for?",
+              options: ["Buying a home", "Retirement savings", "Higher education savings"],
+              answer: "Higher education savings"
+            }
+          ]
+        },
+        {
+          title: "Understanding Insurance",
+          icon: "🛡️",
+          description: "A guide to different types of insurance: health, life, auto, home, and disability.",
+          price: 900,
+          notes: `
+            <h3>Types of Insurance</h3>
+            <ul>
+              <li>**Health Insurance:** Protects against medical expenses.</li>
+              <li>**Life Insurance:** Provides for dependents after your death.</li>
+              <li>**Property Insurance:** Covers your home and its contents.</li>
+              <li>**Disability Insurance:** Replaces income if you can't work.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/b2J74I2m74Y", "https://www.youtube.com/embed/xS6UvjV1gA0"],
+          suggestions: [{ title: "Insurance 101: A Beginner's Guide", videoUrl: "https://www.youtube.com/embed/6iW_eN1t9xY" }],
+          test: [
+            {
+              question: "What type of insurance replaces your income if you can't work due to an injury?",
+              options: ["Life Insurance", "Auto Insurance", "Disability Insurance"],
+              answer: "Disability Insurance"
+            }
+          ]
+        },
+        {
+          title: "Risk Management",
+          icon: "🎲",
+          description: "Learn to protect your assets and money against fraud, scams, and financial uncertainty.",
+          price: 1100,
+          notes: `
+            <h3>Key Topics</h3>
+            <ul>
+              <li>**Fraud Detection:** Spotting phishing emails and suspicious activity.</li>
+              <li>**Identity Theft:** Steps to protect your personal information.</li>
+              <li>**Diversification:** Spreading investments to reduce risk.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/yQj-uJk1u70", "https://www.youtube.com/embed/5Fp3U_R53t8"],
+          suggestions: [{ title: "Cybersecurity Tips to Protect Your Money", videoUrl: "https://www.youtube.com/embed/4yB-6-V0T20" }],
+          test: [
+            {
+              question: "What is a common sign of a phishing scam?",
+              options: ["A legitimate bank email", "A request for your password", "A physical letter from your bank"],
+              answer: "A request for your password"
+            }
+          ]
+        },
+        {
+          title: "Behavioral Finance",
+          icon: "🤔",
+          description: "Understand the psychology behind money decisions and how biases can affect your finances.",
+          price: 800,
+          notes: `
+            <h3>Common Biases</h3>
+            <ul>
+              <li>**Overconfidence Bias:** Believing you're better than average at predicting outcomes.</li>
+              <li>**Herd Mentality:** Following what others are doing without independent research.</li>
+              <li>**Loss Aversion:** The pain of losing is psychologically stronger than the pleasure of gaining.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/2YlQfQ3d6vM", "https://www.youtube.com/embed/H59g1qJ467U"],
+          suggestions: [{ title: "The Psychology of Money", videoUrl: "https://www.youtube.com/embed/g09lGk-n-98" }],
+          test: [
+            {
+              question: "What is 'Loss Aversion'?",
+              options: ["The desire to win money", "The fear of losing money", "The joy of investing"],
+              answer: "The fear of losing money"
+            }
+          ]
+        },
+        {
+          title: "Financial Technology (FinTech)",
+          icon: "📱",
+          description: "Explore modern financial tools like mobile banking, robo-advisors, and payment apps.",
+          price: 600,
+          notes: `
+            <h3>FinTech Innovations</h3>
+            <ul>
+              <li>**Robo-Advisors:** Automated investment services.</li>
+              <li>**Peer-to-Peer Lending:** Lending and borrowing money directly.</li>
+              <li>**Digital Wallets:** Apps like Apple Pay and Google Pay.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/xS_E_e3uXoM", "https://www.youtube.com/embed/5U7zB83y810"],
+          suggestions: [{ title: "The Future of Money and FinTech", videoUrl: "https://www.youtube.com/embed/xJ8jG9uK-3M" }],
+          test: [
+            {
+              question: "What is a 'Robo-Advisor'?",
+              options: ["A financial advisor who is a robot", "An automated investment service", "A robot that helps you save money"],
+              answer: "An automated investment service"
+            }
+          ]
+        },
+        {
+          title: "Entrepreneurship and Side Hustles",
+          icon: "💡",
+          description: "Learn how to create and manage an additional income stream outside of your main job.",
+          price: 1300,
+          notes: `
+            <h3>Starting a Side Hustle</h3>
+            <ul>
+              <li>**Budgeting:** Separate personal and business finances.</li>
+              <li>**Legal Structure:** Sole proprietorship, LLC, etc.</li>
+              <li>**Taxes:** Understanding self-employment taxes.</li>
+            </ul>
+          `,
+          videos: ["https://www.youtube.com/embed/i3o5927v7D0", "https://www.youtube.com/embed/a8qf-0W5j5g"],
+          suggestions: [{ title: "How to Turn Your Passion into a Side Hustle", videoUrl: "https://www.youtube.com/embed/0Jb1g6b6aY4" }],
+          test: [
+            {
+              question: "What is a key financial tip for starting a side hustle?",
+              options: ["Mix personal and business finances", "Open a separate bank account for the business", "Pay no taxes on the income"],
+              answer: "Open a separate bank account for the business"
+            }
+          ]
+        },
+      ];
+
+      function generateCourseCards() {
+        coursesData.forEach((course) => {
+          const card = document.createElement("div");
+          card.classList.add("course-card");
+          
+          const isEnrolled = enrolledCourses[course.title];
+          const buttonText = isEnrolled ? "View Course" : `Enroll for ${course.price} VC`;
+          const buttonClass = isEnrolled ? "view-btn" : "enroll-btn";
+
+          card.innerHTML = `
+            <div class="course-info">
+              <div class="course-icon">${course.icon}</div>
+              <h2 class="course-title">${course.title}</h2>
+              <p class="course-price">Price: ${course.price} VC</p>
+              <p class="course-description">${course.description}</p>
+            </div>
+            <div class="course-actions">
+                <button class="${buttonClass}" data-title="${course.title}" onclick="handleCourseAction(event, '${course.title}', '${buttonClass}')">${buttonText}</button>
+                ${isEnrolled ? `<button class="test-btn" data-title="${course.title}" onclick="openTestModal('${course.title}')">Take Test</button>` : ''}
+            </div>
+          `;
+          coursesGrid.appendChild(card);
+        });
+      }
+
+      function handleCourseAction(e, courseTitle, buttonClass) {
+          e.stopPropagation();
+          const course = coursesData.find(c => c.title === courseTitle);
+          if (buttonClass === 'enroll-btn') {
+              enrollCourse(course);
+          } else {
+              openCourseModal(course);
+          }
+      }
+
+      function enrollCourse(course) {
+        if (userMoney >= course.price) {
+            userMoney -= course.price;
+            enrolledCourses[course.title] = true;
+            localStorage.setItem('enrolledCourses', JSON.stringify(enrolledCourses));
+            updateMoneyDisplay();
+
+            const courseCard = document.querySelector(`.course-card [data-title="${course.title}"]`).closest('.course-card');
+            const actionsDiv = courseCard.querySelector('.course-actions');
+            actionsDiv.innerHTML = `
+                <button class="view-btn" data-title="${course.title}" onclick="handleCourseAction(event, '${course.title}', 'view-btn')">View Course</button>
+                <button class="test-btn" data-title="${course.title}" onclick="openTestModal('${course.title}')">Take Test</button>
+            `;
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Enrolled!',
+              text: `You have successfully enrolled in the "${course.title}" course. Your new balance is ${userMoney} VC.`,
+              showConfirmButton: false,
+              timer: 3000
+            });
+        } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Not Enough Funds!',
+              text: `You do not have enough VC to enroll in this course. You need ${course.price} VC, but you only have ${userMoney} VC.`,
+            });
+        }
+      }
+
+      function openCourseModal(course) {
+        currentCourse = course;
+        modalTitle.textContent = course.title;
+        modalMessage.textContent = course.description;
+        modalNotes.innerHTML = course.notes;
+        modalVideos.innerHTML = "";
+        suggestionsSection.innerHTML = "";
+
+        if (course.videos && course.videos.length > 0) {
+          const videoHeading = document.createElement("h3");
+          videoHeading.textContent = "Videos";
+          modalVideos.appendChild(videoHeading);
+          course.videos.forEach((videoUrl) => {
+            const iframe = document.createElement("iframe");
+            iframe.src = videoUrl;
+            iframe.frameborder = "0";
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            iframe.allowFullscreen = true;
+            modalVideos.appendChild(iframe);
+          });
+        }
+        
+        if (course.suggestions && course.suggestions.length > 0) {
+          const suggestionsHeading = document.createElement("h3");
+          suggestionsHeading.textContent = "Suggested Videos";
+          suggestionsSection.appendChild(suggestionsHeading);
+          const suggestionList = document.createElement("div");
+          suggestionList.classList.add("suggestion-list");
+          course.suggestions.forEach(suggestion => {
+            const iframeContainer = document.createElement("div");
+            iframeContainer.innerHTML = `<iframe src="${suggestion.videoUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>${suggestion.title}</p>`;
+            suggestionList.appendChild(iframeContainer);
+          });
+          suggestionsSection.appendChild(suggestionList);
+        }
+
+        courseModal.style.display = "block";
+      }
+
+      function openTestModal(courseTitle) {
+        currentCourse = coursesData.find(c => c.title === courseTitle);
+        if (!currentCourse || !currentCourse.test) {
+          Swal.fire('Error', 'No test available for this course.', 'error');
+          return;
+        }
+
+        testModalTitle.textContent = `${currentCourse.title} Test`;
+        testQuestionsContainer.innerHTML = '';
+        currentCourse.test.forEach((q, index) => {
+          const questionDiv = document.createElement('div');
+          questionDiv.classList.add('question');
+          questionDiv.innerHTML = `<h4>${index + 1}. ${q.question}</h4>`;
+          const optionsDiv = document.createElement('div');
+          optionsDiv.classList.add('options');
+          q.options.forEach(option => {
+            optionsDiv.innerHTML += `
+              <label>
+                <input type="radio" name="question-${index}" value="${option}">
+                ${option}
+              </label>
+            `;
+          });
+          questionDiv.appendChild(optionsDiv);
+          testQuestionsContainer.appendChild(questionDiv);
+        });
+
+        testModal.style.display = "block";
+      }
+
+      function submitTest() {
+          let score = 0;
+          let totalQuestions = currentCourse.test.length;
+
+          currentCourse.test.forEach((q, index) => {
+              const selectedAnswer = document.querySelector(`input[name="question-${index}"]:checked`);
+              const questionDiv = document.querySelector(`#test-questions .question:nth-child(${index + 1})`);
+              const options = questionDiv.querySelectorAll('label');
+
+              options.forEach(optionLabel => {
+                  const optionInput = optionLabel.querySelector('input');
+                  if (optionInput.value === q.answer) {
+                      optionLabel.classList.add('correct-answer');
+                  }
+                  if (selectedAnswer && optionInput.value === selectedAnswer.value && selectedAnswer.value !== q.answer) {
+                      optionLabel.classList.add('incorrect-answer');
+                  }
+              });
+
+              if (selectedAnswer && selectedAnswer.value === q.answer) {
+                  score++;
+              }
+          });
+
+          const submitBtn = document.querySelector('.submit-test-btn');
+          submitBtn.style.display = 'none';
+
+          Swal.fire({
+              title: 'Test Submitted!',
+              text: `You scored ${score} out of ${totalQuestions}.`,
+              icon: 'info'
+          });
+      }
+
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
+
+      window.onclick = function (event) {
+        if (event.target == courseModal) {
+          closeModal('course-modal');
+        }
+        if (event.target == testModal) {
+          closeModal('test-modal');
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateMoneyDisplay();
+        generateCourseCards();
+      });
+    </script>
+    <script>
+      <% if (errors && errors.length > 0) { %> Swal.fire({ icon: 'error', title: 'Oops...', text: "<%= errors.join('\\n') %>" }); <% } else if (success && success.length > 0) { %> Swal.fire({ icon: 'success', title: 'Success!', text: "<%= success.join('\\n') %>" }); <% } %>
+    </script>
+  </body>
+</html>

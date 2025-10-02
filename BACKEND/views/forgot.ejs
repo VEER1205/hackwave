@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PaisaBuddy - Forgot Password</title>
+   <link rel="stylesheet" href="CSS/forgot.css">
+  </head>
+  <body>
+    <div class="container">
+      <h2>Forgot Password?</h2>
+      <p>
+        Enter your registered email address and we’ll send you a link to reset
+        your password.
+      </p>
+      <form action="/forgot-password" method="post">
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+        <button type="submit">Send Reset Link</button>
+      </form>
+      <a href="/login" class="back-link">Back to Login</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Alerts (API style from 1st snippet) -->
+     <script>
+       <% if (errors && errors.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
+        });
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
+        });
+      <% } %>
+    </script>
+  </body>
+</html>

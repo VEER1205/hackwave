@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financial Literacy Quiz Challenge</title>
+    <link rel="stylesheet" href="CSS/Quiz.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>💰 Financial Literacy Quiz</h1>
+        <p>Test your financial knowledge and climb the leaderboard!</p>
+      </div>
+
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value" id="userCoins">100</div>
+          <div class="stat-label">Virtual Coins</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="userRank">-</div>
+          <div class="stat-label">Your Rank</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="dailyStreak">0</div>
+          <div class="stat-label">Daily Streak</div>
+        </div>
+      </div>
+
+      <!-- Welcome Screen -->
+      <div id="welcomeScreen" class="card">
+        <h2 style="margin-bottom: 20px; color: #10b981">
+          Ready for Today's Challenge?
+        </h2>
+        <p style="margin-bottom: 20px; color: #d1d5db">
+          Answer 7 financial literacy questions as fast as you can! Speed
+          matters - faster answers earn more points.
+        </p>
+        <div style="margin-bottom: 20px">
+          <p><strong>Rules:</strong></p>
+          <ul style="margin-left: 20px; color: #9ca3af">
+            <li>One quiz per day</li>
+            <li>7 questions about finance</li>
+            <li>Faster answers = more points</li>
+            <li>Earn coins and climb the leaderboard!</li>
+          </ul>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()" id="startBtn">
+          Start Today's Quiz
+        </button>
+      </div>
+
+      <!-- Quiz Screen -->
+      <div id="quizScreen" class="hidden">
+        <div class="timer">
+          <div class="timer-circle" id="timerCircle">15</div>
+          <div style="color: #9ca3af">Time Remaining</div>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-number" id="questionNumber">Question 1 of 7</div>
+          <div class="question-text" id="questionText"></div>
+          <div class="options" id="optionsContainer"></div>
+        </div>
+      </div>
+
+      <!-- Results Screen -->
+      <div id="resultsScreen" class="hidden">
+        <div class="result-card card">
+          <h2 style="color: #10b981; margin-bottom: 20px">Quiz Complete!</h2>
+          <div class="score-display" id="finalScore">0</div>
+          <p style="margin-bottom: 15px">Your Score</p>
+          <div class="coins-earned" id="coinsEarned">+100 Coins Earned!</div>
+          <p style="margin: 20px 0; color: #d1d5db" id="resultMessage"></p>
+          <button class="btn btn-secondary" onclick="showLeaderboard()">
+            View Leaderboard
+          </button>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div id="leaderboardScreen" class="card">
+        <h2 style="margin-bottom: 20px; color: #3b82f6">🏆 Leaderboard</h2>
+        <div id="leaderboardList"></div>
+        <button
+          class="btn btn-secondary"
+          onclick="resetToWelcome()"
+          style="margin-top: 20px"
+        >
+          Back to Home
+        </button>
+      </div>
+    </div>
+
+   <script src="JS/Quiz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Alerts (API style from 1st snippet) -->
+     <script>
+       <% if (errors && errors.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
+        });
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
+        });
+      <% } %>
+    </script>
+  </body>
+</html>

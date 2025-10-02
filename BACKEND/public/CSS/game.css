@@ -1,0 +1,307 @@
+:root {
+  --paper-color: #f4f1ea;
+  --ink-color: #3d3d3d;
+  --ink-muted: #6c6c6c;
+  --accent-color: #8b0000;
+  --border-color: #d1c7b8;
+  --credit-color: #006400;
+  --debit-color: #800000;
+  --highlight-bg: #fffbe5;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Merriweather", serif;
+  background-color: #3a3a3a;
+  background-image: url("https://www.transparenttextures.com/patterns/dark-wood.png");
+  color: var(--ink-color);
+  font-size: 16px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+h1,
+h2,
+h3,
+h4,
+.button,
+.modal-header,
+.debrief-header {
+  font-family: "Special Elite", cursive;
+}
+.case-file-container {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 0;
+  width: 100%;
+  max-width: 1500px;
+  height: calc(100vh - 80px);
+  background-color: var(--paper-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid #c8bca7;
+}
+.left-panel {
+  border-right: 1px solid var(--border-color);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  overflow-y: auto;
+  background-color: #ede8dd;
+}
+.right-panel {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.report-section {
+  border-bottom: 2px dashed var(--border-color);
+  padding-bottom: 25px;
+}
+.report-section:last-child {
+  border-bottom: none;
+}
+.section-header {
+  font-size: 1.8rem;
+  color: var(--ink-color);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-main {
+  padding: 20px 30px;
+  border-bottom: 2px solid var(--ink-color);
+  margin-bottom: 20px;
+}
+.header-main .title {
+  font-size: 2.5rem;
+  text-align: center;
+}
+.progress-tracker {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+  font-family: "Merriweather", serif;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.progress-tracker .label {
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+.progress-tracker .value {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.case-details dl {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+.case-details dt {
+  font-weight: bold;
+  color: var(--ink-muted);
+}
+#case-intro {
+  font-style: italic;
+  margin-top: 15px;
+  padding-left: 15px;
+  border-left: 3px solid var(--border-color);
+}
+.suspect {
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  background-color: var(--paper-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.suspect:hover {
+  transform: scale(1.02);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
+}
+.suspect.selected {
+  border-color: var(--accent-color);
+  outline: 1px solid var(--accent-color);
+  background-color: #fffdf5;
+}
+.suspect-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.suspect-title {
+  color: var(--accent-color);
+  font-style: italic;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.suspect-desc {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+.analysis-toolbar {
+  padding-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+.button {
+  background: #fff;
+  color: var(--ink-color);
+  border: 1px solid var(--ink-muted);
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+.button i {
+  margin-right: 8px;
+}
+.button:hover {
+  background: var(--ink-color);
+  color: var(--paper-color);
+  border-color: var(--ink-color);
+}
+.button.accuse-btn {
+  background-color: var(--accent-color);
+  color: var(--paper-color);
+  border-color: var(--accent-color);
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  margin-left: auto;
+}
+.button.accuse-btn:hover {
+  background-color: #6d0000;
+  border-color: #6d0000;
+}
+.transactions-view {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+#current-suspect {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+.table-container {
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+}
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.transaction-table th,
+.transaction-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+.transaction-table thead {
+  position: sticky;
+  top: 0;
+  background-color: #e4e0d7;
+  font-family: "Special Elite", cursive;
+  font-size: 1rem;
+}
+.transaction-table tbody tr:nth-child(even) {
+  background-color: #f9f7f2;
+}
+.transaction-table tbody tr.highlight {
+  background-color: var(--highlight-bg);
+  font-weight: bold;
+}
+.transaction-table td:nth-child(3),
+.transaction-table td:nth-child(4) {
+  text-align: right;
+  font-family: monospace;
+  font-size: 1.1rem;
+}
+.credit {
+  color: var(--credit-color);
+}
+.debit {
+  color: var(--debit-color);
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background-color: var(--paper-color);
+  padding: 25px;
+  border: 1px solid var(--ink-color);
+  width: 90%;
+  max-width: 650px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-header {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--accent-color);
+}
+.modal-body {
+  margin-bottom: 25px;
+  line-height: 1.7;
+}
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.accusation-result {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  color: var(--paper-color);
+  font-family: "Special Elite", cursive;
+  font-size: 1.2rem;
+  z-index: 2000;
+  display: none;
+  border: 2px solid var(--paper-color);
+}
+.accusation-result.correct {
+  background-color: var(--credit-color);
+}
+.accusation-result.incorrect {
+  background-color: var(--accent-color);
+}
+.debrief-section {
+  margin-top: 20px;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 15px;
+}
+.debrief-header {
+  font-size: 1.2rem;
+  color: var(--ink-color);
+}
+.debrief-section ul {
+  list-style-position: inside;
+  padding-left: 10px;
+}

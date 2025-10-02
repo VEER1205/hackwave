@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financial Analytics Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="CSS/dashboard.css" />
+  </head>
+
+  <body>
+    <div class="dashboard">
+      <div class="header-container">
+        <div class="header-title">
+          <h1>Welcome back, Falgun</h1>
+          <p>Here’s your financial overview for today.</p>
+        </div>
+        <div class="header-profile">
+          <div class="profile-info">
+            <span>Falgun Patel</span>
+            <small>falgunpatel2007@gmail.com</small>
+          </div>
+          <div class="profile-photo">
+            <img
+              src="https://api.dicebear.com/7.x/adventurer/svg?seed=Falgun"
+              alt="Profile"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card metric-card">
+          <div class="metric-label">Total Profit</div>
+          <div
+            class="metric-value positive tooltip"
+            data-tooltip="Total profits from all investments"
+          >
+            ₹1,24,500
+          </div>
+          <div class="metric-change positive">
+            <i class="fas fa-arrow-up"></i> 18.5% this month
+          </div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Total Loss</div>
+          <div
+            class="metric-value negative tooltip"
+            data-tooltip="Total losses from all investments"
+          >
+            ₹8,200
+          </div>
+          <div class="metric-change negative">
+            <i class="fas fa-arrow-down"></i> 2.1% this month
+          </div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Net Worth</div>
+          <div
+            class="metric-value neutral tooltip"
+            data-tooltip="Current portfolio value"
+          >
+            ₹5,67,890
+          </div>
+          <div class="metric-change positive">
+            <i class="fas fa-arrow-up"></i> 16.4% overall
+          </div>
+        </div>
+      </div>
+
+      <div class="alert success">
+        <i class="fas fa-check-circle"></i>
+        <div>
+          <strong>Congratulations!</strong> Your SIP investment in HDFC Equity
+          Fund generated ₹2,450 profit this month.
+        </div>
+      </div>
+      <div class="alert warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+          <strong>Market Alert:</strong> Your tech stocks are down 3.2% today.
+          Consider reviewing your portfolio allocation.
+        </div>
+      </div>
+
+      <div class="grid grid-main">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Portfolio Growth Trend</h3>
+            <select id="timeRange" class="time-range-selector">
+              <option value="6m">Last 6 Months</option>
+              <option value="1y">Last 1 Year</option>
+              <option value="2y">Last 2 Years</option>
+              <option value="all">All Time</option>
+            </select>
+          </div>
+          <div class="chart-container">
+            <canvas id="growthChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Investment Distribution</h3>
+          </div>
+          <p class="card-subtitle">
+            As of Today:<span id="currentDate"></span>
+          </p>
+
+          <div class="chart-container chart-small">
+            <canvas id="distributionChart"></canvas>
+          </div>
+          <div class="investment-breakdown">
+            <div class="investment-item">
+              <div class="investment-color" style="background: #3b82f6"></div>
+              <span>Mutual Funds</span>
+              <span class="investment-percent">45%</span>
+            </div>
+            <div class="investment-item">
+              <div class="investment-color" style="background: #16a34a"></div>
+              <span>Stocks</span>
+              <span class="investment-percent">30%</span>
+            </div>
+            <div class="investment-item">
+              <div class="investment-color" style="background: #f59e0b"></div>
+              <span>FDs</span>
+              <span class="investment-percent">15%</span>
+            </div>
+            <div class="investment-item">
+              <div class="investment-color" style="background: #8b5cf6"></div>
+              <span>Gold</span>
+              <span class="investment-percent">10%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Monthly Profit vs Loss</h3>
+            <select id="plTimeRange" class="time-range-selector">
+              <option value="6m" selected>Last 6 Months</option>
+              <option value="12m">Last 12 Months</option>
+            </select>
+          </div>
+          <div class="chart-container">
+            <canvas id="profitLossChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Key Performance Indicators</h3>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-item tooltip" data-tooltip="Return on Investment">
+              <div class="kpi-label">ROI</div>
+              <div class="kpi-value">24.8%</div>
+            </div>
+            <div
+              class="kpi-item tooltip"
+              data-tooltip="Compound Annual Growth Rate"
+            >
+              <div class="kpi-label">CAGR</div>
+              <div class="kpi-value">19.2%</div>
+            </div>
+            <div class="kpi-item tooltip" data-tooltip="Risk-adjusted returns">
+              <div class="kpi-label">Sharpe Ratio</div>
+              <div class="kpi-value">2.14</div>
+            </div>
+            <div
+              class="kpi-item tooltip"
+              data-tooltip="Portfolio risk relative to market"
+            >
+              <div class="kpi-label">Beta</div>
+              <div class="kpi-value">0.87</div>
+            </div>
+            <div
+              class="kpi-item tooltip"
+              data-tooltip="Risk-adjusted returns vs benchmark"
+            >
+              <div class="kpi-label">Alpha</div>
+              <div class="kpi-value">3.6%</div>
+            </div>
+            <div
+              class="kpi-item tooltip"
+              data-tooltip="Maximum peak-to-trough decline"
+            >
+              <div class="kpi-label">Max Drawdown</div>
+              <div class="kpi-value">-7.2%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Recent Transactions</h3>
+          </div>
+          <table class="transactions-table">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HDFC Bank <small>Nov 18</small></td>
+                <td><span class="transaction-type buy">BUY</span></td>
+                <td>₹25,000</td>
+                <td class="metric-value positive" style="font-size: 14px">
+                  +₹1,250
+                </td>
+              </tr>
+              <tr>
+                <td>Nifty 50 ETF <small>Nov 17</small></td>
+                <td><span class="transaction-type buy">BUY</span></td>
+                <td>₹15,000</td>
+                <td class="metric-value positive" style="font-size: 14px">
+                  +₹780
+                </td>
+              </tr>
+              <tr>
+                <td>TCS <small>Nov 15</small></td>
+                <td><span class="transaction-type sell">SELL</span></td>
+                <td>₹30,000</td>
+                <td class="metric-value negative" style="font-size: 14px">
+                  -₹850
+                </td>
+              </tr>
+              <tr>
+                <td>SBI Mutual Fund <small>Nov 12</small></td>
+                <td><span class="transaction-type buy">BUY</span></td>
+                <td>₹10,000</td>
+                <td class="metric-value positive" style="font-size: 14px">
+                  +₹450
+                </td>
+              </tr>
+              <tr>
+                <td>Reliance <small>Nov 10</small></td>
+                <td><span class="transaction-type sell">SELL</span></td>
+                <td>₹20,000</td>
+                <td class="metric-value positive" style="font-size: 14px">
+                  +₹1,200
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Learning Progress</h3>
+          </div>
+          <div class="progress-section">
+            <div class="course-progress">
+              <div class="progress-header">
+                <span>Stock Market Fundamentals</span>
+                <span style="color: var(--accent-green)">Completed</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+            </div>
+            <div class="course-progress">
+              <div class="progress-header">
+                <span>Mutual Fund Investing</span> <span>85%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="course-progress">
+              <div class="progress-header">
+                <span>Tax Planning Strategies</span> <span>60%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 60%"></div>
+              </div>
+            </div>
+            <div class="course-progress">
+              <div class="progress-header">
+                <span>Advanced Technical Analysis</span> <span>40%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 40%"></div>
+              </div>
+            </div>
+            <div class="course-progress">
+              <div class="progress-header">
+                <span>Retirement Planning</span> <span>15%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 15%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="kpi-grid" style="margin-top: 24px">
+            <div class="kpi-item">
+              <div class="kpi-label">Completed</div>
+              <div class="kpi-value">12</div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-label">In Progress</div>
+              <div class="kpi-value">6</div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-label">Remaining</div>
+              <div class="kpi-value">8</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="JS/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Alerts (API style from 1st snippet) -->
+    <script>
+       <% if (errors && errors.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
+        });
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
+        });
+      <% } %>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indian Stock Trading Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="CSS/trading.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Indian Stock Trading Simulator</h1>
+        <div class="balance">Balance: ₹<span id="balance">100000.00</span></div>
+        <div style="text-align: center">
+          <div id="marketStatus" class="market-status market-open">
+            Market Open
+          </div>
+        </div>
+      </div>
+
+      <div class="search-section">
+        <h3 style="color: var(--card-foreground); margin-bottom: 15px">
+          🔍 Search Indian Stocks
+        </h3>
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Enter stock symbol (e.g., RELIANCE, TCS, INFY...)"
+          />
+          <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('trading')">
+          📊 Trading
+        </button>
+        <button class="tab-btn" onclick="switchTab('ipo')">
+          🚀 IPO Section
+        </button>
+      </div>
+
+      <div id="tradingTab" class="trading-panel">
+        <div class="panel">
+          <h3>📋 Your Watchlist</h3>
+          <div class="stock-list" id="stockList"></div>
+        </div>
+
+        <div class="panel">
+          <h3>📊 Price Chart</h3>
+          <div class="chart-container">
+            <canvas id="stockChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>💱 Trading</h3>
+          <div class="trading-form">
+            <div class="form-group">
+              <label>Selected Stock:</label>
+              <input
+                type="text"
+                id="selectedStock"
+                readonly
+                placeholder="Search and select a stock first"
+              />
+            </div>
+            <div class="form-group">
+              <label>Current Price:</label>
+              <input type="text" id="currentPrice" readonly />
+            </div>
+            <div class="form-group">
+              <label>Quantity:</label>
+              <input
+                type="number"
+                id="quantity"
+                min="1"
+                value="1"
+                placeholder="Enter quantity"
+              />
+            </div>
+            <div class="form-group">
+              <label>Total Cost:</label>
+              <input type="text" id="totalCost" readonly />
+            </div>
+            <div class="trade-buttons">
+              <button class="btn btn-buy" id="buyBtn">Buy</button>
+              <button class="btn btn-sell" id="sellBtn">Sell</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ipoTab" class="trading-panel" style="display: none">
+        <div class="panel ipo-panel">
+          <h3>🚀 Upcoming IPOs</h3>
+          <div id="upcomingIpos" class="stock-list"></div>
+        </div>
+
+        <div class="panel ipo-panel">
+          <h3>📈 IPO Details</h3>
+          <div
+            id="ipoDetails"
+            style="
+              text-align: center;
+              color: var(--muted-foreground);
+              padding: 50px 20px;
+            "
+          >
+            Select an IPO to view details
+          </div>
+        </div>
+
+        <div class="panel ipo-panel">
+          <h3>💰 Apply for IPO</h3>
+          <div class="trading-form">
+            <div class="form-group">
+              <label>Selected IPO:</label>
+              <input
+                type="text"
+                id="selectedIpo"
+                readonly
+                placeholder="Select an IPO first"
+              />
+            </div>
+            <div class="form-group">
+              <label>Price Band:</label>
+              <input type="text" id="ipoPriceBand" readonly />
+            </div>
+            <div class="form-group">
+              <label>Lot Size:</label>
+              <input type="text" id="ipoLotSize" readonly />
+            </div>
+            <div class="form-group">
+              <label>Number of Lots:</label>
+              <input
+                type="number"
+                id="ipoLots"
+                min="1"
+                max="5"
+                value="1"
+                placeholder="Max 5 lots"
+              />
+            </div>
+            <div class="form-group">
+              <label>Total Amount:</label>
+              <input type="text" id="ipoTotalAmount" readonly />
+            </div>
+            <button class="btn btn-ipo" id="applyIpoBtn">Apply for IPO</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="trading-panel">
+        <div class="panel">
+          <h3>💼 Portfolio</h3>
+          <div class="portfolio" id="portfolio"></div>
+        </div>
+
+        <div class="panel trade-history">
+          <h3>📜 Trade History</h3>
+          <div id="tradeHistory"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="JS/trading.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Alerts (API style from 1st snippet) -->
+    <script>
+       <% if (errors && errors.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
+        });
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
+        });
+      <% } %>
+    </script>
+  </body>
+</html>

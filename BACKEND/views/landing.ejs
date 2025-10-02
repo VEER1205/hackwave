@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paisabuddy - Empower Your Financial Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+      /* Money Animation */
+      .money-symbol {
+        position: absolute;
+        font-size: 20px;
+        color: #10b981;
+        opacity: 0.3;
+        animation: float 10s infinite linear;
+        pointer-events: none;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.3;
+        }
+        90% {
+          opacity: 0.3;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* Progress Bar */
+      .progress-bar {
+        background-color: #374151;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        background: linear-gradient(90deg, #10b981, #34d399);
+        height: 100%;
+        border-radius: 4px;
+        transition: width 2s ease-in-out;
+        animation: progress-glow 2s infinite;
+      }
+
+      @keyframes progress-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 5px #10b981;
+        }
+        50% {
+          box-shadow: 0 0 20px #10b981, 0 0 30px #10b981;
+        }
+      }
+
+      /* Chart Animation */
+      .chart-container {
+        background: linear-gradient(135deg, #1f2937, #374151);
+        border-radius: 12px;
+        padding: 24px;
+        border: 1px solid #374151;
+      }
+
+      .chart-bar {
+        background: linear-gradient(180deg, #10b981, #059669);
+        border-radius: 4px 4px 0 0;
+        transition: all 0.8s ease;
+        animation: chart-grow 2s ease-out;
+      }
+
+      @keyframes chart-grow {
+        0% {
+          height: 0 !important;
+        }
+        100% {
+          height: var(--final-height);
+        }
+      }
+
+      /* Pulse Animation */
+      @keyframes money-pulse {
+        0%,
+        100% {
+          color: #10b981;
+        }
+        50% {
+          color: #34d399;
+        }
+      }
+
+      .animate-money-pulse {
+        animation: money-pulse 2s infinite;
+      }
+
+      /* Count Up Animation */
+      @keyframes count-up {
+        0% {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .animate-count-up {
+        animation: count-up 1s ease-out;
+      }
+
+      /* Message Modal Styles */
+      .message-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+      }
+
+      .message-modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .message-content {
+        background: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 80vh;
+        overflow: hidden;
+        animation: slideIn 0.3s ease-out;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-50px) scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      .message-header {
+        padding: 20px;
+        border-bottom: 1px solid #374151;
+        background: linear-gradient(135deg, #1f2937, #111827);
+      }
+
+      .message-list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .message-item {
+        padding: 16px 20px;
+        border-bottom: 1px solid #374151;
+        transition: background-color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .message-item:hover {
+        background-color: #374151;
+      }
+
+      .message-item:last-child {
+        border-bottom: none;
+      }
+
+      .message-item.unread {
+        background-color: rgba(16, 185, 129, 0.1);
+        border-left: 3px solid #10b981;
+      }
+
+      .message-time {
+        font-size: 12px;
+        color: #9ca3af;
+      }
+
+      /* Custom Scrollbar */
+      .message-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .message-list::-webkit-scrollbar-track {
+        background: #1f2937;
+      }
+
+      .message-list::-webkit-scrollbar-thumb {
+        background: #10b981;
+        border-radius: 3px;
+      }
+
+      .message-list::-webkit-scrollbar-thumb:hover {
+        background: #059669;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen relative overflow-x-hidden bg-gray-900 text-white">
+    <div
+      id="money-animations"
+      class="fixed inset-0 pointer-events-none z-0"
+    ></div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="message-modal">
+      <div class="message-content">
+        <div class="message-header">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <i
+                data-lucide="message-circle"
+                class="h-6 w-6 text-green-500"
+              ></i>
+              <h3 class="text-lg font-semibold text-white">Messages</h3>
+            </div>
+            <button
+              onclick="closeMessageModal()"
+              class="text-gray-400 hover:text-white transition-colors"
+            >
+              <i data-lucide="x" class="h-5 w-5"></i>
+            </button>
+          </div>
+        </div>
+        <div class="message-list">
+          <div class="message-item unread">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-medium text-white">Welcome Bonus!</h4>
+              <span class="message-time">2 min ago</span>
+            </div>
+            <p class="text-gray-300 text-sm">
+              Congratulations! You've received ₹1,000 welcome bonus for joining
+              PaisaBuddy.
+            </p>
+          </div>
+          <div class="message-item unread">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-medium text-white">Course Completion</h4>
+              <span class="message-time">1 hour ago</span>
+            </div>
+            <p class="text-gray-300 text-sm">
+              Great job! You've completed the "Basics of Investing" course. Keep
+              learning!
+            </p>
+          </div>
+          <div class="message-item unread">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-medium text-white">Market Update</h4>
+              <span class="message-time">3 hours ago</span>
+            </div>
+            <p class="text-gray-300 text-sm">
+              NSE is showing positive trends today. Perfect time to review your
+              portfolio.
+            </p>
+          </div>
+          <div class="message-item">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-medium text-white">Friend Invitation</h4>
+              <span class="message-time">1 day ago</span>
+            </div>
+            <p class="text-gray-300 text-sm">
+              Rahul joined PaisaBuddy using your referral link. You earned ₹500
+              bonus!
+            </p>
+          </div>
+          <div class="message-item">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-medium text-white">Weekly Report</h4>
+              <span class="message-time">2 days ago</span>
+            </div>
+            <p class="text-gray-300 text-sm">
+              Your portfolio gained 2.5% this week. Check out your detailed
+              performance report.
+            </p>
+          </div>
+        </div>
+        <div class="p-4 border-t border-gray-700">
+          <button
+            class="w-full bg-green-500 hover:bg-green-600 text-black py-2 px-4 rounded-lg font-medium transition-colors"
+          >
+            Mark All as Read
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <nav
+      class="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur"
+    >
+      <div
+        class="container mx-auto flex h-16 items-center justify-between px-4"
+      >
+        <div class="flex items-center space-x-2">
+          <div
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500 text-black"
+          >
+            <span class="text-sm font-bold">P</span>
+          </div>
+          <span class="text-xl font-bold text-green-500">Paisabuddy</span>
+        </div>
+
+        <div class="hidden md:flex items-center space-x-6">
+          <a
+            href="/dashboard"
+            class="text-sm text-gray-300 hover:text-white transition-colors"
+            >Dashboard</a
+          >
+          <a
+            href="/game"
+            class="text-sm text-gray-300 hover:text-white transition-colors"
+            >Game</a
+          >
+          <a
+            href="/Course"
+            class="text-sm text-gray-300 hover:text-white transition-colors"
+            >Learn</a
+          >
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div
+            class="hidden sm:flex items-center space-x-2 rounded-lg bg-gray-800 px-3 py-2 border border-gray-700"
+          >
+            <i data-lucide="wallet" class="h-4 w-4 text-green-500"></i>
+            <span
+              class="text-sm font-medium animate-money-pulse"
+              >₹1,00,000</span
+            >
+          </div>
+
+          <button
+            onclick="openMessageModal()"
+            class="relative p-2 text-gray-300 hover:text-white transition-colors"
+          >
+            <i data-lucide="message-circle" class="h-5 w-5"></i>
+            <span
+              class="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-green-500 text-black text-xs flex items-center justify-center"
+              >3</span
+            >
+          </button>
+
+          <a
+            href="/Quiz"
+            class="hidden sm:flex items-center space-x-2 px-3 py-2 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:border-green-500 transition-colors"
+          >
+            <i data-lucide="help-circle" class="h-4 w-4"></i>
+            <span>Quiz</span>
+          </a>
+
+          <button
+            class="hidden lg:flex items-center space-x-2 px-3 py-2 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:border-green-500 transition-colors"
+          >
+            <i data-lucide="users" class="h-4 w-4"></i>
+            <span>Invite Friends</span>
+          </button>
+
+          <a
+            href="/trading"
+            class="bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
+          >
+            <i data-lucide="trending-up" class="h-4 w-4"></i>
+            <span>Invest</span>
+          </a>
+
+          <div
+            class="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center"
+          >
+            <span class="text-sm font-medium">PB</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="relative z-10">
+      <section class="py-12 md:py-20 relative">
+        <div class="container mx-auto px-4">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+              <div class="space-y-4">
+                <h1 class="text-4xl md:text-6xl font-bold">
+                  Empower Your
+                  <span class="text-green-500 animate-pulse"
+                    >Financial Journey</span
+                  >
+                </h1>
+                <p class="text-xl text-gray-400">
+                  Learn, invest, and grow your wealth with Paisabuddy. Join
+                  thousands of users building their financial future.
+                </p>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="/trading"
+                  class="bg-green-500 hover:bg-green-600 text-black px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
+                >
+                  <span>Start Investing</span>
+                  <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </a>
+                <a
+                  href="/dashboard"
+                  class="border border-gray-700 hover:border-green-500 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
+                >
+                  View Portfolio
+                </a>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div
+                  class="bg-gray-800 border border-gray-700 rounded-lg p-4 transform hover:scale-105 transition-transform"
+                >
+                  <div class="text-sm font-medium text-gray-400 mb-2">
+                    Saved This Month
+                  </div>
+                  <div
+                    class="text-2xl font-bold text-green-500 animate-count-up"
+                    id="saved-amount"
+                  >
+                    ₹12,450
+                  </div>
+                  <p class="text-xs text-gray-400 animate-bounce">
+                    +15% from last month
+                  </p>
+                </div>
+
+                <div
+                  class="bg-gray-800 border border-gray-700 rounded-lg p-4 transform hover:scale-105 transition-transform"
+                >
+                  <div class="text-sm font-medium text-gray-400 mb-2">
+                    Learning Progress
+                  </div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-2xl font-bold">78%</span>
+                    <i
+                      data-lucide="book-open"
+                      class="h-4 w-4 text-green-500 animate-pulse"
+                    ></i>
+                  </div>
+                  <div class="progress-bar h-2 mb-2">
+                    <div class="progress-fill" style="width: 78%"></div>
+                  </div>
+                  <p class="text-xs text-gray-400">4 courses completed</p>
+                </div>
+
+                <div
+                  class="bg-gray-800 border border-gray-700 rounded-lg p-4 transform hover:scale-105 transition-transform"
+                >
+                  <div class="text-sm font-medium text-gray-400 mb-2">
+                    Active Users
+                  </div>
+                  <div
+                    class="text-2xl font-bold text-green-500"
+                    id="active-users"
+                  >
+                    2.4K
+                  </div>
+                  <p class="text-xs text-gray-400">Online now</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:pl-8">
+              <div class="chart-container">
+  <h3 class="text-lg font-semibold mb-4 text-white">
+    Active Users This Week
+  </h3>
+  <div class="flex items-end justify-between h-48 space-x-2">
+    <div class="flex flex-col items-center space-y-2">
+      <div class="chart-bar w-8" style="height: 55%"></div> <!-- Mon -->
+      <span class="text-xs text-gray-400">Mon</span>
+    </div>
+    <div class="flex flex-col items-center space-y-2">
+      <div class="chart-bar w-8" style="height: 65%"></div> <!-- Tue -->
+      <span class="text-xs text-gray-400">Tue</span>
+    </div>
+    <div class="flex flex-col items-center space-y-2">
+      <div class="chart-bar w-8" style="height: 45%"></div> <!-- Wed -->
+      <span class="text-xs text-gray-400">Wed</span>
+    </div>
+    <div class="flex flex-col items-center space-y-2">
+      <div class="chart-bar w-8" style="height: 75%"></div> <!-- Thu -->
+      <span class="text-xs text-gray-400">Thu</span>
+    </div>
+    <div class="flex flex-col items-center space-y-2">
+      <div class="chart-bar w-8" style="height: 90%"></div> <!-- Fri -->
+      <span class="text-xs text-gray-400">Fri</span>
+    </div>
+    <div class="flex flex-col items-center space-y-2">
+      <div class="chart-bar w-8" style="height: 60%"></div> <!-- Sat -->
+      <span class="text-xs text-gray-400">Sat</span>
+    </div>
+    <div class="flex flex-col items-center space-y-2">
+      <div class="chart-bar w-8" style="height: 50%"></div> <!-- Sun -->
+      <span class="text-xs text-gray-400">Sun</span>
+    </div>
+  </div>
+</div>
+
+        </div>
+      </section>
+
+      <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+              About Paisabuddy
+            </h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+              We're revolutionizing financial education and investment
+              accessibility for everyone. Our platform combines learning with
+              practical investing tools.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-8">
+            <a
+              href="/course"
+              class="text-center p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              <div
+                class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <i data-lucide="graduation-cap" class="h-8 w-8 text-black"></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Learn</h3>
+              <p class="text-gray-400">
+                Master financial concepts with our interactive courses and
+                expert guidance.
+              </p>
+            </a>
+            <a
+              href="/trading"
+              class="text-center p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              <div
+                class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <i data-lucide="trending-up" class="h-8 w-8 text-black"></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Invest</h3>
+              <p class="text-gray-400">
+                Start investing with confidence using our user-friendly platform
+                and tools.
+              </p>
+            </a>
+            <a
+              href="/Quiz"
+              class="text-center p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              <div
+                class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <i data-lucide="help-circle" class="h-8 w-8 text-black"></i>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Quiz</h3>
+              <p class="text-gray-400">
+                Test your knowledge, sharpen your skills. Every challenge is a
+                step toward mastery.
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16">
+        <div class="container mx-auto px-4">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">How to Play</h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+              Get started with Paisabuddy in just a few simple steps and begin
+              your financial journey today.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+              <div
+                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
+              >
+                1
+              </div>
+              <h3 class="text-lg font-semibold mb-2">Sign Up</h3>
+              <p class="text-gray-400">
+                Create your account and complete your profile to get started.
+              </p>
+            </div>
+            <div class="text-center">
+              <div
+                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
+              >
+                2
+              </div>
+              <h3 class="text-lg font-semibold mb-2">Learn</h3>
+              <p class="text-gray-400">
+                Take courses and quizzes to build your financial knowledge.
+              </p>
+            </div>
+            <div class="text-center">
+              <div
+                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
+              >
+                3
+              </div>
+              <h3 class="text-lg font-semibold mb-2">Practice</h3>
+              <p class="text-gray-400">
+                Use our simulator to practice investing without real money.
+              </p>
+            </div>
+            <div class="text-center">
+              <div
+                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
+              >
+                4
+              </div>
+              <h3 class="text-lg font-semibold mb-2">Invest</h3>
+              <p class="text-gray-400">
+                Start investing real money and grow your wealth.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <div
+                class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500 text-black"
+              >
+                <span class="text-sm font-bold">P</span>
+              </div>
+              <span class="text-xl font-bold text-green-500">Paisabuddy</span>
+            </div>
+            <p class="text-gray-400">
+              Empowering your financial journey with education and smart
+              investing tools.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4">Product</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Features</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Pricing</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Security</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4">Company</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a href="#" class="hover:text-white transition-colors">About</a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Careers</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4">Support</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Help Center</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Community</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition-colors"
+                  >Privacy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"
+        >
+          <p>&copy; 2024 Paisabuddy. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+
+      // Money Animation
+      function createMoneySymbol() {
+        const symbols = ["₹", "$", "€", "¥", "£"];
+        const container = document.getElementById("money-animations");
+
+        const symbol = document.createElement("div");
+        symbol.className = "money-symbol";
+        symbol.textContent =
+          symbols[Math.floor(Math.random() * symbols.length)];
+        symbol.style.left = Math.random() * 100 + "%";
+        symbol.style.animationDuration = Math.random() * 5 + 8 + "s";
+
+        container.appendChild(symbol);
+        const value = document.getElementById("portfolio-value");
+
+        value.textContent = setTimeout(() => {
+          symbol.remove();
+        }, 13000);
+      }
+
+      
+
+      // Create money symbols periodically
+      setInterval(createMoneySymbol, 2000);
+      fetchPortfolio();
+      // Message Modal Functions
+      function openMessageModal() {
+        const modal = document.getElementById("messageModal");
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeMessageModal() {
+        const modal = document.getElementById("messageModal");
+        modal.classList.remove("show");
+        document.body.style.overflow = "auto";
+      }
+
+      // Close modal when clicking outside
+      document
+        .getElementById("messageModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeMessageModal();
+          }
+        });
+
+      // Close modal with Escape key
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeMessageModal();
+        }
+      });
+
+      // Mark message as read when clicked
+      document.querySelectorAll(".message-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          this.classList.remove("unread");
+          // Update notification count
+          const badge = document.querySelector(".bg-green-500");
+          let count = parseInt(badge.textContent);
+          if (count > 0) {
+            badge.textContent = count - 1;
+          }
+        });
+      });
+
+      // Mark all as read
+      function markAllAsRead() {
+        document.querySelectorAll(".message-item.unread").forEach((item) => {
+          item.classList.remove("unread");
+        });
+        document.querySelector(".bg-green-500").textContent = "0";
+        closeMessageModal();
+      }
+
+      // Counter Animation
+      function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 100;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          element.textContent = Math.floor(current).toLocaleString("en-IN");
+        }, 20);
+      }
+
+      // Initialize animations on load
+      window.addEventListener("load", () => {
+        const activeUsers = document.getElementById("active-users");
+        if (activeUsers) {
+          animateCounter(activeUsers, 2400);
+        }
+      });
+    </script>
+  </body>
+</html>
