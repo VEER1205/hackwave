@@ -304,7 +304,46 @@ function getPortFolio(email) {
   });
 }
 
-  module.exports = {
+async function getUserCourses(email) {
+  return new Promise((resolve, reject) => {
+    const db = createConnection();
+
+    const sql = `
+      SELECT * FROM Enrollments WHERE user_id = ?
+    `;
+
+    db.query(sql, [email], (err, results) => {
+      db.end();
+
+      if (err) {
+        console.error("❌ Error fetching user courses:", err.message);
+        return reject(err);
+      }
+
+      resolve(results);
+    });
+  });
+}
+
+function getAllNumberOfUsers() {
+  return new Promise((resolve, reject) => {
+    const db = createConnection();
+    const sql = `SELECT COUNT(*) AS userCount FROM Users`;
+
+    db.query(sql, (err, results) => {
+      db.end();
+
+      if (err) {
+        console.error("❌ Error fetching user count:", err.message);
+        return reject(err);
+      }
+
+      resolve(results[0].userCount);
+    });
+  });
+}
+
+module.exports = {
     storeResetToken,
     verifyResetToken,
     updateUserPassword,
@@ -316,6 +355,7 @@ function getPortFolio(email) {
     linkUserWithOauth,
     getUserByEmail,
     getPortFolio,
+    getUserCourses
   };
 
 
