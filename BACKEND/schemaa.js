@@ -355,7 +355,8 @@ module.exports = {
     linkUserWithOauth,
     getUserByEmail,
     getPortFolio,
-    getUserCourses
+    getUserCourses,
+    getAllNumberOfUsers
   };
 
 
