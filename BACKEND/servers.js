@@ -1,6 +1,18 @@
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const { addUser,getAllNumberOfUsers,getPortFolio } = require("./schemaa.js");
+const {
+  addUser,
+  getAllNumberOfUsers,
+  getUserBalance,
+  updateUserBalance,
+  getPortfolio,
+  upsertPortfolioHolding,
+  insertTrade,
+  getUserTrades,
+  getUserWatchlist,
+  addToWatchlist,
+  removeFromWatchlist
+} = require("./schemaa.js");
 const {
   getGoogleLoginPage,
   getGoogleLoginCallback,
@@ -22,6 +34,19 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/public")));
+
+function requireAuth(req, res, next) {
+  try {
+    const userCookie = req.cookies.user;
+    if (!userCookie) {
+      return res.status(401).json({ error: "Not logged in" });
+    }
+    req.user = JSON.parse(userCookie);
+    next();
+  } catch (err) {
+    res.status(401).json({ error: "Invalid session" });
+  }
+}
 
 app.use((req, res, next) => {
   res.flash = (type, message) => {
@@ -190,17 +215,172 @@ app.get("/api/user/balance", async (req, res) => {
   }
 });
 
-app.get("/api/me", (req, res) => {
+app.get("/api/user/balance", requireAuth, async (req, res) => {
   try {
-    const userCookie = req.cookies.user;
-    if (!userCookie) return res.status(401).json({ error: "Not logged in" });
-
-    const user = JSON.parse(userCookie);
-    res.json({ email: user.email, name: user.name });
+    const balance = await getUserBalance(req.user.user_id);
+    res.json({ balance });
   } catch (err) {
-    console.error("Error parsing user cookie:", err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("❌ GET /api/user/balance error:", err);
+    res.status(500).json({ error: "Failed to fetch user balance" });
   }
+});
+
+// Get user portfolio
+app.get("/api/portfolio", requireAuth, async (req, res) => {
+  try {
+    const holdings = await getPortfolio(req.user.user_id);
+    res.json({ holdings });
+  } catch (err) {
+    console.error("❌ GET /api/portfolio error:", err);
+    res.status(500).json({ error: "Failed to fetch portfolio" });
+  }
+});
+
+// Get user trades
+app.get("/api/trades", requireAuth, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 50;
+    const trades = await getUserTrades(req.user.user_id, limit);
+    res.json({ trades });
+  } catch (err) {
+    console.error("❌ GET /api/trades error:", err);
+    res.status(500).json({ error: "Failed to fetch trades" });
+  }
+});
+
+// Execute trade (BUY/SELL)
+app.post("/api/trade", requireAuth, async (req, res) => {
+  try {
+    const { type, side, symbol, name, qty, price } = req.body;
+    
+    if (!type || !side || !symbol || !qty || !price) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const quantity = parseFloat(qty);
+    const priceNum = parseFloat(price);
+    const total = quantity * priceNum;
+
+    // Get current balance
+    const balance = await getUserBalance(req.user.user_id);
+
+    if (side === 'BUY') {
+      // Check if user has enough balance
+      if (balance < total) {
+        return res.status(400).json({ error: "Insufficient balance" });
+      }
+
+      // Deduct balance
+      await updateUserBalance(req.user.user_id, balance - total);
+
+      // Add to portfolio
+      await upsertPortfolioHolding(
+        req.user.user_id,
+        type,
+        symbol,
+        name,
+        quantity,
+        priceNum,
+        priceNum
+      );
+    } else if (side === 'SELL') {
+      // Check if user has enough holdings
+      const portfolio = await getPortfolio(req.user.user_id);
+      const holding = portfolio.find(h => h.type === type && h.symbol === symbol);
+
+      if (!holding || holding.quantity < quantity) {
+        return res.status(400).json({ error: "Insufficient holdings" });
+      }
+
+      // Add balance
+      await updateUserBalance(req.user.user_id, balance + total);
+
+      // Remove from portfolio
+      await upsertPortfolioHolding(
+        req.user.user_id,
+        type,
+        symbol,
+        name,
+        -quantity, // Negative to subtract
+        priceNum,
+        priceNum
+      );
+    }
+
+    // Insert trade record
+    await insertTrade(
+      req.user.user_id,
+      type,
+      side,
+      symbol,
+      name,
+      quantity,
+      priceNum,
+      total
+    );
+
+    // Return updated balance
+    const newBalance = await getUserBalance(req.user.user_id);
+
+    res.json({
+      success: true,
+      message: `${side} order executed successfully`,
+      balance: newBalance,
+      trade: { type, side, symbol, qty: quantity, price: priceNum, total }
+    });
+  } catch (err) {
+    console.error("❌ POST /api/trade error:", err);
+    res.status(500).json({ error: "Failed to execute trade" });
+  }
+});
+
+// Get watchlist
+app.get("/api/watchlist", requireAuth, async (req, res) => {
+  try {
+    const watchlist = await getUserWatchlist(req.user.user_id);
+    res.json({ watchlist });
+  } catch (err) {
+    console.error("❌ GET /api/watchlist error:", err);
+    res.status(500).json({ error: "Failed to fetch watchlist" });
+  }
+});
+
+// Add to watchlist
+app.post("/api/watchlist", requireAuth, async (req, res) => {
+  try {
+    const { type, symbol, name } = req.body;
+    
+    if (!type || !symbol) {
+      return res.status(400).json({ error: "Missing type or symbol" });
+    }
+
+    await addToWatchlist(req.user.user_id, type, symbol, name || symbol);
+    res.json({ success: true, message: "Added to watchlist" });
+  } catch (err) {
+    console.error("❌ POST /api/watchlist error:", err);
+    res.status(500).json({ error: "Failed to add to watchlist" });
+  }
+});
+
+// Remove from watchlist
+app.delete("/api/watchlist/:symbol", requireAuth, async (req, res) => {
+  try {
+    const { symbol } = req.params;
+    await removeFromWatchlist(req.user.user_id, symbol);
+    res.json({ success: true, message: "Removed from watchlist" });
+  } catch (err) {
+    console.error("❌ DELETE /api/watchlist error:", err);
+    res.status(500).json({ error: "Failed to remove from watchlist" });
+  }
+});
+
+// Get user info
+app.get("/api/me", requireAuth, (req, res) => {
+  res.json({
+    email: req.user.email,
+    name: req.user.name,
+    user_id: req.user.user_id
+  });
 });
 
 
