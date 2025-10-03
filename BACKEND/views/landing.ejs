@@ -1,835 +1,1765 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Paisabuddy - Empower Your Financial Journey</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-      /* Money Animation */
-      .money-symbol {
-        position: absolute;
-        font-size: 20px;
-        color: #10b981;
-        opacity: 0.3;
-        animation: float 10s infinite linear;
-        pointer-events: none;
-      }
+<html lang="en">
 
-      @keyframes float {
-        0% {
-          transform: translateY(100vh) rotate(0deg);
-          opacity: 0;
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeMaster Pro - Advanced Trading Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        10% {
-          opacity: 0.3;
+
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1a1f2e;
+            --accent-primary: #10b981;
+            --accent-secondary: #3b82f6;
+            --accent-gradient: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-tertiary: #6b7280;
+            --border-color: #1f2937;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        90% {
-          opacity: 0.3;
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        100% {
-          transform: translateY(-100px) rotate(360deg);
-          opacity: 0;
+
+        html {
+            scroll-behavior: smooth;
         }
-      }
 
-      /* Progress Bar */
-      .progress-bar {
-        background-color: #374151;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-
-      .progress-fill {
-        background: linear-gradient(90deg, #10b981, #34d399);
-        height: 100%;
-        border-radius: 4px;
-        transition: width 2s ease-in-out;
-        animation: progress-glow 2s infinite;
-      }
-
-      @keyframes progress-glow {
-        0%,
-        100% {
-          box-shadow: 0 0 5px #10b981;
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
-        50% {
-          box-shadow: 0 0 20px #10b981, 0 0 30px #10b981;
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: var(--transition);
         }
-      }
 
-      /* Chart Animation */
-      .chart-container {
-        background: linear-gradient(135deg, #1f2937, #374151);
-        border-radius: 12px;
-        padding: 24px;
-        border: 1px solid #374151;
-      }
-
-      .chart-bar {
-        background: linear-gradient(180deg, #10b981, #059669);
-        border-radius: 4px 4px 0 0;
-        transition: all 0.8s ease;
-        animation: chart-grow 2s ease-out;
-      }
-
-      @keyframes chart-grow {
-        0% {
-          height: 0 !important;
+        .navbar.scrolled {
+            background: rgba(10, 14, 23, 0.95);
+            box-shadow: var(--shadow-lg);
         }
-        100% {
-          height: var(--final-height);
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-      }
 
-      /* Pulse Animation */
-      @keyframes money-pulse {
-        0%,
-        100% {
-          color: #10b981;
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            cursor: pointer;
         }
-        50% {
-          color: #34d399;
+
+        .nav-logo i {
+            color: var(--accent-primary);
+            font-size: 1.75rem;
         }
-      }
 
-      .animate-money-pulse {
-        animation: money-pulse 2s infinite;
-      }
-
-      /* Count Up Animation */
-      @keyframes count-up {
-        0% {
-          transform: translateY(20px);
-          opacity: 0;
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
-        100% {
-          transform: translateY(0);
-          opacity: 1;
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
         }
-      }
 
-      .animate-count-up {
-        animation: count-up 1s ease-out;
-      }
-
-      /* Message Modal Styles */
-      .message-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        backdrop-filter: blur(5px);
-      }
-
-      .message-modal.show {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: fadeIn 0.3s ease-out;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-primary);
         }
-        to {
-          opacity: 1;
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: var(--transition);
         }
-      }
 
-      .message-content {
-        background: #1f2937;
-        border: 1px solid #374151;
-        border-radius: 16px;
-        width: 90%;
-        max-width: 500px;
-        max-height: 80vh;
-        overflow: hidden;
-        animation: slideIn 0.3s ease-out;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateY(-50px) scale(0.9);
-          opacity: 0;
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
         }
-        to {
-          transform: translateY(0) scale(1);
-          opacity: 1;
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
-      }
 
-      .message-header {
-        padding: 20px;
-        border-bottom: 1px solid #374151;
-        background: linear-gradient(135deg, #1f2937, #111827);
-      }
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
 
-      .message-list {
-        max-height: 400px;
-        overflow-y: auto;
-      }
+        .btn-primary,
+        .btn-secondary {
+            padding: 0.625rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.95rem;
+        }
 
-      .message-item {
-        padding: 16px 20px;
-        border-bottom: 1px solid #374151;
-        transition: background-color 0.2s ease;
-        cursor: pointer;
-      }
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
 
-      .message-item:hover {
-        background-color: #374151;
-      }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+        }
 
-      .message-item:last-child {
-        border-bottom: none;
-      }
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
 
-      .message-item.unread {
-        background-color: rgba(16, 185, 129, 0.1);
-        border-left: 3px solid #10b981;
-      }
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
 
-      .message-time {
-        font-size: 12px;
-        color: #9ca3af;
-      }
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
 
-      /* Custom Scrollbar */
-      .message-list::-webkit-scrollbar {
-        width: 6px;
-      }
+        .hero {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-      .message-list::-webkit-scrollbar-track {
-        background: #1f2937;
-      }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 8s ease-in-out infinite;
+        }
 
-      .message-list::-webkit-scrollbar-thumb {
-        background: #10b981;
-        border-radius: 3px;
-      }
+        @keyframes pulse {
 
-      .message-list::-webkit-scrollbar-thumb:hover {
-        background: #059669;
-      }
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .hero-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        .hero-visual {
+            z-index: 1;
+        }
+
+        .trading-chart-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(12px);
+        }
+
+        .stats-section {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .stat-trend.up {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-info {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-current {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .referral-section {
+            padding: 80px 0;
+            background: var(--bg-primary);
+        }
+
+        .referral-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .referral-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .referral-content {
+            display: flex;
+            gap: 2rem;
+            z-index: 1;
+        }
+
+        .referral-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .referral-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .referral-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .referral-benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .benefit-item i {
+            color: var(--accent-primary);
+            font-size: 1.25rem;
+        }
+
+        .referral-action {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            z-index: 1;
+        }
+
+        .referral-code-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .referral-code-box label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .code-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .code-input-group input {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .btn-copy {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .btn-copy:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .referral-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+        }
+
+        .ref-stat {
+            text-align: center;
+        }
+
+        .ref-number {
+            display: block;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .ref-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .features-section {
+            padding: 80px 0;
+            background: var(--bg-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .feature-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .feature-link:hover {
+            gap: 0.75rem;
+        }
+
+        .how-to-section {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .steps-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            flex: 1;
+            max-width: 320px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-primary);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .step-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid var(--accent-secondary);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .testimonials-section {
+            padding: 80px 0;
+            background: var(--bg-primary);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-primary);
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .author-title {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .disclaimer-section {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .disclaimer-card {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--warning);
+            border-radius: 16px;
+            padding: 2.5rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .disclaimer-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--warning);
+            flex-shrink: 0;
+        }
+
+        .disclaimer-content h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--warning);
+        }
+
+        .disclaimer-content p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .disclaimer-content strong {
+            color: var(--text-primary);
+        }
+
+        .cta-section {
+            padding: 100px 0;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-content>p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-note {
+            margin-top: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo i {
+            color: var(--accent-primary);
+            font-size: 1.75rem;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer-column h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-tertiary);
+        }
+
+        .footer-warning {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--warning);
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .referral-card {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-container {
+                flex-direction: column;
+            }
+
+            .step-connector {
+                width: 2px;
+                height: 60px;
+                background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            }
+
+            .step-connector::after {
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -6px;
+                transform: translateX(-50%);
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 8px solid var(--accent-secondary);
+                border-bottom: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .nav-menu.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                border-bottom: 1px solid var(--border-color);
+                padding: 1rem 2rem;
+                gap: 1rem;
+            }
+
+            .hero {
+                padding: 100px 0 60px;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
     </style>
-  </head>
-  <body class="min-h-screen relative overflow-x-hidden bg-gray-900 text-white">
-    <div
-      id="money-animations"
-      class="fixed inset-0 pointer-events-none z-0"
-    ></div>
+</head>
 
-    <!-- Message Modal -->
-    <div id="messageModal" class="message-modal">
-      <div class="message-content">
-        <div class="message-header">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <i
-                data-lucide="message-circle"
-                class="h-6 w-6 text-green-500"
-              ></i>
-              <h3 class="text-lg font-semibold text-white">Messages</h3>
+<body data-new-gr-c-s-check-loaded="14.1255.0" data-gr-ext-installed="">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-chart-line"></i>
+                <span>TradeMaster Pro</span>
             </div>
-            <button
-              onclick="closeMessageModal()"
-              class="text-gray-400 hover:text-white transition-colors"
-            >
-              <i data-lucide="x" class="h-5 w-5"></i>
-            </button>
-          </div>
-        </div>
-        <div class="message-list">
-          <div class="message-item unread">
-            <div class="flex justify-between items-start mb-2">
-              <h4 class="font-medium text-white">Welcome Bonus!</h4>
-              <span class="message-time">2 min ago</span>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#learn" class="nav-link">Learn</a>
+                <a href="#ai-chatbot" class="nav-link">AI Assistant</a>
+                <a href="#games" class="nav-link">Trading Games</a>
+                <a href="#courses" class="nav-link">Courses</a>
+                <a href="#analytics" class="nav-link">Analytics</a>
             </div>
-            <p class="text-gray-300 text-sm">
-              Congratulations! You've received ₹1,000 welcome bonus for joining
-              PaisaBuddy.
-            </p>
-          </div>
-          <div class="message-item unread">
-            <div class="flex justify-between items-start mb-2">
-              <h4 class="font-medium text-white">Course Completion</h4>
-              <span class="message-time">1 hour ago</span>
+            <div class="nav-actions">
+                <button class="btn-secondary">Sign In</button>
+                <button class="btn-primary">Get Started</button>
+                <div class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
             </div>
-            <p class="text-gray-300 text-sm">
-              Great job! You've completed the "Basics of Investing" course. Keep
-              learning!
-            </p>
-          </div>
-          <div class="message-item unread">
-            <div class="flex justify-between items-start mb-2">
-              <h4 class="font-medium text-white">Market Update</h4>
-              <span class="message-time">3 hours ago</span>
-            </div>
-            <p class="text-gray-300 text-sm">
-              NSE is showing positive trends today. Perfect time to review your
-              portfolio.
-            </p>
-          </div>
-          <div class="message-item">
-            <div class="flex justify-between items-start mb-2">
-              <h4 class="font-medium text-white">Friend Invitation</h4>
-              <span class="message-time">1 day ago</span>
-            </div>
-            <p class="text-gray-300 text-sm">
-              Rahul joined PaisaBuddy using your referral link. You earned ₹500
-              bonus!
-            </p>
-          </div>
-          <div class="message-item">
-            <div class="flex justify-between items-start mb-2">
-              <h4 class="font-medium text-white">Weekly Report</h4>
-              <span class="message-time">2 days ago</span>
-            </div>
-            <p class="text-gray-300 text-sm">
-              Your portfolio gained 2.5% this week. Check out your detailed
-              performance report.
-            </p>
-          </div>
         </div>
-        <div class="p-4 border-t border-gray-700">
-          <button
-            class="w-full bg-green-500 hover:bg-green-600 text-black py-2 px-4 rounded-lg font-medium transition-colors"
-          >
-            Mark All as Read
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <nav
-      class="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur"
-    >
-      <div
-        class="container mx-auto flex h-16 items-center justify-between px-4"
-      >
-        <div class="flex items-center space-x-2">
-          <div
-            class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500 text-black"
-          >
-            <span class="text-sm font-bold">P</span>
-          </div>
-          <span class="text-xl font-bold text-green-500">Paisabuddy</span>
-        </div>
-
-        <div class="hidden md:flex items-center space-x-6">
-          <a
-            href="/dashboard"
-            class="text-sm text-gray-300 hover:text-white transition-colors"
-            >Dashboard</a
-          >
-          <a
-            href="/game"
-            class="text-sm text-gray-300 hover:text-white transition-colors"
-            >Game</a
-          >
-          <a
-            href="/Course"
-            class="text-sm text-gray-300 hover:text-white transition-colors"
-            >Learn</a
-          >
-        </div>
-
-        <div class="flex items-center space-x-4">
-          <div
-            class="hidden sm:flex items-center space-x-2 rounded-lg bg-gray-800 px-3 py-2 border border-gray-700"
-          >
-            <i data-lucide="wallet" class="h-4 w-4 text-green-500"></i>
-            <span
-              class="text-sm font-medium animate-money-pulse"
-              >₹1,00,000</span
-            >
-          </div>
-
-          <button
-            onclick="openMessageModal()"
-            class="relative p-2 text-gray-300 hover:text-white transition-colors"
-          >
-            <i data-lucide="message-circle" class="h-5 w-5"></i>
-            <span
-              class="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-green-500 text-black text-xs flex items-center justify-center"
-              >3</span
-            >
-          </button>
-
-          <a
-            href="/Quiz"
-            class="hidden sm:flex items-center space-x-2 px-3 py-2 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:border-green-500 transition-colors"
-          >
-            <i data-lucide="help-circle" class="h-4 w-4"></i>
-            <span>Quiz</span>
-          </a>
-
-          <button
-            class="hidden lg:flex items-center space-x-2 px-3 py-2 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:border-green-500 transition-colors"
-          >
-            <i data-lucide="users" class="h-4 w-4"></i>
-            <span>Invite Friends</span>
-          </button>
-
-          <a
-            href="/trading"
-            class="bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
-          >
-            <i data-lucide="trending-up" class="h-4 w-4"></i>
-            <span>Invest</span>
-          </a>
-
-          <div
-            class="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center"
-          >
-            <span class="text-sm font-medium">PB</span>
-          </div>
-        </div>
-      </div>
     </nav>
 
-    <main class="relative z-10">
-      <section class="py-12 md:py-20 relative">
-        <div class="container mx-auto px-4">
-          <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div class="space-y-8">
-              <div class="space-y-4">
-                <h1 class="text-4xl md:text-6xl font-bold">
-                  Empower Your
-                  <span class="text-green-500 animate-pulse"
-                    >Financial Journey</span
-                  >
-                </h1>
-                <p class="text-xl text-gray-400">
-                  Learn, invest, and grow your wealth with Paisabuddy. Join
-                  thousands of users building their financial future.
-                </p>
-              </div>
-
-              <div class="flex flex-col sm:flex-row gap-4">
-                <a
-                  href="/trading"
-                  class="bg-green-500 hover:bg-green-600 text-black px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
-                >
-                  <span>Start Investing</span>
-                  <i data-lucide="arrow-right" class="h-4 w-4"></i>
-                </a>
-                <a
-                  href="/dashboard"
-                  class="border border-gray-700 hover:border-green-500 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
-                >
-                  View Portfolio
-                </a>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div
-                  class="bg-gray-800 border border-gray-700 rounded-lg p-4 transform hover:scale-105 transition-transform"
-                >
-                  <div class="text-sm font-medium text-gray-400 mb-2">
-                    Saved This Month
-                  </div>
-                  <div
-                    class="text-2xl font-bold text-green-500 animate-count-up"
-                    id="saved-amount"
-                  >
-                    ₹12,450
-                  </div>
-                  <p class="text-xs text-gray-400 animate-bounce">
-                    +15% from last month
-                  </p>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Master the Art of <span class="gradient-text">Trading</span></h1>
+                <p class="hero-subtitle">Join thousands of traders using AI-powered insights, real-time analytics, and
+                    expert courses to maximize profits.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary btn-large">Start Trading Now</button>
+                    <button class="btn-secondary btn-large"><i class="fas fa-play"></i> Watch Demo</button>
                 </div>
-
-                <div
-                  class="bg-gray-800 border border-gray-700 rounded-lg p-4 transform hover:scale-105 transition-transform"
-                >
-                  <div class="text-sm font-medium text-gray-400 mb-2">
-                    Learning Progress
-                  </div>
-                  <div class="flex items-center justify-between mb-2">
-                    <span class="text-2xl font-bold">78%</span>
-                    <i
-                      data-lucide="book-open"
-                      class="h-4 w-4 text-green-500 animate-pulse"
-                    ></i>
-                  </div>
-                  <div class="progress-bar h-2 mb-2">
-                    <div class="progress-fill" style="width: 78%"></div>
-                  </div>
-                  <p class="text-xs text-gray-400">4 courses completed</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Active Traders</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">$2.5B+</div>
+                        <div class="stat-label">Trading Volume</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Satisfaction</div>
+                    </div>
                 </div>
-
-                <div
-                  class="bg-gray-800 border border-gray-700 rounded-lg p-4 transform hover:scale-105 transition-transform"
-                >
-                  <div class="text-sm font-medium text-gray-400 mb-2">
-                    Active Users
-                  </div>
-                  <div
-                    class="text-2xl font-bold text-green-500"
-                    id="active-users"
-                  >
-                    2.4K
-                  </div>
-                  <p class="text-xs text-gray-400">Online now</p>
+            </div>
+            <div class="hero-visual">
+                <div class="trading-chart-card">
+                    <canvas id="heroChart" width="600" height="300"></canvas>
                 </div>
-              </div>
             </div>
-
-            <div class="lg:pl-8">
-              <div class="chart-container">
-  <h3 class="text-lg font-semibold mb-4 text-white">
-    Active Users This Week
-  </h3>
-  <div class="flex items-end justify-between h-48 space-x-2">
-    <div class="flex flex-col items-center space-y-2">
-      <div class="chart-bar w-8" style="height: 55%"></div> <!-- Mon -->
-      <span class="text-xs text-gray-400">Mon</span>
-    </div>
-    <div class="flex flex-col items-center space-y-2">
-      <div class="chart-bar w-8" style="height: 65%"></div> <!-- Tue -->
-      <span class="text-xs text-gray-400">Tue</span>
-    </div>
-    <div class="flex flex-col items-center space-y-2">
-      <div class="chart-bar w-8" style="height: 45%"></div> <!-- Wed -->
-      <span class="text-xs text-gray-400">Wed</span>
-    </div>
-    <div class="flex flex-col items-center space-y-2">
-      <div class="chart-bar w-8" style="height: 75%"></div> <!-- Thu -->
-      <span class="text-xs text-gray-400">Thu</span>
-    </div>
-    <div class="flex flex-col items-center space-y-2">
-      <div class="chart-bar w-8" style="height: 90%"></div> <!-- Fri -->
-      <span class="text-xs text-gray-400">Fri</span>
-    </div>
-    <div class="flex flex-col items-center space-y-2">
-      <div class="chart-bar w-8" style="height: 60%"></div> <!-- Sat -->
-      <span class="text-xs text-gray-400">Sat</span>
-    </div>
-    <div class="flex flex-col items-center space-y-2">
-      <div class="chart-bar w-8" style="height: 50%"></div> <!-- Sun -->
-      <span class="text-xs text-gray-400">Sun</span>
-    </div>
-  </div>
-</div>
-
         </div>
-      </section>
+    </section>
 
-      <section class="py-16 bg-gray-900">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">
-              About Paisabuddy
-            </h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-              We're revolutionizing financial education and investment
-              accessibility for everyone. Our platform combines learning with
-              practical investing tools.
-            </p>
-          </div>
-          <div class="grid md:grid-cols-3 gap-8">
-            <a
-              href="/course"
-              class="text-center p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
-            >
-              <div
-                class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <i data-lucide="graduation-cap" class="h-8 w-8 text-black"></i>
-              </div>
-              <h3 class="text-xl font-semibold mb-2">Learn</h3>
-              <p class="text-gray-400">
-                Master financial concepts with our interactive courses and
-                expert guidance.
-              </p>
-            </a>
-            <a
-              href="/trading"
-              class="text-center p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
-            >
-              <div
-                class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <i data-lucide="trending-up" class="h-8 w-8 text-black"></i>
-              </div>
-              <h3 class="text-xl font-semibold mb-2">Invest</h3>
-              <p class="text-gray-400">
-                Start investing with confidence using our user-friendly platform
-                and tools.
-              </p>
-            </a>
-            <a
-              href="/Quiz"
-              class="text-center p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
-            >
-              <div
-                class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <i data-lucide="help-circle" class="h-8 w-8 text-black"></i>
-              </div>
-              <h3 class="text-xl font-semibold mb-2">Quiz</h3>
-              <p class="text-gray-400">
-                Test your knowledge, sharpen your skills. Every challenge is a
-                step toward mastery.
-              </p>
-            </a>
-          </div>
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="section-title">Real-Time Platform Activity</h2>
+            <div class="stats-grid">
+                <div class="stat-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="stat-card-header">
+                        <h3>Active Users Today</h3>
+                        <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 12.5%</span>
+                    </div>
+                    <canvas id="activeUsersChart" width="600" height="200"></canvas>
+                    <div class="stat-info">
+                        <span class="stat-current">47,917 users online now</span>
+                    </div>
+                </div>
+                <div class="stat-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="stat-card-header">
+                        <h3>Trading Volume (24h)</h3>
+                        <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 8.3%</span>
+                    </div>
+                    <canvas id="volumeChart" width="600" height="200"></canvas>
+                    <div class="stat-info">
+                        <span class="stat-current">$155.8M volume</span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <section class="py-16">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">How to Play</h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-              Get started with Paisabuddy in just a few simple steps and begin
-              your financial journey today.
-            </p>
-          </div>
-          <div class="grid md:grid-cols-4 gap-8">
-            <div class="text-center">
-              <div
-                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
-              >
-                1
-              </div>
-              <h3 class="text-lg font-semibold mb-2">Sign Up</h3>
-              <p class="text-gray-400">
-                Create your account and complete your profile to get started.
-              </p>
+    <section class="referral-section">
+        <div class="container">
+            <div class="referral-card">
+                <div class="referral-content">
+                    <div class="referral-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="referral-text">
+                        <h2>Invite Friends &amp; Earn Cashback</h2>
+                        <p>Get up to $50 for every friend you refer. Your friends get $25 bonus too!</p>
+                        <div class="referral-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>$50 per successful referral</span>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Unlimited referrals</span>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Instant cashback</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="referral-action">
+                    <div class="referral-code-box">
+                        <label>Your Referral Code</label>
+                        <div class="code-input-group">
+                            <input type="text" id="referralCode" value="TRADE2024XYZ" readonly="">
+                            <button class="btn-copy" id="copyCodeBtn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-large">
+                        <i class="fas fa-share-alt"></i> Share Now
+                    </button>
+                    <div class="referral-stats">
+                        <div class="ref-stat">
+                            <span class="ref-number">0</span>
+                            <span class="ref-label">Referrals</span>
+                        </div>
+                        <div class="ref-stat">
+                            <span class="ref-number">$0</span>
+                            <span class="ref-label">Earned</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text-center">
-              <div
-                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
-              >
-                2
-              </div>
-              <h3 class="text-lg font-semibold mb-2">Learn</h3>
-              <p class="text-gray-400">
-                Take courses and quizzes to build your financial knowledge.
-              </p>
-            </div>
-            <div class="text-center">
-              <div
-                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
-              >
-                3
-              </div>
-              <h3 class="text-lg font-semibold mb-2">Practice</h3>
-              <p class="text-gray-400">
-                Use our simulator to practice investing without real money.
-              </p>
-            </div>
-            <div class="text-center">
-              <div
-                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-black font-bold text-xl"
-              >
-                4
-              </div>
-              <h3 class="text-lg font-semibold mb-2">Invest</h3>
-              <p class="text-gray-400">
-                Start investing real money and grow your wealth.
-              </p>
-            </div>
-          </div>
         </div>
-      </section>
-    </main>
+    </section>
 
-    <footer class="bg-gray-900 border-t border-gray-800 py-12">
-      <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-4 gap-8">
-          <div>
-            <div class="flex items-center space-x-2 mb-4">
-              <div
-                class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500 text-black"
-              >
-                <span class="text-sm font-bold">P</span>
-              </div>
-              <span class="text-xl font-bold text-green-500">Paisabuddy</span>
+    <section class="features-section" id="courses">
+        <div class="container">
+            <h2 class="section-title">Everything You Need to Succeed</h2>
+            <p class="section-subtitle">Comprehensive tools and resources for traders of all levels</p>
+            <div class="features-grid">
+                <div class="feature-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Expert Courses</h3>
+                    <p>Learn from industry professionals with 100+ courses covering beginner to advanced strategies.
+                    </p>
+                    <a href="#" class="feature-link">Browse Courses <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Trading Assistant</h3>
+                    <p>Get real-time market insights and personalized trading recommendations powered by advanced AI.
+                    </p>
+                    <a href="#" class="feature-link">Try AI Assistant <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Track your performance with detailed analytics, custom indicators, and portfolio management
+                        tools.</p>
+                    <a href="#" class="feature-link">View Analytics <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Trading Simulator</h3>
+                    <p>Practice risk-free with our trading game. Build confidence before investing real money.</p>
+                    <a href="#" class="feature-link">Start Game <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Forum</h3>
+                    <p>Connect with traders worldwide, share strategies, and learn from experienced investors.</p>
+                    <a href="#" class="feature-link">Join Community <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Smart Alerts</h3>
+                    <p>Never miss an opportunity with customizable price alerts and market notifications.</p>
+                    <a href="#" class="feature-link">Setup Alerts <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
-            <p class="text-gray-400">
-              Empowering your financial journey with education and smart
-              investing tools.
-            </p>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Product</h4>
-            <ul class="space-y-2 text-gray-400">
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Features</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Pricing</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Security</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Company</h4>
-            <ul class="space-y-2 text-gray-400">
-              <li>
-                <a href="#" class="hover:text-white transition-colors">About</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Careers</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Contact</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Support</h4>
-            <ul class="space-y-2 text-gray-400">
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Help Center</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Community</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >Privacy</a
-                >
-              </li>
-            </ul>
-          </div>
         </div>
-        <div
-          class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"
-        >
-          <p>&copy; 2024 Paisabuddy. All rights reserved.</p>
+    </section>
+
+    <section class="how-to-section">
+        <div class="container">
+            <h2 class="section-title">How to Get Started</h2>
+            <p class="section-subtitle">Begin your trading journey in 3 simple steps</p>
+            <div class="steps-container">
+                <div class="step-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Create Account</h3>
+                    <p>Sign up in minutes with just your email. No complicated verification process.</p>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Learn &amp; Practice</h3>
+                    <p>Take free courses and practice with our trading simulator using virtual money.</p>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Start Trading</h3>
+                    <p>Begin real trading with confidence using our AI-powered tools and analytics.</p>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Trusted by Traders Worldwide</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"The AI assistant has completely transformed my trading strategy. I've increased my returns by
+                        45% in just 3 months!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JS</div>
+                        <div class="author-info">
+                            <div class="author-name">James Smith</div>
+                            <div class="author-title">Day Trader</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Best trading platform I've used. The courses are incredibly detailed and the community is super
+                        supportive."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MC</div>
+                        <div class="author-info">
+                            <div class="author-name">Maria Chen</div>
+                            <div class="author-title">Swing Trader</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card"
+                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"The referral program is amazing! I've earned over $500 just by sharing with friends. Everyone
+                        wins!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RP</div>
+                        <div class="author-info">
+                            <div class="author-name">Raj Patel</div>
+                            <div class="author-title">Options Trader</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="disclaimer-section">
+        <div class="container">
+            <div class="disclaimer-card">
+                <div class="disclaimer-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="disclaimer-content">
+                    <h3>Important Disclaimer</h3>
+                    <p><strong>Risk Warning:</strong> Trading involves significant risk and may not be suitable for all
+                        investors. You could lose all of your invested capital. Past performance is not indicative of
+                        future results.</p>
+                    <p><strong>Not Financial Advice:</strong> The information provided on this platform is for
+                        educational purposes only and should not be considered as financial advice. Always conduct your
+                        own research and consult with a licensed financial advisor before making investment decisions.
+                    </p>
+                    <p><strong>Market Volatility:</strong> Cryptocurrency and stock markets can be extremely volatile.
+                        Prices can fluctuate rapidly and unpredictably. Never invest more than you can afford to lose.
+                    </p>
+                    <p><strong>Platform Information:</strong> TradeMaster Pro is an educational and analytical
+                        platform. We do not guarantee profits or investment returns. All trading decisions are made at
+                        your own risk.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Your Trading Journey?</h2>
+                <p>Join 50,000+ traders who are already using TradeMaster Pro</p>
+                <button class="btn-primary btn-large">Create Free Account</button>
+                <p class="cta-note">No credit card required. Start with virtual money.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <i class="fas fa-chart-line"></i>
+                        <span>TradeMaster Pro</span>
+                    </div>
+                    <p class="footer-description">Your trusted partner in trading excellence. Empowering traders with
+                        cutting-edge tools and education.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#ai-chatbot">AI Assistant</a></li>
+                        <li><a href="#games">Trading Games</a></li>
+                        <li><a href="#analytics">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#learn">Learning Center</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press Kit</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Licenses</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 TradeMaster Pro. All rights reserved.</p>
+                <p class="footer-warning">Trading involves risk. Only invest what you can afford to lose.</p>
+            </div>
+        </div>
     </footer>
 
     <script>
-      // Initialize Lucide icons
-      lucide.createIcons();
-
-      // Money Animation
-      function createMoneySymbol() {
-        const symbols = ["₹", "$", "€", "¥", "£"];
-        const container = document.getElementById("money-animations");
-
-        const symbol = document.createElement("div");
-        symbol.className = "money-symbol";
-        symbol.textContent =
-          symbols[Math.floor(Math.random() * symbols.length)];
-        symbol.style.left = Math.random() * 100 + "%";
-        symbol.style.animationDuration = Math.random() * 5 + 8 + "s";
-
-        container.appendChild(symbol);
-        const value = document.getElementById("portfolio-value");
-
-        value.textContent = setTimeout(() => {
-          symbol.remove();
-        }, 13000);
-      }
-
-      
-
-      // Create money symbols periodically
-      setInterval(createMoneySymbol, 2000);
-      fetchPortfolio();
-      // Message Modal Functions
-      function openMessageModal() {
-        const modal = document.getElementById("messageModal");
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-      }
-
-      function closeMessageModal() {
-        const modal = document.getElementById("messageModal");
-        modal.classList.remove("show");
-        document.body.style.overflow = "auto";
-      }
-
-      // Close modal when clicking outside
-      document
-        .getElementById("messageModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) {
-            closeMessageModal();
-          }
+        window.addEventListener('DOMContentLoaded', () => {
+            initNavbar();
+            initCharts();
+            initReferralCode();
+            initScrollEffects();
+            initNavLinks();
         });
 
-      // Close modal with Escape key
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") {
-          closeMessageModal();
+        function initNavbar() {
+            const navbar = document.querySelector('.navbar');
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navMenu = document.getElementById('navMenu');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
         }
-      });
 
-      // Mark message as read when clicked
-      document.querySelectorAll(".message-item").forEach((item) => {
-        item.addEventListener("click", function () {
-          this.classList.remove("unread");
-          // Update notification count
-          const badge = document.querySelector(".bg-green-500");
-          let count = parseInt(badge.textContent);
-          if (count > 0) {
-            badge.textContent = count - 1;
-          }
-        });
-      });
-
-      // Mark all as read
-      function markAllAsRead() {
-        document.querySelectorAll(".message-item.unread").forEach((item) => {
-          item.classList.remove("unread");
-        });
-        document.querySelector(".bg-green-500").textContent = "0";
-        closeMessageModal();
-      }
-
-      // Counter Animation
-      function animateCounter(element, target) {
-        let current = 0;
-        const increment = target / 100;
-        const timer = setInterval(() => {
-          current += increment;
-          if (current >= target) {
-            current = target;
-            clearInterval(timer);
-          }
-          element.textContent = Math.floor(current).toLocaleString("en-IN");
-        }, 20);
-      }
-
-      // Initialize animations on load
-      window.addEventListener("load", () => {
-        const activeUsers = document.getElementById("active-users");
-        if (activeUsers) {
-          animateCounter(activeUsers, 2400);
+        function initNavLinks() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    const targetId = link.getAttribute('href');
+                    if (targetId && targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                    const navMenu = document.getElementById('navMenu');
+                    if (navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                    }
+                });
+            });
         }
-      });
+
+        function initCharts() {
+            initHeroChart();
+            initActiveUsersChart();
+            initVolumeChart();
+        }
+
+        function initHeroChart() {
+            const canvas = document.getElementById('heroChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = 600;
+            canvas.height = 300;
+            const data = generateTradingData(50);
+
+            function drawChart() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const padding = 40;
+                const chartWidth = canvas.width - padding * 2;
+                const chartHeight = canvas.height - padding * 2;
+                const maxValue = Math.max(...data);
+                const minValue = Math.min(...data);
+                const range = maxValue - minValue;
+                ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 5; i++) {
+                    const y = padding + (chartHeight / 5) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(canvas.width - padding, y);
+                    ctx.stroke();
+                }
+                const gradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
+                gradient.addColorStop(0, 'rgba(16, 185, 129, 0.8)');
+                gradient.addColorStop(1, 'rgba(59, 130, 246, 0.8)');
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 3;
+                ctx.lineJoin = 'round';
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                data.forEach((value, index) => {
+                    const x = padding + (chartWidth / (data.length - 1)) * index;
+                    const y = canvas.height - padding - ((value - minValue) / range) * chartHeight;
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                ctx.stroke();
+                const areaGradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
+                areaGradient.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
+                areaGradient.addColorStop(1, 'rgba(16, 185, 129, 0.05)');
+                ctx.fillStyle = areaGradient;
+                ctx.lineTo(canvas.width - padding, canvas.height - padding);
+                ctx.lineTo(padding, canvas.height - padding);
+                ctx.closePath();
+                ctx.fill();
+            }
+            drawChart();
+            let animationIndex = 0;
+            setInterval(() => {
+                data.shift();
+                data.push(generateTradingDataPoint());
+                animationIndex++;
+                drawChart();
+            }, 2000);
+        }
+
+        function initActiveUsersChart() {
+            const canvas = document.getElementById('activeUsersChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = 600;
+            canvas.height = 200;
+            const data = generateUserData(24);
+
+            function drawChart() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const padding = 20;
+                const chartWidth = canvas.width - padding * 2;
+                const chartHeight = canvas.height - padding * 2;
+                const barWidth = chartWidth / data.length - 4;
+                const maxValue = Math.max(...data);
+                data.forEach((value, index) => {
+                    const barHeight = (value / maxValue) * chartHeight;
+                    const x = padding + (chartWidth / data.length) * index;
+                    const y = canvas.height - padding - barHeight;
+                    const gradient = ctx.createLinearGradient(x, y, x, canvas.height - padding);
+                    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.8)');
+                    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.3)');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(x, y, barWidth, barHeight);
+                    if (index === data.length - 1) {
+                        ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
+                        ctx.fillRect(x, y, barWidth, barHeight);
+                    }
+                });
+            }
+            drawChart();
+            setInterval(() => {
+                data.shift();
+                data.push(Math.floor(Math.random() * 50000) + 30000);
+                drawChart();
+            }, 3000);
+        }
+
+        function initVolumeChart() {
+            const canvas = document.getElementById('volumeChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = 600;
+            canvas.height = 200;
+            const data = generateVolumeData(30);
+
+            function drawChart() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const padding = 20;
+                const chartWidth = canvas.width - padding * 2;
+                const chartHeight = canvas.height - padding * 2;
+                const maxValue = Math.max(...data);
+                const minValue = Math.min(...data);
+                const range = maxValue - minValue;
+                const gradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
+                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
+                gradient.addColorStop(1, 'rgba(16, 185, 129, 0.8)');
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 2.5;
+                ctx.lineJoin = 'round';
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                data.forEach((value, index) => {
+                    const x = padding + (chartWidth / (data.length - 1)) * index;
+                    const y = canvas.height - padding - ((value - minValue) / range) * chartHeight;
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                ctx.stroke();
+                const areaGradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
+                areaGradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+                areaGradient.addColorStop(1, 'rgba(59, 130, 246, 0.05)');
+                ctx.fillStyle = areaGradient;
+                ctx.lineTo(canvas.width - padding, canvas.height - padding);
+                ctx.lineTo(padding, canvas.height - padding);
+                ctx.closePath();
+                ctx.fill();
+            }
+            drawChart();
+            setInterval(() => {
+                data.shift();
+                data.push(Math.floor(Math.random() * 200) + 100);
+                drawChart();
+            }, 2500);
+        }
+
+        function generateTradingData(length) {
+            const data = [];
+            let value = 100;
+            for (let i = 0; i < length; i++) {
+                value += (Math.random() - 0.5) * 10;
+                value = Math.max(50, Math.min(150, value));
+                data.push(value);
+            }
+            return data;
+        }
+
+        function generateTradingDataPoint() {
+            return Math.floor(Math.random() * 100) + 50;
+        }
+
+        function generateUserData(length) {
+            const data = [];
+            for (let i = 0; i < length; i++) {
+                data.push(Math.floor(Math.random() * 50000) + 30000);
+            }
+            return data;
+        }
+
+        function generateVolumeData(length) {
+            const data = [];
+            for (let i = 0; i < length; i++) {
+                data.push(Math.floor(Math.random() * 200) + 100);
+            }
+            return data;
+        }
+
+        function initReferralCode() {
+            const copyBtn = document.getElementById('copyCodeBtn');
+            const referralCode = document.getElementById('referralCode');
+            if (copyBtn && referralCode) {
+                copyBtn.addEventListener('click', () => {
+                    referralCode.select();
+                    document.execCommand('copy');
+                    const originalHTML = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    copyBtn.style.background = 'var(--accent-primary)';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHTML;
+                        copyBtn.style.background = '';
+                    }, 2000);
+                });
+            }
+        }
+
+        function initScrollEffects() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            const animateElements = document.querySelectorAll(
+                '.feature-card, .step-card, .testimonial-card, .stat-card'
+            );
+            animateElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
+        const stats = {
+            activeUsers: 48392,
+            volume: 156.8
+        };
+        setInterval(() => {
+            stats.activeUsers += Math.floor(Math.random() * 200) - 100;
+            stats.activeUsers = Math.max(45000, Math.min(52000, stats.activeUsers));
+            const activeUserElement = document.querySelector('.stat-info .stat-current');
+            if (activeUserElement) {
+                activeUserElement.textContent = ${stats.activeUsers.toLocaleString()} users online now;
+            }
+            stats.volume += (Math.random() - 0.5) * 2;
+            stats.volume = Math.max(150, Math.min(165, stats.volume));
+            const volumeElements = document.querySelectorAll('.stat-info .stat-current');
+            if (volumeElements[1]) {
+                volumeElements[1].textContent = $${stats.volume.toFixed(1)}M volume;
+            }
+        }, 5000);
     </script>
-  </body>
+
+</body>
+
 </html>
