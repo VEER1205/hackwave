@@ -286,20 +286,19 @@
     });
   }
 
-function getPortFolio(email) {
+function getUserBalance(user_id) {
   return new Promise((resolve, reject) => {
     const db = createConnection();
-    const sql = `select PortfolioRate from users WHERE email = ?`; // adjust this if you're selecting specific columns
+    const sql = `SELECT Balance FROM users WHERE user_id = ?`;
 
-    db.query(sql, [email], (err, results) => {
+    db.query(sql, [user_id], (err, results) => {
       db.end();
-
       if (err) {
-        console.error("❌ Error fetching portfolio:", err.message);
+        console.error("❌ Error fetching balance:", err.message);
         return reject(err);
       }
-
-      resolve(results); // contains price and asset_name etc.
+      if (results.length === 0) return resolve(0);
+      resolve(results[0].Balance); // ✅ return the number only
     });
   });
 }
@@ -354,7 +353,7 @@ module.exports = {
     getUserWithOauthId,
     linkUserWithOauth,
     getUserByEmail,
-    getPortFolio,
+    getUserBalance,
     getUserCourses,
     getAllNumberOfUsers
   };

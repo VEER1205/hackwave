@@ -1,6 +1,6 @@
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const { addUser } = require("./schemaa.js");
+const { addUser,getAllNumberOfUsers,getPortFolio } = require("./schemaa.js");
 const {
   getGoogleLoginPage,
   getGoogleLoginCallback,
@@ -157,6 +157,15 @@ app.get("/trading", (req, res) => {
   });
 });
 
+app.get("/api/users/count", async (req, res) => {
+  try {
+    const count = await getAllNumberOfUsers();    
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch user count" });
+  }
+});
+
 app.get("/api/portfolio", async (req, res) => {
   try {
     const data = await getPortFolio(req.email);
@@ -166,7 +175,20 @@ app.get("/api/portfolio", async (req, res) => {
   }
 });
 
+app.get("/api/user/balance", async (req, res) => {
+  try {
+    const userCookie = req.cookies.user;
+    if (!userCookie) return res.status(401).json({ error: "Not logged in" });
 
+    const user = JSON.parse(userCookie);
+    const balance = await getUserBalance(user.user_id);
+
+    res.json({ balance }); // ✅ return as { balance: number }
+  } catch (err) {
+    console.error("❌ GET /api/user/balance error:", err);
+    res.status(500).json({ error: "Failed to fetch user balance" });
+  }
+});
 
 app.get("/api/me", (req, res) => {
   try {

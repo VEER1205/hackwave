@@ -1,1764 +1,2016 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="/vite.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TradeMaster Pro - Advanced Trading Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #0a0e17;
+        --bg-secondary: #111827;
+        --bg-tertiary: #1a1f2e;
+        --accent-primary: #10b981;
+        --accent-secondary: #3b82f6;
+        --accent-gradient: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+        --text-primary: #f9fafb;
+        --text-secondary: #9ca3af;
+        --text-tertiary: #6b7280;
+        --border-color: #1f2937;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --error: #ef4444;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(10, 14, 23, 0.8);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 1000;
+        transition: var(--transition);
+      }
+
+      .navbar.scrolled {
+        background: rgba(10, 14, 23, 0.95);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .nav-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        cursor: pointer;
+      }
+
+      .nav-logo i {
+        color: var(--accent-primary);
+        font-size: 1.75rem;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: var(--accent-primary);
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent-gradient);
+        transition: var(--transition);
+      }
+
+      .nav-link:hover::after,
+      .nav-link.active::after {
+        width: 100%;
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-toggle {
+        display: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-primary);
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        padding: 0.625rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        font-size: 0.95rem;
+      }
+
+      .btn-primary {
+        background: var(--accent-gradient);
+        color: white;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--bg-tertiary);
+        border-color: var(--accent-primary);
+      }
+
+      .btn-large {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+      }
+
+      .hero {
+        padding: 120px 0 80px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(
+          circle,
+          rgba(16, 185, 129, 0.1) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: pulse 8s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
         }
 
-        :root {
-            --bg-primary: #0a0e17;
-            --bg-secondary: #111827;
-            --bg-tertiary: #1a1f2e;
-            --accent-primary: #10b981;
-            --accent-secondary: #3b82f6;
-            --accent-gradient: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
-            --text-primary: #f9fafb;
-            --text-secondary: #9ca3af;
-            --text-tertiary: #6b7280;
-            --border-color: #1f2937;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
         }
+      }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+      .hero-content {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
 
-        html {
-            scroll-behavior: smooth;
-        }
+      .hero-text {
+        z-index: 1;
+      }
 
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.02em;
+      }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 14, 23, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
-            transition: var(--transition);
-        }
+      .gradient-text {
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
 
-        .navbar.scrolled {
-            background: rgba(10, 14, 23, 0.95);
-            box-shadow: var(--shadow-lg);
-        }
+      .hero-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+      }
 
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+      .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 3rem;
+      }
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            cursor: pointer;
-        }
+      .hero-stats {
+        display: flex;
+        gap: 3rem;
+      }
 
-        .nav-logo i {
-            color: var(--accent-primary);
-            font-size: 1.75rem;
-        }
+      .stat-item {
+        text-align: left;
+      }
 
-        .nav-menu {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-primary);
+        margin-bottom: 0.25rem;
+      }
 
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 0;
-        }
+      .stat-label {
+        color: var(--text-tertiary);
+        font-size: 0.9rem;
+      }
 
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--accent-primary);
-        }
+      .hero-visual {
+        z-index: 1;
+      }
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-gradient);
-            transition: var(--transition);
-        }
+      .trading-chart-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: var(--shadow-xl);
+        backdrop-filter: blur(12px);
+      }
 
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
-        }
+      .stats-section {
+        padding: 80px 0;
+        background: var(--bg-secondary);
+      }
 
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
 
-        .mobile-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-primary);
-        }
+      .section-subtitle {
+        text-align: center;
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-bottom: 3rem;
+      }
 
-        .btn-primary,
-        .btn-secondary {
-            padding: 0.625rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            font-size: 0.95rem;
-        }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        margin-top: 3rem;
+      }
 
-        .btn-primary {
-            background: var(--accent-gradient);
-            color: white;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-        }
+      .stat-card {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: var(--transition);
+      }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
-        }
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-primary);
+      }
 
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
+      .stat-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
 
-        .btn-secondary:hover {
-            background: var(--bg-tertiary);
-            border-color: var(--accent-primary);
-        }
+      .stat-card-header h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
 
-        .btn-large {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-        }
+      .stat-trend {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
 
-        .hero {
-            padding: 120px 0 80px;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
+      .stat-trend.up {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+      }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: pulse 8s ease-in-out infinite;
-        }
+      .stat-info {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
 
-        @keyframes pulse {
+      .stat-current {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
 
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
+      .referral-section {
+        padding: 80px 0;
+        background: var(--bg-primary);
+      }
 
-            50% {
-                transform: scale(1.1);
-                opacity: 0.8;
-            }
-        }
+      .referral-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 3rem;
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
 
+      .referral-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.1) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
+
+      .referral-content {
+        display: flex;
+        gap: 2rem;
+        z-index: 1;
+      }
+
+      .referral-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--accent-gradient);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        flex-shrink: 0;
+      }
+
+      .referral-text h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .referral-text p {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+      }
+
+      .referral-benefits {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--text-secondary);
+      }
+
+      .benefit-item i {
+        color: var(--accent-primary);
+        font-size: 1.25rem;
+      }
+
+      .referral-action {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        z-index: 1;
+      }
+
+      .referral-code-box {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .referral-code-box label {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .code-input-group {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .code-input-group input {
+        flex: 1;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        color: var(--text-primary);
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+      }
+
+      .btn-copy {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .btn-copy:hover {
+        background: var(--accent-primary);
+        border-color: var(--accent-primary);
+      }
+
+      .referral-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: var(--bg-tertiary);
+        border-radius: 12px;
+      }
+
+      .ref-stat {
+        text-align: center;
+      }
+
+      .ref-number {
+        display: block;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--accent-primary);
+      }
+
+      .ref-label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--text-tertiary);
+      }
+
+      .features-section {
+        padding: 80px 0;
+        background: var(--bg-primary);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .feature-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-primary);
+      }
+
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--accent-gradient);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .feature-card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .feature-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--accent-primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .feature-link:hover {
+        gap: 0.75rem;
+      }
+
+      .how-to-section {
+        padding: 80px 0;
+        background: var(--bg-secondary);
+      }
+
+      .steps-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .step-card {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem;
+        text-align: center;
+        flex: 1;
+        max-width: 320px;
+        position: relative;
+        transition: var(--transition);
+      }
+
+      .step-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-primary);
+      }
+
+      .step-number {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: var(--accent-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+
+      .step-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--bg-secondary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+        color: var(--accent-primary);
+      }
+
+      .step-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .step-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .step-connector {
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(
+          to right,
+          var(--accent-primary),
+          var(--accent-secondary)
+        );
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .step-connector::after {
+        content: "";
+        position: absolute;
+        right: -6px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 8px solid var(--accent-secondary);
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+      }
+
+      .testimonials-section {
+        padding: 80px 0;
+        background: var(--bg-primary);
+      }
+
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .testimonial-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: var(--transition);
+      }
+
+      .testimonial-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-primary);
+      }
+
+      .testimonial-stars {
+        color: #fbbf24;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .testimonial-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .author-avatar {
+        width: 50px;
+        height: 50px;
+        background: var(--accent-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .author-name {
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .author-title {
+        font-size: 0.85rem;
+        color: var(--text-tertiary);
+      }
+
+      .disclaimer-section {
+        padding: 80px 0;
+        background: var(--bg-secondary);
+      }
+
+      .disclaimer-card {
+        background: var(--bg-tertiary);
+        border: 2px solid var(--warning);
+        border-radius: 16px;
+        padding: 2.5rem;
+        display: flex;
+        gap: 2rem;
+      }
+
+      .disclaimer-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(245, 158, 11, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--warning);
+        flex-shrink: 0;
+      }
+
+      .disclaimer-content h3 {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        color: var(--warning);
+      }
+
+      .disclaimer-content p {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 1rem;
+      }
+
+      .disclaimer-content strong {
+        color: var(--text-primary);
+      }
+
+      .cta-section {
+        padding: 100px 0;
+        background: var(--bg-primary);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-section::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(16, 185, 129, 0.15) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
+
+      .cta-content {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .cta-content h2 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .cta-content > p {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 2.5rem;
+      }
+
+      .cta-note {
+        margin-top: 1rem;
+        color: var(--text-tertiary);
+        font-size: 0.9rem;
+      }
+
+      .footer {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        padding: 60px 0 30px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .footer-logo i {
+        color: var(--accent-primary);
+        font-size: 1.75rem;
+      }
+
+      .footer-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-links a {
+        width: 40px;
+        height: 40px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        transition: var(--transition);
+      }
+
+      .social-links a:hover {
+        background: var(--accent-primary);
+        border-color: var(--accent-primary);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .footer-column h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1.25rem;
+        color: var(--text-primary);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .footer-links a:hover {
+        color: var(--accent-primary);
+        padding-left: 4px;
+      }
+
+      .footer-bottom {
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+        color: var(--text-tertiary);
+      }
+
+      .footer-warning {
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--warning);
+      }
+
+      @media (max-width: 1024px) {
         .hero-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-text {
-            z-index: 1;
+          grid-template-columns: 1fr;
         }
 
         .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .gradient-text {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 3rem;
-        }
-
-        .stat-item {
-            text-align: left;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-        }
-
-        .hero-visual {
-            z-index: 1;
-        }
-
-        .trading-chart-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: var(--shadow-xl);
-            backdrop-filter: blur(12px);
-        }
-
-        .stats-section {
-            padding: 80px 0;
-            background: var(--bg-secondary);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
+          font-size: 2.5rem;
         }
 
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--accent-primary);
-        }
-
-        .stat-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-card-header h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .stat-trend {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .stat-trend.up {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .stat-info {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .stat-current {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .referral-section {
-            padding: 80px 0;
-            background: var(--bg-primary);
-        }
-
-        .referral-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 3rem;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .referral-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .referral-content {
-            display: flex;
-            gap: 2rem;
-            z-index: 1;
-        }
-
-        .referral-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--accent-gradient);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            flex-shrink: 0;
-        }
-
-        .referral-text h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .referral-text p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .referral-benefits {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .benefit-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .benefit-item i {
-            color: var(--accent-primary);
-            font-size: 1.25rem;
-        }
-
-        .referral-action {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            z-index: 1;
-        }
-
-        .referral-code-box {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .referral-code-box label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .code-input-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .code-input-group input {
-            flex: 1;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            color: var(--text-primary);
-            font-family: 'Courier New', monospace;
-            font-weight: 600;
-        }
-
-        .btn-copy {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 0.75rem 1.25rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .btn-copy:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-        }
-
-        .referral-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-        }
-
-        .ref-stat {
-            text-align: center;
-        }
-
-        .ref-number {
-            display: block;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-        }
-
-        .ref-label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-        }
-
-        .features-section {
-            padding: 80px 0;
-            background: var(--bg-primary);
+          grid-template-columns: 1fr;
         }
 
         .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .feature-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--accent-primary);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--accent-gradient);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .feature-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .feature-link:hover {
-            gap: 0.75rem;
-        }
-
-        .how-to-section {
-            padding: 80px 0;
-            background: var(--bg-secondary);
-        }
-
-        .steps-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .step-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2.5rem;
-            text-align: center;
-            flex: 1;
-            max-width: 320px;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .step-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--accent-primary);
-        }
-
-        .step-number {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            background: var(--accent-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
-
-        .step-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--bg-secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1.5rem;
-            color: var(--accent-primary);
-        }
-
-        .step-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .step-card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .step-connector {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .step-connector::after {
-            content: '';
-            position: absolute;
-            right: -6px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-left: 8px solid var(--accent-secondary);
-            border-top: 5px solid transparent;
-            border-bottom: 5px solid transparent;
-        }
-
-        .testimonials-section {
-            padding: 80px 0;
-            background: var(--bg-primary);
+          grid-template-columns: repeat(2, 1fr);
         }
 
         .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
+          grid-template-columns: 1fr;
         }
 
-        .testimonial-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: var(--transition);
+        .referral-card {
+          grid-template-columns: 1fr;
         }
 
-        .testimonial-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--accent-primary);
+        .steps-container {
+          flex-direction: column;
         }
 
-        .testimonial-stars {
-            color: #fbbf24;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+        .step-connector {
+          width: 2px;
+          height: 60px;
+          background: linear-gradient(
+            to bottom,
+            var(--accent-primary),
+            var(--accent-secondary)
+          );
         }
 
-        .testimonial-card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            background: var(--accent-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .author-name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .author-title {
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-        }
-
-        .disclaimer-section {
-            padding: 80px 0;
-            background: var(--bg-secondary);
-        }
-
-        .disclaimer-card {
-            background: var(--bg-tertiary);
-            border: 2px solid var(--warning);
-            border-radius: 16px;
-            padding: 2.5rem;
-            display: flex;
-            gap: 2rem;
-        }
-
-        .disclaimer-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(245, 158, 11, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--warning);
-            flex-shrink: 0;
-        }
-
-        .disclaimer-content h3 {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-            color: var(--warning);
-        }
-
-        .disclaimer-content p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1rem;
-        }
-
-        .disclaimer-content strong {
-            color: var(--text-primary);
-        }
-
-        .cta-section {
-            padding: 100px 0;
-            background: var(--bg-primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .cta-content {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-content h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-content>p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-        }
-
-        .cta-note {
-            margin-top: 1rem;
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-        }
-
-        .footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            padding: 60px 0 30px;
+        .step-connector::after {
+          right: auto;
+          left: 50%;
+          top: auto;
+          bottom: -6px;
+          transform: translateX(-50%);
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 8px solid var(--accent-secondary);
+          border-bottom: none;
         }
 
         .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-menu {
+          display: none;
         }
 
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+        .mobile-toggle {
+          display: block;
         }
 
-        .footer-logo i {
-            color: var(--accent-primary);
-            font-size: 1.75rem;
+        .nav-menu.active {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: var(--bg-secondary);
+          border-bottom: 1px solid var(--border-color);
+          padding: 1rem 2rem;
+          gap: 1rem;
         }
 
-        .footer-description {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
+        .hero {
+          padding: 100px 0 60px;
         }
 
-        .social-links {
-            display: flex;
-            gap: 1rem;
+        .hero-title {
+          font-size: 2rem;
         }
 
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            transition: var(--transition);
+        .hero-subtitle {
+          font-size: 1rem;
         }
 
-        .social-links a:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: white;
-            transform: translateY(-2px);
+        .hero-buttons {
+          flex-direction: column;
         }
 
-        .footer-column h4 {
-            font-size: 1.1rem;
-            margin-bottom: 1.25rem;
-            color: var(--text-primary);
+        .hero-stats {
+          flex-direction: column;
+          gap: 1.5rem;
         }
 
-        .footer-links {
-            list-style: none;
+        .section-title {
+          font-size: 2rem;
         }
 
-        .footer-links li {
-            margin-bottom: 0.75rem;
+        .features-grid {
+          grid-template-columns: 1fr;
         }
 
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
+        .cta-content h2 {
+          font-size: 2rem;
         }
 
-        .footer-links a:hover {
-            color: var(--accent-primary);
-            padding-left: 4px;
+        .footer-grid {
+          grid-template-columns: 1fr;
         }
+      }
 
-        .footer-bottom {
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            color: var(--text-tertiary);
-        }
-
-        .footer-warning {
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--warning);
-        }
-
-        @media (max-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .referral-card {
-                grid-template-columns: 1fr;
-            }
-
-            .steps-container {
-                flex-direction: column;
-            }
-
-            .step-connector {
-                width: 2px;
-                height: 60px;
-                background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
-            }
-
-            .step-connector::after {
-                right: auto;
-                left: 50%;
-                top: auto;
-                bottom: -6px;
-                transform: translateX(-50%);
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-top: 8px solid var(--accent-secondary);
-                border-bottom: none;
-            }
-
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .nav-menu.active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--bg-secondary);
-                border-bottom: 1px solid var(--border-color);
-                padding: 1rem 2rem;
-                gap: 1rem;
-            }
-
-            .hero {
-                padding: 100px 0 60px;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
-
-            .hero-stats {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-content h2 {
-                font-size: 2rem;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        canvas {
-            width: 100% !important;
-            height: auto !important;
-        }
+      canvas {
+        width: 100% !important;
+        height: auto !important;
+      }
     </style>
-</head>
+  </head>
 
-<body data-new-gr-c-s-check-loaded="14.1255.0" data-gr-ext-installed="">
+  <body data-new-gr-c-s-check-loaded="14.1255.0" data-gr-ext-installed="">
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-chart-line"></i>
-                <span>TradeMaster Pro</span>
-            </div>
-            <div class="nav-menu" id="navMenu">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#dashboard" class="nav-link">Dashboard</a>
-                <a href="#analytics" class="nav-link">Trading</a>
-                <a href="#ai-chatbot" class="nav-link">AI Assistant</a>
-                <a href="#games" class="nav-link">Daily Quiz</a>
-                <a href="#courses" class="nav-link">Courses</a>
-            </div>
-            <div class="nav-actions">
-                <button class="btn-secondary">Sign In</button>
-                <button class="btn-primary">Get Started</button>
-                <div class="mobile-toggle" id="mobileToggle">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </div>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-chart-line"></i>
+          <span>TradeMaster Pro</span>
         </div>
+        <div class="nav-menu" id="navMenu">
+          <a href="#home" class="nav-link active">Home</a>
+          <a href="#dashboard" class="nav-link">Dashboard</a>
+          <a href="#analytics" class="nav-link">Trading</a>
+          <a href="#ai-chatbot" class="nav-link">AI Assistant</a>
+          <a href="#games" class="nav-link">Daily Quiz</a>
+          <a href="#courses" class="nav-link">Courses</a>
+        </div>
+        <div class="nav-actions">
+          <button class="btn-secondary">Sign In</button>
+          <button class="btn-primary">Get Started</button>
+          <div class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">Master the Art of <span class="gradient-text">Trading</span></h1>
-                <p class="hero-subtitle">Join thousands of traders using AI-powered insights, real-time analytics, and
-                    expert courses to maximize profits.</p>
-                <div class="hero-buttons">
-                    <button class="btn-primary btn-large">Start Trading Now</button>
-                    <button class="btn-secondary btn-large"><i class="fas fa-play"></i> Watch Demo</button>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">50K+</div>
-                        <div class="stat-label">Active Traders</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">$2.5B+</div>
-                        <div class="stat-label">Trading Volume</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Satisfaction</div>
-                    </div>
-                </div>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="hero-title">
+            Master the Art of <span class="gradient-text">Trading</span>
+          </h1>
+          <p class="hero-subtitle">
+            Join thousands of traders using AI-powered insights, real-time
+            analytics, and expert courses to maximize profits.
+          </p>
+          <div class="hero-buttons">
+            <button class="btn-primary btn-large">Start Trading Now</button>
+            <button class="btn-secondary btn-large">
+              <i class="fas fa-play"></i> Watch Demo
+            </button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">50K+</div>
+              <div class="stat-label">Active Traders</div>
             </div>
-            <div class="hero-visual">
-                <div class="trading-chart-card">
-                    <canvas id="heroChart" width="600" height="300"></canvas>
-                </div>
+            <div class="stat-item">
+              <div class="stat-number">$2.5B+</div>
+              <div class="stat-label">Trading Volume</div>
             </div>
+            <div class="stat-item">
+              <div class="stat-number">98%</div>
+              <div class="stat-label">Satisfaction</div>
+            </div>
+          </div>
         </div>
+        <div class="hero-visual">
+          <div class="trading-chart-card">
+            <canvas id="heroChart" width="600" height="300"></canvas>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="stats-section">
-        <div class="container">
-            <h2 class="section-title">Real-Time Platform Activity</h2>
-            <div class="stats-grid">
-                <div class="stat-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="stat-card-header">
-                        <h3>Active Users Today</h3>
-                        <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 12.5%</span>
-                    </div>
-                    <canvas id="activeUsersChart" width="600" height="200"></canvas>
-                    <div class="stat-info">
-                        <span class="stat-current">47,917 users online now</span>
-                    </div>
-                </div>
-                <div class="stat-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="stat-card-header">
-                        <h3>Trading Volume (24h)</h3>
-                        <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 8.3%</span>
-                    </div>
-                    <canvas id="volumeChart" width="600" height="200"></canvas>
-                    <div class="stat-info">
-                        <span class="stat-current">$155.8M volume</span>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="section-title">Real-Time Platform Activity</h2>
+        <div class="stats-grid">
+          <div
+            class="stat-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="stat-card-header">
+              <h3>Active Users Today</h3>
+              <span class="stat-trend up"
+                ><i class="fas fa-arrow-up"></i> 12.5%</span
+              >
             </div>
+            <canvas id="activeUsersChart" width="600" height="200"></canvas>
+            <div class="stat-info">
+              <span class="stat-current">47,917 users online now</span>
+            </div>
+          </div>
+          <div
+            class="stat-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="stat-card-header">
+              <h3>Trading Volume (24h)</h3>
+              <span class="stat-trend up"
+                ><i class="fas fa-arrow-up"></i> 8.3%</span
+              >
+            </div>
+            <canvas id="volumeChart" width="600" height="200"></canvas>
+            <div class="stat-info">
+              <span class="stat-current">$155.8M volume</span>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="referral-section">
-        <div class="container">
-            <div class="referral-card">
-                <div class="referral-content">
-                    <div class="referral-icon">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <div class="referral-text">
-                        <h2>Invite Friends &amp; Earn Cashback</h2>
-                        <p>Get up to $50 for every friend you refer. Your friends get $25 bonus too!</p>
-                        <div class="referral-benefits">
-                            <div class="benefit-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>$50 per successful referral</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Unlimited referrals</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Instant cashback</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="referral-action">
-                    <div class="referral-code-box">
-                        <label>Your Referral Code</label>
-                        <div class="code-input-group">
-                            <input type="text" id="referralCode" value="TRADE2024XYZ" readonly="">
-                            <button class="btn-copy" id="copyCodeBtn">
-                                <i class="fas fa-copy"></i> Copy
-                            </button>
-                        </div>
-                    </div>
-                    <button class="btn-primary btn-large">
-                        <i class="fas fa-share-alt"></i> Share Now
-                    </button>
-                    <div class="referral-stats">
-                        <div class="ref-stat">
-                            <span class="ref-number">0</span>
-                            <span class="ref-label">Referrals</span>
-                        </div>
-                        <div class="ref-stat">
-                            <span class="ref-number">$0</span>
-                            <span class="ref-label">Earned</span>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="referral-card">
+          <div class="referral-content">
+            <div class="referral-icon">
+              <i class="fas fa-gift"></i>
             </div>
+            <div class="referral-text">
+              <h2>Invite Friends &amp; Earn Cashback</h2>
+              <p>
+                Get up to $50 for every friend you refer. Your friends get $25
+                bonus too!
+              </p>
+              <div class="referral-benefits">
+                <div class="benefit-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>$50 per successful referral</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Unlimited referrals</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Instant cashback</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="referral-action">
+            <div class="referral-code-box">
+              <label>Your Referral Code</label>
+              <div class="code-input-group">
+                <input
+                  type="text"
+                  id="referralCode"
+                  value="TRADE2024XYZ"
+                  readonly=""
+                />
+                <button class="btn-copy" id="copyCodeBtn">
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </div>
+            </div>
+            <button class="btn-primary btn-large">
+              <i class="fas fa-share-alt"></i> Share Now
+            </button>
+            <div class="referral-stats">
+              <div class="ref-stat">
+                <span class="ref-number">0</span>
+                <span class="ref-label">Referrals</span>
+              </div>
+              <div class="ref-stat">
+                <span class="ref-number">$0</span>
+                <span class="ref-label">Earned</span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="features-section" id="courses">
-        <div class="container">
-            <h2 class="section-title">Everything You Need to Succeed</h2>
-            <p class="section-subtitle">Comprehensive tools and resources for traders of all levels</p>
-            <div class="features-grid">
-                <div class="feature-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>Expert Courses</h3>
-                    <p>Learn from industry professionals with 100+ courses covering beginner to advanced strategies.
-                    </p>
-                    <a href="#" class="feature-link">Browse Courses <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="feature-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>AI Trading Assistant</h3>
-                    <p>Get real-time market insights and personalized trading recommendations powered by advanced AI.
-                    </p>
-                    <a href="#" class="feature-link">Try AI Assistant <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="feature-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <h3>Advanced Analytics</h3>
-                    <p>Track your performance with detailed analytics, custom indicators, and portfolio management
-                        tools.</p>
-                    <a href="#" class="feature-link">View Analytics <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="feature-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h3>Trading Simulator</h3>
-                    <p>Practice risk-free with our trading game. Build confidence before investing real money.</p>
-                    <a href="#" class="feature-link">Start Game <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="feature-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Community Forum</h3>
-                    <p>Connect with traders worldwide, share strategies, and learn from experienced investors.</p>
-                    <a href="#" class="feature-link">Join Community <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="feature-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <h3>Smart Alerts</h3>
-                    <p>Never miss an opportunity with customizable price alerts and market notifications.</p>
-                    <a href="#" class="feature-link">Setup Alerts <i class="fas fa-arrow-right"></i></a>
-                </div>
+      <div class="container">
+        <h2 class="section-title">Everything You Need to Succeed</h2>
+        <p class="section-subtitle">
+          Comprehensive tools and resources for traders of all levels
+        </p>
+        <div class="features-grid">
+          <div
+            class="feature-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="feature-icon">
+              <i class="fas fa-graduation-cap"></i>
             </div>
+            <h3>Expert Courses</h3>
+            <p>
+              Learn from industry professionals with 100+ courses covering
+              beginner to advanced strategies.
+            </p>
+            <a href="#" class="feature-link"
+              >Browse Courses <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+          <div
+            class="feature-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="feature-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3>AI Trading Assistant</h3>
+            <p>
+              Get real-time market insights and personalized trading
+              recommendations powered by advanced AI.
+            </p>
+            <a href="#" class="feature-link"
+              >Try AI Assistant <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+          <div
+            class="feature-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="feature-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <h3>Advanced Analytics</h3>
+            <p>
+              Track your performance with detailed analytics, custom indicators,
+              and portfolio management tools.
+            </p>
+            <a href="#" class="feature-link"
+              >View Analytics <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+          <div
+            class="feature-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="feature-icon">
+              <i class="fas fa-gamepad"></i>
+            </div>
+            <h3>Trading Simulator</h3>
+            <p>
+              Practice risk-free with our trading game. Build confidence before
+              investing real money.
+            </p>
+            <a href="#" class="feature-link"
+              >Start Game <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+          <div
+            class="feature-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Community Forum</h3>
+            <p>
+              Connect with traders worldwide, share strategies, and learn from
+              experienced investors.
+            </p>
+            <a href="#" class="feature-link"
+              >Join Community <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+          <div
+            class="feature-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="feature-icon">
+              <i class="fas fa-bell"></i>
+            </div>
+            <h3>Smart Alerts</h3>
+            <p>
+              Never miss an opportunity with customizable price alerts and
+              market notifications.
+            </p>
+            <a href="#" class="feature-link"
+              >Setup Alerts <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="how-to-section">
-        <div class="container">
-            <h2 class="section-title">How to Get Started</h2>
-            <p class="section-subtitle">Begin your trading journey in 3 simple steps</p>
-            <div class="steps-container">
-                <div class="step-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="step-number">1</div>
-                    <div class="step-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <h3>Create Account</h3>
-                    <p>Sign up in minutes with just your email. No complicated verification process.</p>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="step-number">2</div>
-                    <div class="step-icon">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <h3>Learn &amp; Practice</h3>
-                    <p>Take free courses and practice with our trading simulator using virtual money.</p>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="step-number">3</div>
-                    <div class="step-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>Start Trading</h3>
-                    <p>Begin real trading with confidence using our AI-powered tools and analytics.</p>
-                </div>
+      <div class="container">
+        <h2 class="section-title">How to Get Started</h2>
+        <p class="section-subtitle">
+          Begin your trading journey in 3 simple steps
+        </p>
+        <div class="steps-container">
+          <div
+            class="step-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="step-number">1</div>
+            <div class="step-icon">
+              <i class="fas fa-user-plus"></i>
             </div>
+            <h3>Create Account</h3>
+            <p>
+              Sign up in minutes with just your email. No complicated
+              verification process.
+            </p>
+          </div>
+          <div class="step-connector"></div>
+          <div
+            class="step-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="step-number">2</div>
+            <div class="step-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <h3>Learn &amp; Practice</h3>
+            <p>
+              Take free courses and practice with our trading simulator using
+              virtual money.
+            </p>
+          </div>
+          <div class="step-connector"></div>
+          <div
+            class="step-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="step-number">3</div>
+            <div class="step-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <h3>Start Trading</h3>
+            <p>
+              Begin real trading with confidence using our AI-powered tools and
+              analytics.
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="testimonials-section">
-        <div class="container">
-            <h2 class="section-title">Trusted by Traders Worldwide</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p>"The AI assistant has completely transformed my trading strategy. I've increased my returns by
-                        45% in just 3 months!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JS</div>
-                        <div class="author-info">
-                            <div class="author-name">James Smith</div>
-                            <div class="author-title">Day Trader</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p>"Best trading platform I've used. The courses are incredibly detailed and the community is super
-                        supportive."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MC</div>
-                        <div class="author-info">
-                            <div class="author-name">Maria Chen</div>
-                            <div class="author-title">Swing Trader</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card"
-                    style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p>"The referral program is amazing! I've earned over $500 just by sharing with friends. Everyone
-                        wins!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">RP</div>
-                        <div class="author-info">
-                            <div class="author-name">Raj Patel</div>
-                            <div class="author-title">Options Trader</div>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="section-title">Trusted by Traders Worldwide</h2>
+        <div class="testimonials-grid">
+          <div
+            class="testimonial-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="testimonial-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
             </div>
+            <p>
+              "The AI assistant has completely transformed my trading strategy.
+              I've increased my returns by 45% in just 3 months!"
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar">JS</div>
+              <div class="author-info">
+                <div class="author-name">James Smith</div>
+                <div class="author-title">Day Trader</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="testimonial-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="testimonial-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p>
+              "Best trading platform I've used. The courses are incredibly
+              detailed and the community is super supportive."
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar">MC</div>
+              <div class="author-info">
+                <div class="author-name">Maria Chen</div>
+                <div class="author-title">Swing Trader</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="testimonial-card"
+            style="
+              opacity: 1;
+              transform: translateY(0px);
+              transition: opacity 0.6s, transform 0.6s;
+            "
+          >
+            <div class="testimonial-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p>
+              "The referral program is amazing! I've earned over $500 just by
+              sharing with friends. Everyone wins!"
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar">RP</div>
+              <div class="author-info">
+                <div class="author-name">Raj Patel</div>
+                <div class="author-title">Options Trader</div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="disclaimer-section">
-        <div class="container">
-            <div class="disclaimer-card">
-                <div class="disclaimer-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="disclaimer-content">
-                    <h3>Important Disclaimer</h3>
-                    <p><strong>Risk Warning:</strong> Trading involves significant risk and may not be suitable for all
-                        investors. You could lose all of your invested capital. Past performance is not indicative of
-                        future results.</p>
-                    <p><strong>Not Financial Advice:</strong> The information provided on this platform is for
-                        educational purposes only and should not be considered as financial advice. Always conduct your
-                        own research and consult with a licensed financial advisor before making investment decisions.
-                    </p>
-                    <p><strong>Market Volatility:</strong> Cryptocurrency and stock markets can be extremely volatile.
-                        Prices can fluctuate rapidly and unpredictably. Never invest more than you can afford to lose.
-                    </p>
-                    <p><strong>Platform Information:</strong> TradeMaster Pro is an educational and analytical
-                        platform. We do not guarantee profits or investment returns. All trading decisions are made at
-                        your own risk.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="disclaimer-card">
+          <div class="disclaimer-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="disclaimer-content">
+            <h3>Important Disclaimer</h3>
+            <p>
+              <strong>Risk Warning:</strong> Trading involves significant risk
+              and may not be suitable for all investors. You could lose all of
+              your invested capital. Past performance is not indicative of
+              future results.
+            </p>
+            <p>
+              <strong>Not Financial Advice:</strong> The information provided on
+              this platform is for educational purposes only and should not be
+              considered as financial advice. Always conduct your own research
+              and consult with a licensed financial advisor before making
+              investment decisions.
+            </p>
+            <p>
+              <strong>Market Volatility:</strong> Cryptocurrency and stock
+              markets can be extremely volatile. Prices can fluctuate rapidly
+              and unpredictably. Never invest more than you can afford to lose.
+            </p>
+            <p>
+              <strong>Platform Information:</strong> TradeMaster Pro is an
+              educational and analytical platform. We do not guarantee profits
+              or investment returns. All trading decisions are made at your own
+              risk.
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Start Your Trading Journey?</h2>
-                <p>Join 50,000+ traders who are already using TradeMaster Pro</p>
-                <button class="btn-primary btn-large">Create Free Account</button>
-                <p class="cta-note">No credit card required. Start with virtual money.</p>
-            </div>
+      <div class="container">
+        <div class="cta-content">
+          <h2>Ready to Start Your Trading Journey?</h2>
+          <p>Join 50,000+ traders who are already using TradeMaster Pro</p>
+          <button class="btn-primary btn-large">Create Free Account</button>
+          <p class="cta-note">
+            No credit card required. Start with virtual money.
+          </p>
         </div>
+      </div>
     </section>
 
     <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <div class="footer-logo">
-                        <i class="fas fa-chart-line"></i>
-                        <span>TradeMaster Pro</span>
-                    </div>
-                    <p class="footer-description">Your trusted partner in trading excellence. Empowering traders with
-                        cutting-edge tools and education.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h4>Platform</h4>
-                    <ul class="footer-links">
-                        <li><a href="#dashboard">Dashboard</a></li>
-                        <li><a href="#courses">Courses</a></li>
-                        <li><a href="#ai-chatbot">AI Assistant</a></li>
-                        <li><a href="#games">Trading Games</a></li>
-                        <li><a href="#analytics">Analytics</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Resources</h4>
-                    <ul class="footer-links">
-                        <li><a href="#learn">Learning Center</a></li>
-                        <li><a href="#">API Documentation</a></li>
-                        <li><a href="#">Community Forum</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Help Center</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Company</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press Kit</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Partners</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Disclaimer</a></li>
-                        <li><a href="#">Licenses</a></li>
-                    </ul>
-                </div>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <div class="footer-logo">
+              <i class="fas fa-chart-line"></i>
+              <span>TradeMaster Pro</span>
             </div>
-            <div class="footer-bottom">
-                <p>© 2024 TradeMaster Pro. All rights reserved.</p>
-                <p class="footer-warning">Trading involves risk. Only invest what you can afford to lose.</p>
+            <p class="footer-description">
+              Your trusted partner in trading excellence. Empowering traders
+              with cutting-edge tools and education.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
+          </div>
+          <div class="footer-column">
+            <h4>Platform</h4>
+            <ul class="footer-links">
+              <li><a href="#dashboard">Dashboard</a></li>
+              <li><a href="#courses">Courses</a></li>
+              <li><a href="#ai-chatbot">AI Assistant</a></li>
+              <li><a href="#games">Trading Games</a></li>
+              <li><a href="#analytics">Analytics</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Resources</h4>
+            <ul class="footer-links">
+              <li><a href="#learn">Learning Center</a></li>
+              <li><a href="#">API Documentation</a></li>
+              <li><a href="#">Community Forum</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Help Center</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Company</h4>
+            <ul class="footer-links">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press Kit</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Partners</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <ul class="footer-links">
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+              <li><a href="#">Disclaimer</a></li>
+              <li><a href="#">Licenses</a></li>
+            </ul>
+          </div>
         </div>
+        <div class="footer-bottom">
+          <p>© 2024 TradeMaster Pro. All rights reserved.</p>
+          <p class="footer-warning">
+            Trading involves risk. Only invest what you can afford to lose.
+          </p>
+        </div>
+      </div>
     </footer>
 
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            initNavbar();
-            initCharts();
-            initReferralCode();
-            initScrollEffects();
-            initNavLinks();
+      window.addEventListener("DOMContentLoaded", () => {
+        initNavbar();
+        initCharts();
+        initReferralCode();
+        initScrollEffects();
+        initNavLinks();
+      });
+
+      function initNavbar() {
+        const navbar = document.querySelector(".navbar");
+        const mobileToggle = document.getElementById("mobileToggle");
+        const navMenu = document.getElementById("navMenu");
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
         });
+        if (mobileToggle) {
+          mobileToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+          });
+        }
+      }
 
-        function initNavbar() {
-            const navbar = document.querySelector('.navbar');
-            const mobileToggle = document.getElementById('mobileToggle');
-            const navMenu = document.getElementById('navMenu');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-            if (mobileToggle) {
-                mobileToggle.addEventListener('click', () => {
-                    navMenu.classList.toggle('active');
+      function initNavLinks() {
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            navLinks.forEach((l) => l.classList.remove("active"));
+            link.classList.add("active");
+            const targetId = link.getAttribute("href");
+            if (targetId && targetId.startsWith("#")) {
+              const targetElement = document.querySelector(targetId);
+              if (targetElement) {
+                targetElement.scrollIntoView({
+                  behavior: "smooth",
                 });
+              }
             }
-        }
-
-        function initNavLinks() {
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    const targetId = link.getAttribute('href');
-                    if (targetId && targetId.startsWith('#')) {
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                    const navMenu = document.getElementById('navMenu');
-                    if (navMenu.classList.contains('active')) {
-                        navMenu.classList.remove('active');
-                    }
-                });
-            });
-        }
-
-        function initCharts() {
-            initHeroChart();
-            initActiveUsersChart();
-            initVolumeChart();
-        }
-
-        function initHeroChart() {
-            const canvas = document.getElementById('heroChart');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = 600;
-            canvas.height = 300;
-            const data = generateTradingData(50);
-
-            function drawChart() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const padding = 40;
-                const chartWidth = canvas.width - padding * 2;
-                const chartHeight = canvas.height - padding * 2;
-                const maxValue = Math.max(...data);
-                const minValue = Math.min(...data);
-                const range = maxValue - minValue;
-                ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
-                ctx.lineWidth = 1;
-                for (let i = 0; i <= 5; i++) {
-                    const y = padding + (chartHeight / 5) * i;
-                    ctx.beginPath();
-                    ctx.moveTo(padding, y);
-                    ctx.lineTo(canvas.width - padding, y);
-                    ctx.stroke();
-                }
-                const gradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
-                gradient.addColorStop(0, 'rgba(16, 185, 129, 0.8)');
-                gradient.addColorStop(1, 'rgba(59, 130, 246, 0.8)');
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 3;
-                ctx.lineJoin = 'round';
-                ctx.lineCap = 'round';
-                ctx.beginPath();
-                data.forEach((value, index) => {
-                    const x = padding + (chartWidth / (data.length - 1)) * index;
-                    const y = canvas.height - padding - ((value - minValue) / range) * chartHeight;
-                    if (index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                });
-                ctx.stroke();
-                const areaGradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
-                areaGradient.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
-                areaGradient.addColorStop(1, 'rgba(16, 185, 129, 0.05)');
-                ctx.fillStyle = areaGradient;
-                ctx.lineTo(canvas.width - padding, canvas.height - padding);
-                ctx.lineTo(padding, canvas.height - padding);
-                ctx.closePath();
-                ctx.fill();
+            const navMenu = document.getElementById("navMenu");
+            if (navMenu.classList.contains("active")) {
+              navMenu.classList.remove("active");
             }
-            drawChart();
-            let animationIndex = 0;
-            setInterval(() => {
-                data.shift();
-                data.push(generateTradingDataPoint());
-                animationIndex++;
-                drawChart();
-            }, 2000);
-        }
+          });
+        });
+      }
 
-        function initActiveUsersChart() {
-            const canvas = document.getElementById('activeUsersChart');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = 600;
-            canvas.height = 200;
-            const data = generateUserData(24);
+      function initCharts() {
+        initHeroChart();
+        initActiveUsersChart();
+        initVolumeChart();
+      }
 
-            function drawChart() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const padding = 20;
-                const chartWidth = canvas.width - padding * 2;
-                const chartHeight = canvas.height - padding * 2;
-                const barWidth = chartWidth / data.length - 4;
-                const maxValue = Math.max(...data);
-                data.forEach((value, index) => {
-                    const barHeight = (value / maxValue) * chartHeight;
-                    const x = padding + (chartWidth / data.length) * index;
-                    const y = canvas.height - padding - barHeight;
-                    const gradient = ctx.createLinearGradient(x, y, x, canvas.height - padding);
-                    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.8)');
-                    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.3)');
-                    ctx.fillStyle = gradient;
-                    ctx.fillRect(x, y, barWidth, barHeight);
-                    if (index === data.length - 1) {
-                        ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
-                        ctx.fillRect(x, y, barWidth, barHeight);
-                    }
-                });
+      function initHeroChart() {
+        const canvas = document.getElementById("heroChart");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 300;
+        const data = generateTradingData(50);
+
+        function drawChart() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          const padding = 40;
+          const chartWidth = canvas.width - padding * 2;
+          const chartHeight = canvas.height - padding * 2;
+          const maxValue = Math.max(...data);
+          const minValue = Math.min(...data);
+          const range = maxValue - minValue;
+          ctx.strokeStyle = "rgba(16, 185, 129, 0.3)";
+          ctx.lineWidth = 1;
+          for (let i = 0; i <= 5; i++) {
+            const y = padding + (chartHeight / 5) * i;
+            ctx.beginPath();
+            ctx.moveTo(padding, y);
+            ctx.lineTo(canvas.width - padding, y);
+            ctx.stroke();
+          }
+          const gradient = ctx.createLinearGradient(
+            0,
+            padding,
+            0,
+            canvas.height - padding
+          );
+          gradient.addColorStop(0, "rgba(16, 185, 129, 0.8)");
+          gradient.addColorStop(1, "rgba(59, 130, 246, 0.8)");
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 3;
+          ctx.lineJoin = "round";
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          data.forEach((value, index) => {
+            const x = padding + (chartWidth / (data.length - 1)) * index;
+            const y =
+              canvas.height -
+              padding -
+              ((value - minValue) / range) * chartHeight;
+            if (index === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
             }
-            drawChart();
-            setInterval(() => {
-                data.shift();
-                data.push(Math.floor(Math.random() * 50000) + 30000);
-                drawChart();
-            }, 3000);
+          });
+          ctx.stroke();
+          const areaGradient = ctx.createLinearGradient(
+            0,
+            padding,
+            0,
+            canvas.height - padding
+          );
+          areaGradient.addColorStop(0, "rgba(16, 185, 129, 0.3)");
+          areaGradient.addColorStop(1, "rgba(16, 185, 129, 0.05)");
+          ctx.fillStyle = areaGradient;
+          ctx.lineTo(canvas.width - padding, canvas.height - padding);
+          ctx.lineTo(padding, canvas.height - padding);
+          ctx.closePath();
+          ctx.fill();
         }
-
-        function initVolumeChart() {
-            const canvas = document.getElementById('volumeChart');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = 600;
-            canvas.height = 200;
-            const data = generateVolumeData(30);
-
-            function drawChart() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const padding = 20;
-                const chartWidth = canvas.width - padding * 2;
-                const chartHeight = canvas.height - padding * 2;
-                const maxValue = Math.max(...data);
-                const minValue = Math.min(...data);
-                const range = maxValue - minValue;
-                const gradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
-                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
-                gradient.addColorStop(1, 'rgba(16, 185, 129, 0.8)');
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 2.5;
-                ctx.lineJoin = 'round';
-                ctx.lineCap = 'round';
-                ctx.beginPath();
-                data.forEach((value, index) => {
-                    const x = padding + (chartWidth / (data.length - 1)) * index;
-                    const y = canvas.height - padding - ((value - minValue) / range) * chartHeight;
-                    if (index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                });
-                ctx.stroke();
-                const areaGradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
-                areaGradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
-                areaGradient.addColorStop(1, 'rgba(59, 130, 246, 0.05)');
-                ctx.fillStyle = areaGradient;
-                ctx.lineTo(canvas.width - padding, canvas.height - padding);
-                ctx.lineTo(padding, canvas.height - padding);
-                ctx.closePath();
-                ctx.fill();
-            }
-            drawChart();
-            setInterval(() => {
-                data.shift();
-                data.push(Math.floor(Math.random() * 200) + 100);
-                drawChart();
-            }, 2500);
-        }
-
-        function generateTradingData(length) {
-            const data = [];
-            let value = 100;
-            for (let i = 0; i < length; i++) {
-                value += (Math.random() - 0.5) * 10;
-                value = Math.max(50, Math.min(150, value));
-                data.push(value);
-            }
-            return data;
-        }
-
-        function generateTradingDataPoint() {
-            return Math.floor(Math.random() * 100) + 50;
-        }
-
-        function generateUserData(length) {
-            const data = [];
-            for (let i = 0; i < length; i++) {
-                data.push(Math.floor(Math.random() * 50000) + 30000);
-            }
-            return data;
-        }
-
-        function generateVolumeData(length) {
-            const data = [];
-            for (let i = 0; i < length; i++) {
-                data.push(Math.floor(Math.random() * 200) + 100);
-            }
-            return data;
-        }
-
-        function initReferralCode() {
-            const copyBtn = document.getElementById('copyCodeBtn');
-            const referralCode = document.getElementById('referralCode');
-            if (copyBtn && referralCode) {
-                copyBtn.addEventListener('click', () => {
-                    referralCode.select();
-                    document.execCommand('copy');
-                    const originalHTML = copyBtn.innerHTML;
-                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    copyBtn.style.background = 'var(--accent-primary)';
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalHTML;
-                        copyBtn.style.background = '';
-                    }, 2000);
-                });
-            }
-        }
-
-        function initScrollEffects() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            const animateElements = document.querySelectorAll(
-                '.feature-card, .step-card, .testimonial-card, .stat-card'
-            );
-            animateElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        }
-        const stats = {
-            activeUsers: 48392,
-            volume: 156.8
-        };
+        drawChart();
+        let animationIndex = 0;
         setInterval(() => {
-            stats.activeUsers += Math.floor(Math.random() * 200) - 100;
-            stats.activeUsers = Math.max(45000, Math.min(52000, stats.activeUsers));
-            const activeUserElement = document.querySelector('.stat-info .stat-current');
-            if (activeUserElement) {
-                activeUserElement.textContent = `${stats.activeUsers.toLocaleString()} users online now`;
+          data.shift();
+          data.push(generateTradingDataPoint());
+          animationIndex++;
+          drawChart();
+        }, 2000);
+      }
+
+      async function initActiveUsersChart() {
+        const canvas = document.getElementById("activeUsersChart");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 200;
+
+        // Initialize with placeholder data
+        const data = generateUserData(24);
+        let currentUserCount = 0;
+
+        // Fetch actual user count from API
+        async function fetchUserCount() {
+          try {
+            const response = await fetch("/api/users/count");
+            if (response.ok) {
+              const result = await response.json();
+              currentUserCount = result.count || result.total || result;
+              // Update the stat display
+              updateUserCountDisplay(currentUserCount);
+              return currentUserCount;
             }
-            stats.volume += (Math.random() - 0.5) * 2;
-            stats.volume = Math.max(150, Math.min(165, stats.volume));
-            const volumeElements = document.querySelectorAll('.stat-info .stat-current');
-            if (volumeElements[1]) {
-                volumeElements[1].textContent = `$${stats.volume.toFixed(1)}M volume`;
+          } catch (error) {
+            console.error("Error fetching user count:", error);
+          }
+          return null;
+        }
+
+        function updateUserCountDisplay(count) {
+          const activeUserElement = document.querySelector(
+            ".stat-info .stat-current"
+          );
+          if (activeUserElement && count) {
+            activeUserElement.textContent = `${count.toLocaleString()} users online now`;
+          }
+        }
+
+        function drawChart() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          const padding = 20;
+          const chartWidth = canvas.width - padding * 2;
+          const chartHeight = canvas.height - padding * 2;
+          const barWidth = chartWidth / data.length - 4;
+          const maxValue = Math.max(...data);
+          data.forEach((value, index) => {
+            const barHeight = (value / maxValue) * chartHeight;
+            const x = padding + (chartWidth / data.length) * index;
+            const y = canvas.height - padding - barHeight;
+            const gradient = ctx.createLinearGradient(
+              x,
+              y,
+              x,
+              canvas.height - padding
+            );
+            gradient.addColorStop(0, "rgba(16, 185, 129, 0.8)");
+            gradient.addColorStop(1, "rgba(16, 185, 129, 0.3)");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, y, barWidth, barHeight);
+            if (index === data.length - 1) {
+              ctx.fillStyle = "rgba(59, 130, 246, 0.8)";
+              ctx.fillRect(x, y, barWidth, barHeight);
             }
-        }, 5000);
+          });
+        }
+
+        // Initial fetch and draw once
+        await fetchUserCount();
+        drawChart();
+
+        // Only update the display text, not the chart
+        setInterval(async () => {
+          await fetchUserCount();
+        }, 5000); // Update every 5 seconds
+      }
+
+      function initVolumeChart() {
+        const canvas = document.getElementById("volumeChart");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 200;
+        const data = generateVolumeData(30);
+
+        function drawChart() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          const padding = 20;
+          const chartWidth = canvas.width - padding * 2;
+          const chartHeight = canvas.height - padding * 2;
+          const maxValue = Math.max(...data);
+          const minValue = Math.min(...data);
+          const range = maxValue - minValue;
+          const gradient = ctx.createLinearGradient(
+            0,
+            padding,
+            0,
+            canvas.height - padding
+          );
+          gradient.addColorStop(0, "rgba(59, 130, 246, 0.8)");
+          gradient.addColorStop(1, "rgba(16, 185, 129, 0.8)");
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 2.5;
+          ctx.lineJoin = "round";
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          data.forEach((value, index) => {
+            const x = padding + (chartWidth / (data.length - 1)) * index;
+            const y =
+              canvas.height -
+              padding -
+              ((value - minValue) / range) * chartHeight;
+            if (index === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          });
+          ctx.stroke();
+          const areaGradient = ctx.createLinearGradient(
+            0,
+            padding,
+            0,
+            canvas.height - padding
+          );
+          areaGradient.addColorStop(0, "rgba(59, 130, 246, 0.2)");
+          areaGradient.addColorStop(1, "rgba(59, 130, 246, 0.05)");
+          ctx.fillStyle = areaGradient;
+          ctx.lineTo(canvas.width - padding, canvas.height - padding);
+          ctx.lineTo(padding, canvas.height - padding);
+          ctx.closePath();
+          ctx.fill();
+        }
+        drawChart();
+        setInterval(() => {
+          data.shift();
+          data.push(Math.floor(Math.random() * 200) + 100);
+          drawChart();
+        }, 2500);
+      }
+
+      function generateTradingData(length) {
+        const data = [];
+        let value = 100;
+        for (let i = 0; i < length; i++) {
+          value += (Math.random() - 0.5) * 10;
+          value = Math.max(50, Math.min(150, value));
+          data.push(value);
+        }
+        return data;
+      }
+
+      function generateTradingDataPoint() {
+        return Math.floor(Math.random() * 100) + 50;
+      }
+
+      function generateUserData(length) {
+        const data = [];
+        for (let i = 0; i < length; i++) {
+          data.push(Math.floor(Math.random() * 50000) + 30000);
+        }
+        return data;
+      }
+
+      function generateVolumeData(length) {
+        const data = [];
+        for (let i = 0; i < length; i++) {
+          data.push(Math.floor(Math.random() * 200) + 100);
+        }
+        return data;
+      }
+
+      function initReferralCode() {
+        const copyBtn = document.getElementById("copyCodeBtn");
+        const referralCode = document.getElementById("referralCode");
+        if (copyBtn && referralCode) {
+          copyBtn.addEventListener("click", () => {
+            referralCode.select();
+            document.execCommand("copy");
+            const originalHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            copyBtn.style.background = "var(--accent-primary)";
+            setTimeout(() => {
+              copyBtn.innerHTML = originalHTML;
+              copyBtn.style.background = "";
+            }, 2000);
+          });
+        }
+      }
+
+      function initScrollEffects() {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -100px 0px",
+        };
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        }, observerOptions);
+        const animateElements = document.querySelectorAll(
+          ".feature-card, .step-card, .testimonial-card, .stat-card"
+        );
+        animateElements.forEach((el) => {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(30px)";
+          el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+          observer.observe(el);
+        });
+      }
+      const stats = {
+        activeUsers: 48392,
+        volume: 156.8,
+      };
+      setInterval(() => {
+        stats.activeUsers += Math.floor(Math.random() * 200) - 100;
+        stats.activeUsers = Math.max(45000, Math.min(52000, stats.activeUsers));
+        const activeUserElement = document.querySelector(
+          ".stat-info .stat-current"
+        );
+        if (activeUserElement) {
+          activeUserElement.textContent = `${stats.activeUsers.toLocaleString()} users online now`;
+        }
+        stats.volume += (Math.random() - 0.5) * 2;
+        stats.volume = Math.max(150, Math.min(165, stats.volume));
+        const volumeElements = document.querySelectorAll(
+          ".stat-info .stat-current"
+        );
+        if (volumeElements[1]) {
+          volumeElements[1].textContent = `$${stats.volume.toFixed(1)}M volume`;
+        }
+      }, 5000);
     </script>
-
-</body>
-
+  </body>
 </html>
