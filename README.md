@@ -197,7 +197,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Contact
 
 For questions or support, please contact any team member:
-- Falgun Patel - [falgunpatel2007@gmail.com](mailto:falgunpatel2007@gmail.com)
+- Falgun Patel - [dodiyaveer12@gmail.com](mailto:dodiyaveer12@gmail.com)
 - Project Repository - [GitHub](https://github.com/yourusername/trademaster-pro)
 
 ## Acknowledgments
