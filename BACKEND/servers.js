@@ -323,7 +323,7 @@ app.delete("/api/watchlist/:symbol",  async (req, res) => {
 });
 
 // Get user info
-app.get("/api/me", requireAuth, (req, res) => {
+app.get("/api/me", (req, res) => {
   res.json({
     email: req.user.email,
     name: req.user.name,
