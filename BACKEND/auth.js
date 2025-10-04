@@ -184,6 +184,20 @@ const getGoogleLoginCallback = async (req, res) => {
       "errors",
       "Couldn't login with Google because of invalid login attempt. Please try again!"
     );
+      res.cookie(
+        "user",
+        JSON.stringify({
+          id: user.user_id,
+          email: user.email,
+          name: user.name,
+        }),
+        {
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          maxAge: 1000 * 60 * 60, // 1 hour
+        }
+      );
     return res.redirect("/login");
   }
 
@@ -197,7 +211,7 @@ const getGoogleLoginCallback = async (req, res) => {
   }
 
   if (!user) {
-    await createUserWithOauth({
+    user=await createUserWithOauth({
       name: name,
       email: email,
       password: null,
@@ -361,7 +375,7 @@ const getGithubLoginCallback = async (req, res) => {
   }
 
   if (!user) {
-    await createUserWithOauth({
+    user=await createUserWithOauth({
       name: displayName,
       email: email,
       password: null,
@@ -369,7 +383,20 @@ const getGithubLoginCallback = async (req, res) => {
       providerAccountId: githubUserId,
     });
   }
-
+    res.cookie(
+      "user",
+      JSON.stringify({
+        id: user.user_id,
+        email: user.email,
+        name: user.name,
+      }),
+      {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60, // 1 hour
+      }
+    );
   res.redirect("/landing");
 };
 
@@ -447,7 +474,7 @@ const getLinkedInLoginCallback = async (req, res) => {
     }
 
     if (!existingUser) {
-      await createUserWithOauth({
+     user= await createUserWithOauth({
         name: name,
         email: email,
         password: null,
@@ -455,7 +482,20 @@ const getLinkedInLoginCallback = async (req, res) => {
         providerAccountId: linkedInUserId,
       });
     }
-
+      res.cookie(
+        "user",
+        JSON.stringify({
+          id: user.user_id,
+          email: user.email,
+          name: user.name,
+        }),
+        {
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          maxAge: 1000 * 60 * 60, // 1 hour
+        }
+      );
     res.redirect("/landing");
   } catch (error) {
     console.error("Error fetching LinkedIn profile:", error);

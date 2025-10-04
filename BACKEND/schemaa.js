@@ -518,7 +518,62 @@ function getAllNumberOfUsers() {
   });
 }
 
+async function executeTrade(userId, { type, side, symbol, name, qty, price }) {
+  console.log("Order Receieved");
+  const quantity = parseFloat(qty);
+  const priceNum = parseFloat(price);
+  const total = quantity * priceNum;
+
+  // Get balance
+  const balance = await getUserBalance(userId);
+
+  if (side === "BUY") {
+    if (balance < total) throw new Error("Insufficient balance");
+    await updateUserBalance(userId, balance - total);
+    await upsertPortfolioHolding(
+      userId,
+      type,
+      symbol,
+      name,
+      quantity,
+      priceNum,
+      priceNum
+    );
+  } else if (side === "SELL") {
+    const portfolio = await getPortfolio(userId);
+    const holding = portfolio.find(
+      (h) => h.type === type && h.symbol === symbol
+    );
+    if (!holding || holding.quantity < quantity)
+      throw new Error("Insufficient holdings");
+    await updateUserBalance(userId, balance + total);
+    await upsertPortfolioHolding(
+      userId,
+      type,
+      symbol,
+      name,
+      -quantity,
+      priceNum,
+      priceNum
+    );
+  }
+
+  await insertTrade(
+    userId,
+    type,
+    side,
+    symbol,
+    name,
+    quantity,
+    priceNum,
+    total
+  );
+
+  return { success: true, total, message: `Trade executed successfully` };
+}
+
 module.exports = {
+ executeTrade,
   storeResetToken,
   verifyResetToken,
   updateUserPassword,

@@ -2,881 +2,322 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FinPro Academy - Master Your Finances</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TradeMaster Pro — Courses</title>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-      /* --- Root Variables --- */
-      :root {
-        --bg-color: #0d1117;
-        --surface-color: #161b22;
-        --border-color: #30363d;
-        --primary-color: #22c55e;
-        --primary-color-hover: #16a34a;
-        --secondary-color: #f59e0b;
-        --secondary-color-hover: #d97706;
-        --accent-gradient: linear-gradient(135deg, #22c55e 0%, #3b82f6 100%);
-        --text-primary: #f0f6fc;
-        --text-secondary: #8b949e;
-        --border-radius: 12px;
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
-          0 2px 4px -2px rgba(0, 0, 0, 0.4);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      /* --- Global Styles --- */
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: var(--bg-color);
-        color: var(--text-primary);
-        line-height: 1.6;
-      }
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      /* --- Navbar --- */
-      .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: rgba(13, 17, 23, 0.8);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--border-color);
-        z-index: 1000;
-        transition: var(--transition);
-      }
-      .navbar.scrolled {
-        background: rgba(13, 17, 23, 0.95);
-        box-shadow: var(--shadow-lg);
-      }
-      .nav-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 1rem 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .nav-logo {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        text-decoration: none;
-      }
-      .nav-logo i {
-        color: var(--primary-color);
-        font-size: 1.75rem;
-      }
-      .nav-menu {
-        display: flex;
-        gap: 2.5rem;
-        align-items: center;
-      }
-      .nav-link {
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-weight: 500;
-        transition: var(--transition);
-        position: relative;
-        padding: 0.5rem 0;
-      }
-      .nav-link:hover,
-      .nav-link.active {
-        color: var(--primary-color);
-      }
-      .nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--accent-gradient);
-        transition: var(--transition);
-      }
-      .nav-link:hover::after,
-      .nav-link.active::after {
-        width: 100%;
-      }
-      .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-      .mobile-toggle {
-        display: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: var(--text-primary);
-        background: none;
-        border: none;
-      }
-
-      /* --- Main Content & Spacing --- */
-      main {
-        padding-top: 100px; /* IMPORTANT: Prevents content from hiding behind the fixed navbar */
-      }
-      .hero {
-        text-align: center;
-        padding: 5rem 0;
-      }
-      .hero h1 {
-        font-size: 3.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-      }
-      .hero h1 .highlight {
-        color: var(--primary-color);
-      }
-      .hero p {
-        font-size: 1.25rem;
-        color: var(--text-secondary);
-        max-width: 600px;
-        margin: 0 auto 2rem auto;
-      }
-
-      /* --- Money Bar --- */
-      .money-bar {
-        background-color: var(--surface-color);
-        border: 1px solid var(--border-color);
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: var(--transition);
-      }
-      .money-bar:hover {
-        border-color: var(--primary-color);
-      }
-
-      /* --- Course Grid & Cards --- */
-      .courses-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        padding-bottom: 4rem;
-      }
-      .course-card {
-        background-color: var(--surface-color);
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
-        padding: 2rem;
-        box-shadow: var(--shadow-md);
-        transition: transform 0.3s ease, border-color 0.3s ease,
-          box-shadow 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-      .course-card:hover {
-        transform: translateY(-8px);
-        border-color: var(--primary-color);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5),
-          0 0 20px -5px rgba(34, 197, 94, 0.2);
-      }
-      .course-info {
-        flex-grow: 1;
-      }
-      .course-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-      }
-      .course-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: var(--text-primary);
-      }
-      .course-price {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-      }
-      .course-description {
-        color: var(--text-secondary);
-        margin-bottom: 1.5rem;
-      }
-      .course-actions {
-        display: flex;
-        gap: 1rem;
-        margin-top: auto;
-      }
-      .btn {
-        display: inline-block;
-        width: 100%;
-        padding: 0.85rem;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 600;
-        text-align: center;
-        cursor: pointer;
-        transition: background-color 0.2s ease, transform 0.2s ease;
-      }
-      .btn:hover {
-        transform: translateY(-2px);
-      }
-      .enroll-btn {
-        background-color: var(--primary-color);
-        color: #0d1117;
-      }
-      .enroll-btn:hover {
-        background-color: var(--primary-color-hover);
-      }
-      .view-btn {
-        background-color: transparent;
-        color: var(--primary-color);
-        border: 2px solid var(--primary-color);
-      }
-      .view-btn:hover {
-        background-color: var(--primary-color);
-        color: var(--bg-color);
-      }
-      .test-btn {
-        background-color: var(--secondary-color);
-        color: var(--bg-color);
-      }
-      .test-btn:hover {
-        background-color: var(--secondary-color-hover);
-      }
-
-      /* --- Modals --- */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1001;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(13, 17, 23, 0.7);
-        backdrop-filter: blur(8px);
-        padding-top: 60px;
-      }
-      .modal-content {
-        background-color: var(--surface-color);
-        border: 1px solid var(--border-color);
-        color: var(--text-primary);
-        margin: 5% auto;
-        padding: 2rem;
-        border-radius: var(--border-radius);
-        width: 90%;
-        max-width: 700px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        position: relative;
-      }
-      .close-btn {
-        color: var(--text-secondary);
-        position: absolute;
-        top: 15px;
-        right: 25px;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: color 0.2s ease;
-      }
-      .close-btn:hover {
-        color: var(--text-primary);
-      }
-      .modal-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-      }
-      .modal-notes h3,
-      .modal-videos h3,
-      .suggestions h3 {
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 0.5rem;
-      }
-      .modal-notes ul,
-      .modal-notes ol {
-        padding-left: 20px;
-      }
-      .modal-notes ul li,
-      .modal-notes ol li {
-        margin-bottom: 0.5rem;
-      }
-      .modal-videos iframe,
-      .suggestions .suggestion-list iframe {
-        width: 100%;
-        height: 315px;
-        border-radius: var(--border-radius);
-        border: 1px solid var(--border-color);
-      }
-      .question {
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        background-color: var(--bg-color);
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-      }
-      .question h4 {
-        margin-bottom: 0.75rem;
-        color: var(--text-primary);
-      }
-      .options label {
-        display: block;
-        margin-bottom: 0.5rem;
-        cursor: pointer;
-        padding: 0.75rem;
-        border-radius: 6px;
-        border: 1px solid transparent;
-        transition: background-color 0.2s, border-color 0.2s;
-      }
-      .options label:hover {
-        background-color: #30363d;
-      }
-      .options input[type="radio"] {
-        margin-right: 10px;
-      }
-      .correct-answer {
-        color: var(--primary-color);
-        font-weight: bold;
-        background-color: rgba(34, 197, 94, 0.1);
-        border-color: var(--primary-color);
-      }
-      .incorrect-answer {
-        color: #f87171;
-        text-decoration: line-through;
-        background-color: rgba(248, 113, 113, 0.1);
-        border-color: #f87171;
-      }
-      .swal2-popup {
-        background-color: var(--surface-color) !important;
-        color: var(--text-primary) !important;
-        border: 1px solid var(--border-color) !important;
-      }
-      .swal2-title {
-        color: var(--text-primary) !important;
-      }
-      .swal2-html-container {
-        color: var(--text-secondary) !important;
-      }
-
-      /* --- Mobile Responsive --- */
-      @media (max-width: 820px) {
-        .nav-menu {
-          display: none;
-        }
-        .mobile-toggle {
-          display: block;
-        }
-        .nav-menu.active {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          background: var(--surface-color);
-          border-bottom: 1px solid var(--border-color);
-          padding: 2rem;
-          gap: 1.5rem;
-          box-shadow: var(--shadow-lg);
-        }
-      }
-      @media (max-width: 768px) {
-        .hero h1 {
-          font-size: 2.5rem;
-        }
-        .course-actions {
-          flex-direction: column;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="CSS/course.css" />
   </head>
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="#home" class="nav-logo">
-          <i class="fas fa-chart-line"></i>
-          <span>Trade Master Pro</span>
-        </a>
+        <a href="#home" class="nav-logo"
+          ><i class="fas fa-chart-line"></i><span>TradeMaster Pro</span></a
+        >
 
-        <div class="nav-menu" id="navMenu">
-          <a href="#home" class="nav-link active">Home</a>
-          <a href="#dashboard" class="nav-link">Dashboard</a>
-          <a href="#analytics" class="nav-link">Trading</a>
-          <a href="#ai-chatbot" class="nav-link">AI Assistant</a>
-          <a href="#games" class="nav-link">Daily Quiz</a>
-          <a href="#courses" class="nav-link">Courses</a>
-        </div>
+        <ul class="nav-menu" id="navMenu">
+          <a href="/landing" class="nav-link active">Home</a>
+          <a href="/dashboard" class="nav-link">Dashboard</a>
+          <a href="/trading" class="nav-link">Trading</a>
+          <a href="/chatbot" class="nav-link">AI Assistant</a>
+          <a href="/Quiz" class="nav-link">Daily Quiz</a>
+          <a href="/course" class="nav-link">Courses</a>
+        </ul>
 
         <div class="nav-actions">
-          <div class="money-bar">
-            <span class="money-icon">💰</span>
-            <span id="saved-money"></span>
-          </div>
-          <button class="mobile-toggle" id="mobileToggle">
+          <a href="/login">
+            <button class="btn-primary">Get Started</button>
+          </a>
+
+          <div class="mobile-toggle" id="mobileToggle">
             <i class="fas fa-bars"></i>
-          </button>
+          </div>
         </div>
       </div>
     </nav>
 
-    <main>
-      <div class="container">
-        <div class="hero" id="home">
-          <h1><span class="highlight">Master</span> Your Financial Future</h1>
-          <p>
-            Join thousands of learners using AI-powered insights, real-time
-            analytics, and expert courses to maximize profits.
-          </p>
+    <main id="home">
+      <section class="hero">
+        <h1 class="hero-title">
+          Master the Markets. <span>Unlock Your Potential.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Gain the knowledge and confidence to navigate the financial world. Our
+          expert-led courses turn beginners into pros, one trade at a time.
+        </p>
+        <a href="#courses" class="btn btn-primary">Explore Courses</a>
+      </section>
+
+      <div class="wallet">
+        <i class="fas fa-wallet wallet-icon"></i>
+        <div class="wallet-info">
+          <h3>Virtual Wallet</h3>
+          <span id="user-coin-balance" class="wallet-balance">1000</span>
         </div>
-        <div class="courses-grid" id="courses"></div>
       </div>
+
+      <section id="courses">
+        <h2 class="section-title">Interactive Trading Courses</h2>
+        <div class="courses-grid" id="coursesGrid">
+          <!-- Course cards -->
+          <div class="course-card" data-course-id="intro-stocks">
+            <i class="fas fa-seedling course-icon"></i>
+            <h3 class="course-title">Intro to the Stock Market</h3>
+            <p class="course-description">
+              The perfect starting point. Learn what stocks are, how the market
+              works, and the essential terminology to begin your journey.
+            </p>
+            <div class="course-meta">
+              <span class="tag beginner">Beginner</span>
+              <span><i class="fas fa-book-open"></i> 8 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 5 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 100
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="100">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="candlestick">
+            <i class="fas fa-chart-bar course-icon"></i>
+            <h3 class="course-title">Candlestick Pattern Mastery</h3>
+            <p class="course-description">
+              Decode market sentiment by mastering the most common and effective
+              candlestick patterns used by professional traders.
+            </p>
+            <div class="course-meta">
+              <span class="tag beginner">Beginner</span>
+              <span><i class="fas fa-book-open"></i> 12 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 8 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 150
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="150">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="fundamentals">
+            <i class="fas fa-building-columns course-icon"></i>
+            <h3 class="course-title">Fundamental Analysis 101</h3>
+            <p class="course-description">
+              Go beyond the charts. Learn to evaluate a company's financial
+              health to find undervalued stocks with long-term potential.
+            </p>
+            <div class="course-meta">
+              <span class="tag intermediate">Intermediate</span>
+              <span><i class="fas fa-book-open"></i> 15 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 10 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 250
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="250">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="risk-mgmt">
+            <i class="fas fa-shield-halved course-icon"></i>
+            <h3 class="course-title">Risk Management Strategies</h3>
+            <p class="course-description">
+              Protect your capital with stop-loss orders, position sizing,
+              diversification and correlation management.
+            </p>
+            <div class="course-meta">
+              <span class="tag intermediate">Intermediate</span>
+              <span><i class="fas fa-book-open"></i> 10 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 7 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 300
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="300">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="adv-indicators">
+            <i class="fas fa-arrows-spin course-icon"></i>
+            <h3 class="course-title">Advanced Technical Indicators</h3>
+            <p class="course-description">
+              Dive deeper into MACD, RSI, Bollinger Bands. Learn multi-indicator
+              confluence and avoid common pitfalls.
+            </p>
+            <div class="course-meta">
+              <span class="tag intermediate">Intermediate</span>
+              <span><i class="fas fa-book-open"></i> 18 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 10 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 350
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="350">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="crypto-blockchain">
+            <i class="fab fa-bitcoin course-icon"></i>
+            <h3 class="course-title">Cryptocurrency & Blockchain</h3>
+            <p class="course-description">
+              Understand blockchain, consensus, tokens and how to analyze the
+              crypto market responsibly.
+            </p>
+            <div class="course-meta">
+              <span class="tag beginner">Beginner</span>
+              <span><i class="fas fa-book-open"></i> 14 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 8 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 200
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="200">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="psychology">
+            <i class="fas fa-brain course-icon"></i>
+            <h3 class="course-title">The Psychology of Trading</h3>
+            <p class="course-description">
+              Conquer fear/greed. Build rules, maintain discipline, and create
+              feedback loops for consistency.
+            </p>
+            <div class="course-meta">
+              <span class="tag advanced">Advanced</span>
+              <span><i class="fas fa-book-open"></i> 9 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 6 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 400
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="400">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="forex">
+            <i class="fas fa-money-bill-trend-up course-icon"></i>
+            <h3 class="course-title">Forex Market Essentials</h3>
+            <p class="course-description">
+              Currency pairs, pips, lots, spreads, leverage & macro drivers —
+              learn the FX market structure.
+            </p>
+            <div class="course-meta">
+              <span class="tag intermediate">Intermediate</span>
+              <span><i class="fas fa-book-open"></i> 16 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 9 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 300
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="300">
+                Enroll
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" data-course-id="options-beginners">
+            <i class="fas fa-layer-group course-icon"></i>
+            <h3 class="course-title">Options Trading for Beginners</h3>
+            <p class="course-description">
+              Calls, puts, moneyness, greeks lite, and simple strategies like
+              covered call and protective put.
+            </p>
+            <div class="course-meta">
+              <span class="tag advanced">Advanced</span>
+              <span><i class="fas fa-book-open"></i> 20 Lessons</span>
+              <span><i class="fas fa-vial-circle-check"></i> 12 Questions</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <i class="fas fa-circle-dollar-to-slot"></i> 450
+              </div>
+              <button class="btn btn-primary btn-enroll" data-cost="450">
+                Enroll
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <div id="course-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('course-modal')"
-          >&times;</span
-        >
-        <h2 id="modal-title"></h2>
-        <p id="modal-message"></p>
-        <div id="modal-notes" class="modal-notes"></div>
-        <div id="modal-videos" class="modal-videos"></div>
-        <div id="suggestions" class="suggestions"></div>
+    <!-- Materials Modal -->
+    <div class="modal" id="materialModal" aria-hidden="true">
+      <div
+        class="modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="materialTitle"
+      >
+        <div class="modal-header">
+          <div class="modal-title" id="materialTitle">Course Materials</div>
+          <button class="modal-close" id="materialClose" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-tabs">
+          <button class="tab-btn active" data-tab="notes">Notes</button>
+          <button class="tab-btn" data-tab="videos">Videos</button>
+          <button class="tab-btn" data-tab="docs">Docs & PPTs</button>
+          <button class="tab-btn" data-tab="papers">Papers</button>
+          <button class="tab-btn" data-tab="tests">Test</button>
+          <button class="tab-btn" data-tab="cert">Certificate</button>
+        </div>
+        <div class="modal-body">
+          <div class="tab-panel active" id="tab-notes"></div>
+          <div class="tab-panel" id="tab-videos"></div>
+          <div class="tab-panel" id="tab-docs"></div>
+          <div class="tab-panel" id="tab-papers"></div>
+          <div class="tab-panel" id="tab-tests"></div>
+          <div class="tab-panel" id="tab-cert"></div>
+        </div>
       </div>
     </div>
-
-    <div id="test-modal" class="modal">
-      <div class="modal-content test-modal-content">
-        <span class="close-btn" onclick="closeModal('test-modal')"
-          >&times;</span
-        >
-        <h2 id="test-modal-title"></h2>
-        <div id="test-questions"></div>
-        <button class="btn test-btn" onclick="submitTest()">Submit Test</button>
-      </div>
-    </div>
-
+    <script src="JS/course.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Alerts (API style from 1st snippet) -->
     <script>
-      // --- Course and Game Logic ---
-      const initialMoney = 2500;
-      let userMoney =
-        parseInt(localStorage.getItem("userMoney")) || initialMoney;
-      const enrolledCourses =
-        JSON.parse(localStorage.getItem("enrolledCourses")) || {};
-
-      const moneyDisplay = document.getElementById("saved-money");
-      const coursesGrid = document.getElementById("courses");
-      const courseModal = document.getElementById("course-modal");
-      const testModal = document.getElementById("test-modal");
-      const modalTitle = document.getElementById("modal-title");
-      const modalMessage = document.getElementById("modal-message");
-      const modalNotes = document.getElementById("modal-notes");
-      const modalVideos = document.getElementById("modal-videos");
-      const suggestionsSection = document.getElementById("suggestions");
-      const testModalTitle = document.getElementById("test-modal-title");
-      const testQuestionsContainer = document.getElementById("test-questions");
-      let currentCourse = null;
-
-      async function fetchUserBalance() {
-        try {
-          const res = await fetch("/api/user/balance");
-          const data = await res.json();
-          userMoney = data.balance; // assume API returns { balance: 2500 }
-          updateMoneyDisplay();
-          console.log("yse")
-        } catch (err) {
-          console.error("Error fetching balance:", err);
-        }
-      }
-
-      function updateMoneyDisplay() {
-        moneyDisplay.textContent = ` ${userMoney}`;
-      }
-      const coursesData = [
-        {
-          title: "Budgeting and Saving",
-          icon: "💰",
-          description:
-            "Learn to create and stick to a budget, track expenses, and build an emergency fund.",
-          price: 250,
-          notes: `<h3>Key Concepts</h3><ul><li><strong>The 50/30/20 Rule:</strong> 50% for Needs, 30% for Wants, 20% for Savings/Debt.</li><li><strong>Zero-Based Budgeting:</strong> Every dollar is assigned a purpose.</li><li><strong>Emergency Fund:</strong> Aim for 3-6 months of living expenses.</li></ul>`,
-          videos: [
-            "https://www.youtube.com/embed/5U7zB83y810",
-            "https://www.youtube.com/embed/S_B7WwT7L7c",
-          ],
-          test: [
-            {
-              question: "What is the 50/30/20 budgeting rule?",
-              options: [
-                "50% savings, 30% needs, 20% wants",
-                "50% needs, 30% wants, 20% savings/debt",
-                "50% wants, 30% needs, 20% savings",
-              ],
-              answer: "50% needs, 30% wants, 20% savings/debt",
-            },
-            {
-              question: "What is a key purpose of an emergency fund?",
-              options: [
-                "To buy luxury items",
-                "To invest in stocks",
-                "To cover unexpected expenses",
-              ],
-              answer: "To cover unexpected expenses",
-            },
-          ],
-        },
-        {
-          title: "Debt Management",
-          icon: "💳",
-          description:
-            "Discover strategies to pay off debt efficiently, including the avalanche and snowball methods.",
-          price: 300,
-          notes: `<h3>Debt Payoff Strategies</h3><ul><li><strong>Debt Snowball:</strong> Pay off smallest debts first for motivational wins.</li><li><strong>Debt Avalanche:</strong> Pay off highest-interest debts first to save money.</li></ul>`,
-          videos: [
-            "https://www.youtube.com/embed/e6-Iq7k9a6o",
-            "https://www.youtube.com/embed/zS9t2W1nFss",
-          ],
-          test: [
-            {
-              question:
-                "Which debt payoff method focuses on paying the smallest debts first?",
-              options: [
-                "Debt Avalanche",
-                "Debt Snowball",
-                "Debt Consolidation",
-              ],
-              answer: "Debt Snowball",
-            },
-            {
-              question:
-                "What is the primary benefit of the Debt Avalanche method?",
-              options: [
-                "It gives you quick wins",
-                "It saves the most money on interest",
-                "It is the easiest method",
-              ],
-              answer: "It saves the most money on interest",
-            },
-          ],
-        },
-        {
-          title: "Understanding Credit",
-          icon: "📈",
-          description:
-            "Learn how credit scores are calculated, how to build a good score, and how to read your credit report.",
-          price: 400,
-          notes: `<h3>FICO Score Components</h3><ul><li><strong>Payment History (35%):</strong> The most important factor.</li><li><strong>Amounts Owed (30%):</strong> How much of your available credit you're using.</li></ul>`,
-          videos: [
-            "https://www.youtube.com/embed/g2g-nJ36104",
-            "https://www.youtube.com/embed/qF-uN7n12eU",
-          ],
-          test: [
-            {
-              question:
-                "What is the most important factor in a FICO credit score?",
-              options: ["Credit Mix", "Amounts Owed", "Payment History"],
-              answer: "Payment History",
-            },
-            {
-              question:
-                "What is a good strategy to improve your credit utilization?",
-              options: [
-                "Max out all your credit cards",
-                "Keep your credit card balances low",
-                "Close old credit accounts",
-              ],
-              answer: "Keep your credit card balances low",
-            },
-          ],
-        },
-        {
-          title: "Investing Basics",
-          icon: "📊",
-          description:
-            "A beginner's guide to stocks, bonds, mutual funds, and the power of compound interest.",
-          price: 450,
-          notes: `<h3>Investing Principles</h3><ul><li><strong>Diversification:</strong> Don't put all your eggs in one basket.</li><li><strong>Compound Interest:</strong> The magic of earning returns on your returns.</li></ul>`,
-          videos: [
-            "https://www.youtube.com/embed/fD3yY85q9eI",
-            "https://www.youtube.com/embed/8oMko_Yp05U",
-          ],
-          test: [
-            {
-              question: "What is the term for earning returns on your returns?",
-              options: ["Simple Interest", "Compounding", "Diversification"],
-              answer: "Compounding",
-            },
-            {
-              question:
-                "What is the primary benefit of diversification in investing?",
-              options: [
-                "It guarantees high returns",
-                "It reduces overall risk",
-                "It simplifies tax filings",
-              ],
-              answer: "It reduces overall risk",
-            },
-          ],
-        },
-        {
-          title: "Taxes 101",
-          icon: "🧾",
-          description:
-            "Demystify the tax system. Understand tax brackets, deductions, and how to file your taxes.",
-          price: 350,
-          notes: `<h3>Tax Fundamentals</h3><ul><li><strong>Tax Brackets:</strong> Understand the progressive tax system.</li><li><strong>Deductions vs. Credits:</strong> Deductions reduce taxable income; credits reduce tax owed.</li></ul>`,
-          videos: [
-            "https://www.youtube.com/embed/gU9Hj2n5E7c",
-            "https://www.youtube.com/embed/1Jc99iS_1rQ",
-          ],
-          test: [
-            {
-              question:
-                "What is the difference between a tax deduction and a tax credit?",
-              options: [
-                "Deductions are for individuals, credits are for businesses",
-                "Deductions reduce taxable income, credits reduce tax owed",
-                "Deductions are only for state taxes, credits for federal taxes",
-              ],
-              answer:
-                "Deductions reduce taxable income, credits reduce tax owed",
-            },
-          ],
-        },
-        {
-          title: "Retirement Planning",
-          icon: "🧘",
-          description:
-            "Plan for your golden years by exploring different retirement accounts like 401(k)s and IRAs.",
-          price: 480,
-          notes: `<h3>Retirement Accounts</h3><ul><li><strong>401(k):</strong> Employer-sponsored plan.</li><li><strong>IRA (Individual Retirement Account):</strong> Can be traditional or Roth.</li></ul>`,
-          videos: [
-            "https://www.youtube.com/embed/b87l1-yE6tA",
-            "https://www.youtube.com/embed/9BqTjF23cEw",
-          ],
-          test: [
-            {
-              question:
-                "What is a key benefit of starting retirement savings early?",
-              options: [
-                "It lets you retire later",
-                "It allows you to take advantage of compound interest",
-                "It is only for high-income earners",
-              ],
-              answer: "It allows you to take advantage of compound interest",
-            },
-          ],
-        },
-      ];
-
-      function generateCourseCards() {
-        coursesGrid.innerHTML = "";
-        coursesData.forEach((course) => {
-          const card = document.createElement("div");
-          card.classList.add("course-card");
-          const isEnrolled = enrolledCourses[course.title];
-          const enrollButton = `<button class="btn enroll-btn" data-title="${course.title}" onclick="handleCourseAction(event, '${course.title}', 'enroll-btn')">Enroll Now</button>`;
-          const enrolledButtons = `<button class="btn view-btn" data-title="${course.title}" onclick="handleCourseAction(event, '${course.title}', 'view-btn')">View Course</button><button class="btn test-btn" data-title="${course.title}" onclick="openTestModal('${course.title}')">Take Test</button>`;
-          card.innerHTML = `<div class="course-info"><div class="course-icon">${
-            course.icon
-          }</div><h2 class="course-title">${
-            course.title
-          }</h2><p class="course-price">${
-            course.price
-          } VC</p><p class="course-description">${
-            course.description
-          }</p></div><div class="course-actions">${
-            isEnrolled ? enrolledButtons : enrollButton
-          }</div>`;
-          coursesGrid.appendChild(card);
-        });
-      }
-      function handleCourseAction(e, courseTitle, actionType) {
-        e.stopPropagation();
-        const course = coursesData.find((c) => c.title === courseTitle);
-        if (actionType === "enroll-btn") enrollCourse(course);
-        else openCourseModal(course);
-      }
-      function enrollCourse(course) {
-        if (userMoney >= course.price) {
-          userMoney -= course.price;
-          enrolledCourses[course.title] = true;
-          localStorage.setItem(
-            "enrolledCourses",
-            JSON.stringify(enrolledCourses)
-          );
-          updateMoneyDisplay();
-          generateCourseCards();
-          Swal.fire({
-            icon: "success",
-            title: "Enrolled!",
-            text: `You have successfully enrolled in the "${course.title}" course.`,
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Not Enough Funds!",
-            text: `You need ${course.price - userMoney} more VC to enroll.`,
-          });
-        }
-      }
-      function openCourseModal(course) {
-        currentCourse = course;
-        modalTitle.textContent = course.title;
-        modalMessage.textContent = course.description;
-        modalNotes.innerHTML = course.notes || "";
-        modalVideos.innerHTML = "";
-        if (course.videos && course.videos.length > 0) {
-          const videoHeading = document.createElement("h3");
-          videoHeading.textContent = "Videos";
-          modalVideos.appendChild(videoHeading);
-          course.videos.forEach((videoUrl) => {
-            const iframe = document.createElement("iframe");
-            iframe.src = videoUrl;
-            iframe.frameBorder = "0";
-            iframe.allow =
-              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-            iframe.allowFullscreen = true;
-            modalVideos.appendChild(iframe);
-          });
-        }
-        courseModal.style.display = "block";
-      }
-      function openTestModal(courseTitle) {
-        currentCourse = coursesData.find((c) => c.title === courseTitle);
-        if (!currentCourse || !currentCourse.test) return;
-        testModalTitle.textContent = `${currentCourse.title} Test`;
-        testQuestionsContainer.innerHTML = "";
-        currentCourse.test.forEach((q, index) => {
-          const questionDiv = document.createElement("div");
-          questionDiv.classList.add("question");
-          questionDiv.innerHTML = `<h4>${index + 1}. ${q.question}</h4>`;
-          const optionsDiv = document.createElement("div");
-          optionsDiv.classList.add("options");
-          q.options.forEach((option) => {
-            optionsDiv.innerHTML += `<label><input type="radio" name="question-${index}" value="${option}"> ${option}</label>`;
-          });
-          questionDiv.appendChild(optionsDiv);
-          testQuestionsContainer.appendChild(questionDiv);
-        });
-        const submitBtn = testModal.querySelector(".test-btn");
-        submitBtn.style.display = "block";
-        testModal.style.display = "block";
-      }
-      function submitTest() {
-        let score = 0;
-        currentCourse.test.forEach((q, index) => {
-          const selectedAnswer = document.querySelector(
-            `input[name="question-${index}"]:checked`
-          );
-          const questionDiv = document.querySelector(
-            `#test-questions .question:nth-child(${index + 1})`
-          );
-          const options = questionDiv.querySelectorAll("label");
-          questionDiv
-            .querySelectorAll('input[type="radio"]')
-            .forEach((radio) => (radio.disabled = true));
-          options.forEach((optionLabel) => {
-            const optionInput = optionLabel.querySelector("input");
-            if (optionInput.value === q.answer)
-              optionLabel.classList.add("correct-answer");
-            if (
-              selectedAnswer &&
-              optionInput.value === selectedAnswer.value &&
-              selectedAnswer.value !== q.answer
-            )
-              optionLabel.classList.add("incorrect-answer");
-          });
-          if (selectedAnswer && selectedAnswer.value === q.answer) score++;
-        });
-        document.querySelector("#test-modal .test-btn").style.display = "none";
+       <% if (errors && errors.length > 0) { %>
         Swal.fire({
-          title: "Test Submitted!",
-          text: `You scored ${score} out of ${currentCourse.test.length}.`,
-          icon: "info",
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
         });
-      }
-      function closeModal(modalId) {
-        document.getElementById(modalId).style.display = "none";
-      }
-      window.onclick = function (event) {
-        if (event.target == courseModal) closeModal("course-modal");
-        if (event.target == testModal) closeModal("test-modal");
-      };
-    </script>
-
-    <script>
-      // --- Navbar Interactivity ---
-      document.addEventListener("DOMContentLoaded", () => {
-        // Initialize everything after the DOM is ready
-        initNavbar();
-        updateMoneyDisplay();
-        generateCourseCards();
-      });
-
-      function initNavbar() {
-        const navbar = document.querySelector(".navbar");
-        const mobileToggle = document.getElementById("mobileToggle");
-        const navMenu = document.getElementById("navMenu");
-        const navLinks = document.querySelectorAll(".nav-link");
-
-        // Scroll effect
-        window.addEventListener("scroll", () => {
-          if (window.scrollY > 50) navbar.classList.add("scrolled");
-          else navbar.classList.remove("scrolled");
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
         });
-
-        // Mobile menu toggle
-        if (mobileToggle) {
-          mobileToggle.addEventListener("click", () => {
-            navMenu.classList.toggle("active");
-          });
-        }
-
-        // Active link highlighting and closing mobile menu on click
-        navLinks.forEach((link) => {
-          link.addEventListener("click", () => {
-            navLinks.forEach((l) => l.classList.remove("active"));
-            link.classList.add("active");
-            if (navMenu.classList.contains("active")) {
-              navMenu.classList.remove("active");
-            }
-          });
-        });
-      }
+      <% } %>
     </script>
   </body>
 </html>

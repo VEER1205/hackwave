@@ -10,8 +10,9 @@ const {
   insertTrade,
   getUserTrades,
   getUserWatchlist,
+  executeTrade,
   addToWatchlist,
-  removeFromWatchlist
+  removeFromWatchlist,
 } = require("./schemaa.js");
 const {
   getGoogleLoginPage,
@@ -39,12 +40,19 @@ function requireAuth(req, res, next) {
   try {
     const userCookie = req.cookies.user;
     if (!userCookie) {
-      return res.status(401).json({ error: "Not logged in" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Please log in first" });
     }
-    req.user = JSON.parse(userCookie);
+
+    const user = JSON.parse(userCookie);
+    req.user = user;
     next();
   } catch (err) {
-    res.status(401).json({ error: "Invalid session" });
+    console.error("Auth check failed:", err);
+    return res
+      .status(401)
+      .json({ success: false, message: "Please log in first" });
   }
 }
 
@@ -147,15 +155,15 @@ app.get("/Quiz", (req, res) => {
   });
 });
 
-app.get("/landing", (req, res) => {
-  res.render("landing", {
+app.get("/chatbot", (req, res) => {
+  res.render("chatbot", {
     errors: res.locals.errors,
     success: res.locals.success,
   });
 });
 
-app.get("/course", (req, res) => {
-  res.render("course", {
+app.get("/landing", (req, res) => {
+  res.render("landing", {
     errors: res.locals.errors,
     success: res.locals.success,
   });
@@ -168,23 +176,33 @@ app.get("/game", (req, res) => {
   });
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", requireAuth, (req, res) => {
   res.render("dashboard", {
     errors: res.locals.errors,
     success: res.locals.success,
+    user: req.user, // pass user info
   });
 });
 
-app.get("/trading", (req, res) => {
+app.get("/trading", requireAuth, (req, res) => {
   res.render("trading", {
     errors: res.locals.errors,
     success: res.locals.success,
+    user: req.user,
+  });
+});
+
+app.get("/course", requireAuth, (req, res) => {
+  res.render("course", {
+    errors: res.locals.errors,
+    success: res.locals.success,
+    user: req.user,
   });
 });
 
 app.get("/api/users/count", async (req, res) => {
   try {
-    const count = await getAllNumberOfUsers();    
+    const count = await getAllNumberOfUsers();
     res.json({ count });
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch user count" });
@@ -193,7 +211,7 @@ app.get("/api/users/count", async (req, res) => {
 
 app.get("/api/portfolio", async (req, res) => {
   try {
-    const data = await getPortFolio(req.email);
+    const data = await getPortfolio(req.email);
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch portfolio" });
@@ -252,82 +270,12 @@ app.get("/api/trades", requireAuth, async (req, res) => {
 app.post("/api/trade", requireAuth, async (req, res) => {
   try {
     const { type, side, symbol, name, qty, price } = req.body;
-    
+
     if (!type || !side || !symbol || !qty || !price) {
       return res.status(400).json({ error: "Missing required fields" });
     }
-
-    const quantity = parseFloat(qty);
-    const priceNum = parseFloat(price);
-    const total = quantity * priceNum;
-
-    // Get current balance
-    const balance = await getUserBalance(req.user.user_id);
-
-    if (side === 'BUY') {
-      // Check if user has enough balance
-      if (balance < total) {
-        return res.status(400).json({ error: "Insufficient balance" });
-      }
-
-      // Deduct balance
-      await updateUserBalance(req.user.user_id, balance - total);
-
-      // Add to portfolio
-      await upsertPortfolioHolding(
-        req.user.user_id,
-        type,
-        symbol,
-        name,
-        quantity,
-        priceNum,
-        priceNum
-      );
-    } else if (side === 'SELL') {
-      // Check if user has enough holdings
-      const portfolio = await getPortfolio(req.user.user_id);
-      const holding = portfolio.find(h => h.type === type && h.symbol === symbol);
-
-      if (!holding || holding.quantity < quantity) {
-        return res.status(400).json({ error: "Insufficient holdings" });
-      }
-
-      // Add balance
-      await updateUserBalance(req.user.user_id, balance + total);
-
-      // Remove from portfolio
-      await upsertPortfolioHolding(
-        req.user.user_id,
-        type,
-        symbol,
-        name,
-        -quantity, // Negative to subtract
-        priceNum,
-        priceNum
-      );
-    }
-
-    // Insert trade record
-    await insertTrade(
-      req.user.user_id,
-      type,
-      side,
-      symbol,
-      name,
-      quantity,
-      priceNum,
-      total
-    );
-
-    // Return updated balance
-    const newBalance = await getUserBalance(req.user.user_id);
-
-    res.json({
-      success: true,
-      message: `${side} order executed successfully`,
-      balance: newBalance,
-      trade: { type, side, symbol, qty: quantity, price: priceNum, total }
-    });
+    const userId = req.user.user_id;
+    executeTrade(userId, { type, side, symbol, name, qty, price });
   } catch (err) {
     console.error("❌ POST /api/trade error:", err);
     res.status(500).json({ error: "Failed to execute trade" });
@@ -349,7 +297,7 @@ app.get("/api/watchlist", requireAuth, async (req, res) => {
 app.post("/api/watchlist", requireAuth, async (req, res) => {
   try {
     const { type, symbol, name } = req.body;
-    
+
     if (!type || !symbol) {
       return res.status(400).json({ error: "Missing type or symbol" });
     }
@@ -379,12 +327,9 @@ app.get("/api/me", requireAuth, (req, res) => {
   res.json({
     email: req.user.email,
     name: req.user.name,
-    user_id: req.user.user_id
+    user_id: req.user.user_id,
   });
 });
-
-
-
 
 app.post("/login", loginWithEmail);
 

@@ -1,236 +1,240 @@
-// Financial literacy questions database
-const questionBank = [
+document.addEventListener("DOMContentLoaded", () => {
+  initNavbar();
+  initNavLinks();
+});
+
+function initNavbar() {
+  const navbar = document.querySelector(".navbar");
+  const mobileToggle = document.getElementById("mobileToggle");
+  const navMenu = document.getElementById("navMenu");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) navbar.classList.add("scrolled");
+    else navbar.classList.remove("scrolled");
+  });
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("active");
+    });
+  }
+}
+
+function initNavLinks() {
+  const navLinks = document.querySelectorAll(".nav-link");
+  const navMenu = document.getElementById("navMenu");
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      navLinks.forEach((l) => l.classList.remove("active"));
+      link.classList.add("active");
+
+      if (navMenu.classList.contains("active"))
+        navMenu.classList.remove("active");
+    });
+  });
+}
+const quizData = [
   {
-    question: "What does SIP stand for in mutual fund investments?",
+    question: "What is a 'bull market'?",
     options: [
-      "Systematic Investment Plan",
-      "Simple Interest Plan",
-      "Secure Investment Portfolio",
-      "Standard Investment Process",
+      "A market where prices are falling",
+      "A market where prices are rising",
+      "A market with high volatility",
+      "A market with low trading volume",
     ],
-    correct: 0,
+    correctAnswer: 1,
+    explanation:
+      "A bull market is characterized by rising prices and investor optimism. It's called 'bull' because bulls thrust their horns upward when attacking.",
   },
   {
-    question:
-      "Which type of bank account typically offers the highest interest rate?",
+    question: "What does IPO stand for?",
     options: [
-      "Savings Account",
-      "Current Account",
-      "Fixed Deposit",
-      "Salary Account",
+      "Internal Profit Organization",
+      "Initial Public Offering",
+      "International Payment Order",
+      "Investment Portfolio Overview",
     ],
-    correct: 2,
+    correctAnswer: 1,
+    explanation:
+      "IPO stands for Initial Public Offering, which is when a private company first sells shares to the public on a stock exchange.",
   },
   {
-    question:
-      "What is the maximum insurance coverage provided by FDIC for bank deposits?",
-    options: ["$100,000", "$250,000", "$500,000", "$1,000,000"],
-    correct: 1,
-  },
-  {
-    question: "Which of these is NOT a type of mutual fund?",
-    options: ["Equity Fund", "Debt Fund", "Hybrid Fund", "Credit Fund"],
-    correct: 3,
-  },
-  {
-    question: "What should you do if you suspect credit card fraud?",
+    question: "What is a call option?",
     options: [
-      "Wait and see",
-      "Contact bank immediately",
-      "Use card more to test",
-      "Ignore small amounts",
+      "The right to sell an asset at a specific price",
+      "The right to buy an asset at a specific price",
+      "An obligation to buy an asset",
+      "A type of savings account",
     ],
-    correct: 1,
-  },
-  {
-    question: "What is a good credit score range?",
-    options: ["300-500", "500-650", "650-750", "750-850"],
-    correct: 3,
-  },
-  {
-    question:
-      "Which investment has the highest risk but potentially highest returns?",
-    options: [
-      "Fixed Deposits",
-      "Government Bonds",
-      "Stocks",
-      "Savings Account",
-    ],
-    correct: 2,
-  },
-  {
-    question: "What does APR stand for in credit cards?",
-    options: [
-      "Annual Percentage Rate",
-      "Average Payment Rate",
-      "Automatic Payment Rate",
-      "Annual Premium Rate",
-    ],
-    correct: 0,
-  },
-  {
-    question: "Which is the safest investment option?",
-    options: ["Cryptocurrency", "Stocks", "Government Bonds", "Forex Trading"],
-    correct: 2,
-  },
-  {
-    question: "What is the 50/30/20 rule in budgeting?",
-    options: [
-      "50% savings, 30% needs, 20% wants",
-      "50% needs, 30% wants, 20% savings",
-      "50% wants, 30% savings, 20% needs",
-      "50% investments, 30% expenses, 20% emergency",
-    ],
-    correct: 1,
-  },
-  {
-    question: "What is compound interest?",
-    options: [
-      "Interest on principal only",
-      "Interest on interest",
-      "Fixed interest rate",
-      "Simple interest calculation",
-    ],
-    correct: 1,
-  },
-  {
-    question: "Which document is required to open a bank account?",
-    options: [
-      "Only Aadhaar Card",
-      "Only PAN Card",
-      "KYC documents",
-      "Only passport",
-    ],
-    correct: 2,
-  },
-  {
-    question: "What is the purpose of an emergency fund?",
-    options: [
-      "Investment growth",
-      "Tax savings",
-      "Unexpected expenses",
-      "Luxury purchases",
-    ],
-    correct: 2,
-  },
-  {
-    question: "Which type of insurance is mandatory for vehicles?",
-    options: [
-      "Comprehensive Insurance",
-      "Third-party Insurance",
-      "Zero Depreciation",
-      "Personal Accident",
-    ],
-    correct: 1,
+    correctAnswer: 1,
+    explanation:
+      "A call option gives the holder the right (but not the obligation) to buy an asset at a predetermined price within a specific time period.",
   },
   {
     question: "What is diversification in investing?",
     options: [
-      "Buying one stock",
-      "Spreading investments",
-      "Timing the market",
-      "Following trends",
+      "Putting all money in one investment",
+      "Spreading investments across different assets",
+      "Only investing in technology stocks",
+      "Keeping all money in cash",
     ],
-    correct: 1,
+    correctAnswer: 1,
+    explanation:
+      "Diversification is the practice of spreading investments across various financial instruments to reduce risk. It's the concept of 'not putting all eggs in one basket.'",
+  },
+  {
+    question: "What is a P/E ratio?",
+    options: [
+      "Price to Equity ratio",
+      "Profit to Expense ratio",
+      "Price to Earnings ratio",
+      "Portfolio to Exchange ratio",
+    ],
+    correctAnswer: 2,
+    explanation:
+      "P/E ratio (Price to Earnings) is calculated by dividing a company's stock price by its earnings per share. It's used to value a company and compare it with others.",
+  },
+  {
+    question: "What does FDIC insurance protect?",
+    options: [
+      "Stock investments",
+      "Bank deposits",
+      "Cryptocurrency",
+      "Real estate",
+    ],
+    correctAnswer: 1,
+    explanation:
+      "FDIC (Federal Deposit Insurance Corporation) insurance protects bank deposits up to $250,000 per depositor, per insured bank.",
+  },
+  {
+    question: "What is a bear market?",
+    options: [
+      "A market where prices are rising",
+      "A market where prices are falling by 20% or more",
+      "A market with no trading",
+      "A foreign exchange market",
+    ],
+    correctAnswer: 1,
+    explanation:
+      "A bear market occurs when prices fall 20% or more from recent highs, typically accompanied by widespread pessimism. Bears swipe downward when attacking.",
+  },
+  {
+    question: "What is compound interest?",
+    options: [
+      "Interest calculated only on principal",
+      "Interest on interest plus principal",
+      "A type of bank fee",
+      "Interest paid quarterly",
+    ],
+    correctAnswer: 1,
+    explanation:
+      "Compound interest is interest calculated on the initial principal plus accumulated interest from previous periods, allowing your money to grow exponentially.",
+  },
+  {
+    question: "What is a dividend?",
+    options: [
+      "A company's debt payment",
+      "A stock split",
+      "A portion of company profits paid to shareholders",
+      "A trading fee",
+    ],
+    correctAnswer: 2,
+    explanation:
+      "A dividend is a distribution of a portion of a company's earnings to its shareholders, usually paid quarterly in cash or additional shares.",
+  },
+  {
+    question: "What is liquidity in finance?",
+    options: [
+      "How much cash a company has",
+      "How easily an asset can be converted to cash",
+      "The water content of an investment",
+      "A type of investment strategy",
+    ],
+    correctAnswer: 1,
+    explanation:
+      "Liquidity refers to how quickly and easily an asset can be converted into cash without significantly affecting its price.",
+  },
+  {
+    question: "What is a mutual fund?",
+    options: [
+      "A loan between friends",
+      "A pooled investment managed by professionals",
+      "A type of bank account",
+      "A government bond",
+    ],
+    correctAnswer: 1,
+    explanation:
+      "A mutual fund pools money from many investors to purchase a diversified portfolio of stocks, bonds, or other securities, managed by professional fund managers.",
+  },
+  {
+    question: "What does ROI stand for?",
+    options: [
+      "Rate of Inflation",
+      "Return on Investment",
+      "Risk of Investment",
+      "Rate of Interest",
+    ],
+    correctAnswer: 1,
+    explanation:
+      "ROI (Return on Investment) measures the profitability of an investment, calculated as (Gain - Cost) / Cost, usually expressed as a percentage.",
+  },
+  {
+    question: "What is a stock split?",
+    options: [
+      "Dividing company profits",
+      "Selling half your shares",
+      "Increasing the number of shares while reducing price proportionally",
+      "A trading strategy",
+    ],
+    correctAnswer: 2,
+    explanation:
+      "A stock split increases the number of shares outstanding while reducing the price per share proportionally. A 2-for-1 split gives you two shares for each one you owned.",
+  },
+  {
+    question: "What is a put option?",
+    options: [
+      "The right to buy an asset",
+      "The right to sell an asset at a specific price",
+      "An obligation to sell an asset",
+      "A type of bank deposit",
+    ],
+    correctAnswer: 1,
+    explanation:
+      "A put option gives the holder the right (but not the obligation) to sell an asset at a predetermined price within a specific time period.",
+  },
+  {
+    question: "What is market capitalization?",
+    options: [
+      "The total value of a company's outstanding shares",
+      "The capital gains tax rate",
+      "The maximum market price",
+      "The trading volume limit",
+    ],
+    correctAnswer: 0,
+    explanation:
+      "Market capitalization (market cap) is calculated by multiplying the current stock price by the total number of outstanding shares, representing the company's total value.",
   },
 ];
 
-// Game state
-let currentQuestions = [];
-let currentQuestionIndex = 0;
+let currentQuestion = 0;
 let score = 0;
-let timeLeft = 15;
-let timer = null;
-let questionStartTime = 0;
-let userData = JSON.parse(localStorage.getItem("quizUserData")) || {
-  coins: 100,
-  dailyStreak: 0,
-  lastQuizDate: null,
-  totalScore: 0,
-  quizzesTaken: 0,
-};
+let selectedAnswer = null;
+let answered = false;
+let userAnswers = [];
 
-// Initialize app
-function init() {
-  updateUserStats();
-  updateLeaderboard();
-  checkDailyQuizStatus();
-}
+function loadQuestion() {
+  const question = quizData[currentQuestion];
+  document.getElementById("question-text").textContent = question.question;
+  document.getElementById("current-question").textContent = currentQuestion + 1;
+  document.getElementById("total-questions").textContent = quizData.length;
 
-function checkDailyQuizStatus() {
-  const today = new Date().toDateString();
-  const startBtn = document.getElementById("startBtn");
+  const progress = ((currentQuestion + 1) / quizData.length) * 100;
+  document.getElementById("progress-fill").style.width = progress + "%";
+  document.getElementById("progress-percentage").textContent =
+    Math.round(progress) + "%";
 
-  if (userData.lastQuizDate === today) {
-    startBtn.textContent = "Quiz Already Completed Today";
-    startBtn.disabled = true;
-    startBtn.style.opacity = "0.5";
-    startBtn.style.cursor = "not-allowed";
-  }
-}
-
-function updateUserStats() {
-  document.getElementById("userCoins").textContent = userData.coins;
-  document.getElementById("dailyStreak").textContent = userData.dailyStreak;
-
-  const leaderboard = getLeaderboard();
-  const userRank = leaderboard.findIndex((user) => user.id === "current") + 1;
-  document.getElementById("userRank").textContent = userRank || "-";
-}
-
-function generateDailyQuestions() {
-  const today = new Date();
-  const seed =
-    today.getFullYear() * 10000 +
-    (today.getMonth() + 1) * 100 +
-    today.getDate();
-
-  // Seeded random function
-  function seededRandom(seed) {
-    const x = Math.sin(seed) * 10000;
-    return x - Math.floor(x);
-  }
-
-  const shuffled = [...questionBank];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(seededRandom(seed + i) * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
-  return shuffled.slice(0, 7);
-}
-
-function startQuiz() {
-  const today = new Date().toDateString();
-  if (userData.lastQuizDate === today) return;
-
-  currentQuestions = generateDailyQuestions();
-  currentQuestionIndex = 0;
-  score = 0;
-
-  document.getElementById("welcomeScreen").classList.add("hidden");
-  document.getElementById("leaderboardScreen").classList.add("hidden");
-  document.getElementById("quizScreen").classList.remove("hidden");
-
-  showQuestion();
-}
-
-function showQuestion() {
-  if (currentQuestionIndex >= currentQuestions.length) {
-    endQuiz();
-    return;
-  }
-
-  const question = currentQuestions[currentQuestionIndex];
-  const progress = (currentQuestionIndex / currentQuestions.length) * 100;
-
-  document.getElementById("questionNumber").textContent = `Question ${
-    currentQuestionIndex + 1
-  } of ${currentQuestions.length}`;
-  document.getElementById("questionText").textContent = question.question;
-  document.getElementById("progressFill").style.width = progress + "%";
-
-  const optionsContainer = document.getElementById("optionsContainer");
+  const optionsContainer = document.getElementById("options-container");
   optionsContainer.innerHTML = "";
 
   question.options.forEach((option, index) => {
@@ -241,175 +245,187 @@ function showQuestion() {
     optionsContainer.appendChild(optionDiv);
   });
 
-  startTimer();
+  document.getElementById("explanation-container").innerHTML = "";
+  document.getElementById("next-button").style.display = "none";
+  selectedAnswer = null;
+  answered = false;
 }
 
-function startTimer() {
-  timeLeft = 15;
-  questionStartTime = Date.now();
-  updateTimerDisplay();
+function selectAnswer(index) {
+  if (answered) return;
 
-  timer = setInterval(() => {
-    timeLeft--;
-    updateTimerDisplay();
+  selectedAnswer = index;
+  answered = true;
 
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      selectAnswer(-1); // Time's up
-    }
-  }, 1000);
-}
-
-function updateTimerDisplay() {
-  const timerCircle = document.getElementById("timerCircle");
-  timerCircle.textContent = timeLeft;
-
-  const percentage = (timeLeft / 15) * 360;
-  timerCircle.style.background = `conic-gradient(#10b981 ${percentage}deg, #1e293b ${percentage}deg)`;
-}
-
-function selectAnswer(selectedIndex) {
-  clearInterval(timer);
-
-  const question = currentQuestions[currentQuestionIndex];
+  const question = quizData[currentQuestion];
   const options = document.querySelectorAll(".option");
-  const responseTime = Date.now() - questionStartTime;
 
-  // Show correct/incorrect answers
-  options.forEach((option, index) => {
-    if (index === question.correct) {
+  options.forEach((option, i) => {
+    option.classList.add("disabled");
+    if (i === question.correctAnswer) {
       option.classList.add("correct");
-    } else if (index === selectedIndex && selectedIndex !== question.correct) {
+    } else if (i === selectedAnswer) {
       option.classList.add("incorrect");
     }
-    option.onclick = null; // Disable clicking
   });
 
-  // Calculate score based on correctness and speed
-  if (selectedIndex === question.correct) {
-    const speedBonus = Math.max(0, Math.floor((15000 - responseTime) / 100));
-    const questionScore = 100 + speedBonus;
-    score += questionScore;
+  if (selectedAnswer === question.correctAnswer) {
+    score++;
   }
 
-  // Move to next question after delay
-  setTimeout(() => {
-    currentQuestionIndex++;
-    showQuestion();
-  }, 2000);
+  userAnswers.push({
+    question: question.question,
+    selected: question.options[selectedAnswer],
+    correct: question.options[question.correctAnswer],
+    isCorrect: selectedAnswer === question.correctAnswer,
+  });
+
+  const explanationDiv = document.createElement("div");
+  explanationDiv.className = "explanation";
+  explanationDiv.innerHTML = `
+                 <div class="explanation-title">Explanation:</div>
+                 <div>${question.explanation}</div>
+             `;
+  document.getElementById("explanation-container").appendChild(explanationDiv);
+
+  document.getElementById("next-button").style.display = "block";
 }
 
-function endQuiz() {
-  const today = new Date().toDateString();
+function nextQuestion() {
+  currentQuestion++;
 
-  // Update user data
-  userData.lastQuizDate = today;
-  userData.totalScore += score;
-  userData.quizzesTaken++;
-
-  // Calculate coins earned
-  let coinsEarned = 100; // Base participation reward
-  if (score >= 700) coinsEarned += 50; // High score bonus
-
-  userData.coins += coinsEarned;
-  
-
-  // Update streak
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  if (userData.lastQuizDate === yesterday.toDateString()) {
-    userData.dailyStreak++;
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
   } else {
-    userData.dailyStreak = 1;
+    showResults();
   }
-
-  // Save to localStorage
-  localStorage.setItem("quizUserData", JSON.stringify(userData));
-
-  // Update leaderboard
-  updateLeaderboard();
-
-  // Show results
-  document.getElementById("quizScreen").classList.add("hidden");
-  document.getElementById("resultsScreen").classList.remove("hidden");
-  document.getElementById("finalScore").textContent = score;
-  document.getElementById(
-    "coinsEarned"
-  ).textContent = `+${coinsEarned} Coins Earned!`;
-
-  let message = "";
-  if (score >= 700) message = "Excellent! You're a financial expert! 🏆";
-  else if (score >= 500) message = "Great job! Keep learning! 📈";
-  else if (score >= 300) message = "Good effort! Practice makes perfect! 💪";
-  else message = "Keep studying! You'll improve! 📚";
-
-  document.getElementById("resultMessage").textContent = message;
-
-  updateUserStats();
 }
 
-function getLeaderboard() {
-  const leaderboard = JSON.parse(localStorage.getItem("quizLeaderboard")) || [];
+function showResults() {
+  document.getElementById("quiz-container").style.display = "none";
+  const resultsContainer = document.getElementById("results-container");
+  resultsContainer.style.display = "block";
 
-  // Add/update current user
-  const existingIndex = leaderboard.findIndex((user) => user.id === "current");
-  const currentUser = {
-    id: "current",
-    name: "You",
-    score: userData.totalScore,
-    coins: userData.coins,
-    quizzes: userData.quizzesTaken,
-  };
+  const percentage = Math.round((score / quizData.length) * 100);
+  const incorrect = quizData.length - score;
+  let coinsEarned = 0;
 
-  if (existingIndex >= 0) {
-    leaderboard[existingIndex] = currentUser;
+  // Determine performance level, message, and coins
+  let performanceLevel = "";
+  let performanceMessage = "";
+  let performanceColor = "";
+
+  if (percentage >= 90) {
+    performanceLevel = "Outstanding! 🏆";
+    performanceMessage =
+      "You have an excellent understanding of finance and trading concepts. Your knowledge is impressive!";
+    performanceColor = "hsl(160, 84%, 45%)";
+    coinsEarned = percentage === 100 ? 100 : 75;
+  } else if (percentage >= 75) {
+    performanceLevel = "Great Job! 🌟";
+    performanceMessage =
+      "You have a solid grasp of finance fundamentals. Keep building on this strong foundation!";
+    performanceColor = "hsl(170, 80%, 45%)";
+    coinsEarned = 50;
+  } else if (percentage >= 60) {
+    performanceLevel = "Good Effort! 👍";
+    performanceMessage =
+      "You have a decent understanding, but there's room for improvement. Review the explanations below!";
+    performanceColor = "hsl(180, 70%, 45%)";
+    coinsEarned = 25;
+  } else if (percentage >= 40) {
+    performanceLevel = "Keep Learning! 📚";
+    performanceMessage =
+      "You're on the right track, but need more practice. Study the topics you missed and try again!";
+    performanceColor = "hsl(45, 90%, 55%)";
+    coinsEarned = 15;
   } else {
-    leaderboard.push(currentUser);
+    performanceLevel = "Don't Give Up! 💪";
+    performanceMessage =
+      "Finance can be challenging, but practice makes perfect. Review all questions and retake the quiz!";
+    performanceColor = "hsl(0, 84%, 60%)";
+    coinsEarned = 10;
   }
 
-  // Sort by total score
-  leaderboard.sort((a, b) => b.score - a.score);
-
-  return leaderboard;
-}
-
-function updateLeaderboard() {
-  const leaderboard = getLeaderboard();
-  localStorage.setItem("quizLeaderboard", JSON.stringify(leaderboard));
-
-  const leaderboardList = document.getElementById("leaderboardList");
-  leaderboardList.innerHTML = "";
-
-  leaderboard.slice(0, 10).forEach((user, index) => {
-    const item = document.createElement("div");
-    item.className = "leaderboard-item";
-    if (user.id === "current") {
-      item.style.border = "2px solid #10b981";
+  let reviewHTML = "";
+  userAnswers.forEach((answer, index) => {
+    reviewHTML += `
+            <div class="review-item">
+                <div class="review-question">
+                    <span style="color: hsl(160, 84%, 45%); font-weight: bold;">Q${
+                      index + 1
+                    }.</span> ${answer.question}
+                </div>
+                <div class="review-answer ${
+                  answer.isCorrect ? "correct" : "incorrect"
+                }">
+                    ${answer.isCorrect ? "✓" : "✗"} Your answer: ${
+      answer.selected
     }
-
-    item.innerHTML = `
-                    <div class="leaderboard-rank">#${index + 1}</div>
-                    <div class="leaderboard-name">${user.name}</div>
-                    <div class="leaderboard-score">${user.score} pts</div>
-                `;
-
-    leaderboardList.appendChild(item);
+                </div>
+                ${
+                  !answer.isCorrect
+                    ? `<div class="review-answer correct">✓ Correct answer: ${answer.correct}</div>`
+                    : ""
+                }
+                <div style="margin-top: 8px; font-size: 0.875rem; color: hsl(180, 5%, 75%); font-style: italic;">
+                    ${quizData[index].explanation}
+                </div>
+            </div>
+        `;
   });
+
+  resultsContainer.innerHTML = `
+        <div class="results">
+            <h2 style="color: ${performanceColor}; margin-bottom: 12px;">${performanceLevel}</h2>
+            <div class="score">${score}/${quizData.length}</div>
+            <div class="percentage">${percentage}% Correct</div>
+            <p style="color: hsl(180, 5%, 75%); margin-bottom: 24px; line-height: 1.6;">
+                ${performanceMessage}
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                <div style="background: hsl(220, 20%, 10%); padding: 16px; border-radius: 8px; border: 2px solid hsl(160, 84%, 45%);">
+                    <div style="font-size: 0.875rem; color: hsl(180, 5%, 65%); margin-bottom: 4px;">Correct</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: hsl(160, 84%, 45%);">${score}</div>
+                </div>
+                <div style="background: hsl(220, 20%, 10%); padding: 16px; border-radius: 8px; border: 2px solid hsl(0, 84%, 60%);">
+                    <div style="font-size: 0.875rem; color: hsl(180, 5%, 65%); margin-bottom: 4px;">Incorrect</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: hsl(0, 84%, 60%);">${incorrect}</div>
+                </div>
+                <div style="background: hsl(220, 20%, 10%); padding: 16px; border-radius: 8px; border: 2px solid hsl(180, 80%, 50%);">
+                    <div style="font-size: 0.875rem; color: hsl(180, 5%, 65%); margin-bottom: 4px;">Accuracy</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: hsl(180, 80%, 50%);">${percentage}%</div>
+                </div>
+                 <div style="background: hsl(220, 20%, 10%); padding: 16px; border-radius: 8px; border: 2px solid hsl(50, 100%, 50%);">
+                    <div style="font-size: 0.875rem; color: hsl(180, 5%, 65%); margin-bottom: 4px;">Coins Earned</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: hsl(50, 100%, 50%);">+${coinsEarned}</div>
+                </div>
+            </div>
+            
+            <button class="button button-primary" onclick="restartQuiz()">Retake Quiz</button>
+            
+            <div class="review-section">
+                <h3 style="margin-bottom: 16px; font-size: 1.25rem;">Detailed Review</h3>
+                <p style="color: hsl(180, 5%, 65%); margin-bottom: 16px; font-size: 0.875rem;">
+                    Review each question below to understand the correct answers and explanations.
+                </p>
+                ${reviewHTML}
+            </div>
+        </div>
+    `;
 }
 
-function showLeaderboard() {
-  document.getElementById("resultsScreen").classList.add("hidden");
-  document.getElementById("leaderboardScreen").classList.remove("hidden");
+function restartQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  userAnswers = [];
+  document.getElementById("quiz-container").style.display = "block";
+  document.getElementById("results-container").style.display = "none";
+  loadQuestion();
 }
 
-function resetToWelcome() {
-  document.getElementById("leaderboardScreen").classList.add("hidden");
-  document.getElementById("resultsScreen").classList.add("hidden");
-  document.getElementById("quizScreen").classList.add("hidden");
-  document.getElementById("welcomeScreen").classList.remove("hidden");
+document.getElementById("next-button").addEventListener("click", nextQuestion);
 
-  checkDailyQuizStatus();
-}
-
-// Initialize the app
-init();
+// Initialize quiz
+loadQuestion();
