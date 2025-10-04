@@ -1,15 +1,15 @@
-# TradeMaster Pro 📈
+# TradeMaster Pro
 
 A comprehensive trading and investment platform that combines AI-powered insights, virtual trading, educational courses, and real-time market analysis to help users master the art of trading.
 
-## 🌟 Features
+## Features
 
-### 🔐 Authentication System
+### Authentication System
 - User registration and login with multiple OAuth options (Google, GitHub, LinkedIn)
 - Secure password authentication
 - Modern, split-screen design with glassmorphism effects
 
-### 📊 Trading Dashboard
+### Trading Dashboard
 - **Virtual Trading Environment**: Practice trading with ₹10,00,000 virtual balance
 - **Real-time Market Data**: Live updates for NIFTY 50, SENSEX, and BANKNIFTY indices
 - **Stock Analysis**: Interactive charts with multiple timeframes (1M, 3M, 6M, 1Y, 3Y, Max)
@@ -17,7 +17,7 @@ A comprehensive trading and investment platform that combines AI-powered insight
 - **Watchlist Management**: Create and manage custom watchlists for stocks and mutual funds
 - **Portfolio Tracking**: Monitor your investments, profits, and losses in real-time
 
-### 🤖 AI Assistant
+### AI Assistant
 - Trading co-pilot for strategy backtesting
 - Technical indicator analysis
 - Market news updates
@@ -25,25 +25,25 @@ A comprehensive trading and investment platform that combines AI-powered insight
 - Expert recommendations tracker
 - Market signal tracking
 
-### 📚 Educational Platform
+### Educational Platform
 - Interactive trading courses
 - Virtual wallet system (1000 tokens)
 - Beginner to pro learning path
 - Expert-led curriculum
 
-### 🎯 Daily Quiz
+### Daily Quiz
 - Finance and trading knowledge tests
 - 15-question format with progress tracking
 - Multiple-choice questions covering bull markets, trading concepts, and financial terminology
 
-### 📱 User Experience
+### User Experience
 - Personalized dashboard with user greeting
 - Financial overview cards (Total Profit, Total Loss, Net Worth)
 - Portfolio growth trends
 - Investment distribution visualization
 - Real-time notifications and market alerts
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **HTML5** - Semantic markup and structure
@@ -58,7 +58,7 @@ A comprehensive trading and investment platform that combines AI-powered insight
 ### Database
 - **MySQL** - Relational database for user data, transactions, and market information
 
-## 👥 Team
+## Team
 
 ### Frontend Development
 - **Falgun Patel** - UI/UX Implementation, Trading Interface
@@ -72,7 +72,7 @@ A comprehensive trading and investment platform that combines AI-powered insight
 ### Documentation & Presentation
 - **Aryan Jagadish Keni** - README, PPT, Video Documentation
 
-## 📋 Installation
+## Installation
 
 ### Prerequisites
 - Node.js (v14 or higher)
@@ -117,7 +117,7 @@ A comprehensive trading and investment platform that combines AI-powered insight
 6. **Access the application**
    - Open your browser and navigate to `http://localhost:3000`
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 trademaster-pro/
@@ -150,7 +150,7 @@ trademaster-pro/
 └── README.md
 ```
 
-## 🔑 Key Functionalities
+## Key Functionalities
 
 ### Virtual Trading System
 - Buy and sell stocks with virtual currency
@@ -170,7 +170,7 @@ trademaster-pro/
 - Token-based reward system
 - Quiz assessments
 
-## 🚀 Future Enhancements
+## Future Enhancements
 
 - Mobile application (iOS & Android)
 - Social trading features
@@ -180,11 +180,11 @@ trademaster-pro/
 - Community forums
 - Live webinars and workshops
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -194,13 +194,13 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📞 Contact
+## Contact
 
 For questions or support, please contact any team member:
 - Falgun Patel - [falgunpatel2007@gmail.com](mailto:falgunpatel2007@gmail.com)
 - Project Repository - [GitHub](https://github.com/yourusername/trademaster-pro)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Market data providers
 - Open-source community
@@ -209,4 +209,4 @@ For questions or support, please contact any team member:
 
 ---
 
-**⚠️ Disclaimer**: This is an educational platform for learning trading concepts. Virtual trading results do not guarantee real-world trading success. Always consult with financial advisors before making investment decisions.
+**Disclaimer**: This is an educational platform for learning trading concepts. Virtual trading results do not guarantee real-world trading success. Always consult with financial advisors before making investment decisions.
