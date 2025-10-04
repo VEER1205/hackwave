@@ -1,79 +1,212 @@
-# PaisaBuddy: Financial Literacy & Stock Trading Simulator
+# TradeMaster Pro
 
-## Team Details
-- **Project Lead**: Veer Dodiya
-- **Team Members**: Pushpendra Singh Rathod,Falgun Patel,Dhruv Bhadreshwara
-
-## Project Abstract
-**PaisaBuddy** is a web-based platform designed to improve financial literacy and provide users with a hands-on experience in stock trading through a real-time simulator. The platform includes various modules such as interactive financial literacy courses, a personalized financial dashboard, and a stock trading game that simulates the Indian market, enabling users to practice risk-free trading.
-
-## Domain and Tools Used
-
-### Domain
-- **Financial Literacy**: Provides users with a comprehensive understanding of financial principles and practices.
-- **Stock Trading Simulation**: A simulated trading environment for users to practice stock trading in the Indian market.
-- **Authentication & Security**: A robust, secure system for user login and data protection.
-
-### Tools and Technologies
-This project is built using modern full-stack technologies:
-
-- **Node.js**: The back-end runtime environment used to build the application.
-- **Express**: A web application framework for server-side development.
-- **EJS (Embedded JavaScript)**: Used for server-side templating to dynamically render HTML pages.
-- **MySQL**: Relational database used for storing user data and course information.
-- **bcrypt**: A library used for securely hashing user passwords.
-- **Passport.js**: Authentication middleware to support social logins like Google, GitHub, and LinkedIn.
-- **connect-flash**: Middleware for handling and displaying flash messages to users.
+A comprehensive trading and investment platform that combines AI-powered insights, virtual trading, educational courses, and real-time market analysis to help users master the art of trading.
 
 ## Features
 
-- **Financial Dashboard**: A personalized dashboard to track financial insights and key metrics.
-- **Indian Stock Trading Simulator**: A module that allows users to practice stock trading using real-time data from the Indian stock market, without any risk.
-- **Financial Literacy Courses**: Interactive modules designed to educate users on various financial topics, such as investments, budgeting, and saving.
-- **Secure User Authentication**: A secure login system with support for traditional email/password login as well as social login options (Google, GitHub, LinkedIn).
-- **Password Management**: A password reset functionality to help users recover their accounts securely.
-- **Dynamic UI**: Front-end pages built using EJS for dynamic server-side rendering.
+### Authentication System
+- User registration and login with multiple OAuth options (Google, GitHub, LinkedIn)
+- Secure password authentication
+- Modern, split-screen design with glassmorphism effects
 
-## File Structure Overview
+### Trading Dashboard
+- **Virtual Trading Environment**: Practice trading with ₹10,00,000 virtual balance
+- **Real-time Market Data**: Live updates for NIFTY 50, SENSEX, and BANKNIFTY indices
+- **Stock Analysis**: Interactive charts with multiple timeframes (1M, 3M, 6M, 1Y, 3Y, Max)
+- **Prediction Bar**: AI-powered momentum, trend, and volatility scoring system
+- **Watchlist Management**: Create and manage custom watchlists for stocks and mutual funds
+- **Portfolio Tracking**: Monitor your investments, profits, and losses in real-time
 
-- `dashboard.ejs`: The user's main dashboard page.
-- `trading.ejs`: The interface for the stock trading simulator.
-- `course.ejs`: The template for displaying financial literacy courses.
-- `login.ejs`, `forgot.ejs`, `reset-password.ejs`: Pages related to authentication.
-- `servers.js`: The main server file that handles all routing and server-side logic.
-- `auth.js`: Contains functions for user authentication.
-- `schemaa.js`: Defines the structure of the database tables.
-- `package.json`: Contains metadata and project dependencies.
+### AI Assistant
+- Trading co-pilot for strategy backtesting
+- Technical indicator analysis
+- Market news updates
+- Smart alerts and recommendations
+- Expert recommendations tracker
+- Market signal tracking
 
-## Getting Started
+### Educational Platform
+- Interactive trading courses
+- Virtual wallet system (1000 tokens)
+- Beginner to pro learning path
+- Expert-led curriculum
 
-To set up and run the project locally, follow these steps:
+### Daily Quiz
+- Finance and trading knowledge tests
+- 15-question format with progress tracking
+- Multiple-choice questions covering bull markets, trading concepts, and financial terminology
+
+### User Experience
+- Personalized dashboard with user greeting
+- Financial overview cards (Total Profit, Total Loss, Net Worth)
+- Portfolio growth trends
+- Investment distribution visualization
+- Real-time notifications and market alerts
+
+## Tech Stack
+
+### Frontend
+- **HTML5** - Semantic markup and structure
+- **CSS3** - Modern styling with gradients, animations, and responsive design
+- **JavaScript** - Interactive features and dynamic content
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web application framework
+- **RESTful APIs** - For data exchange
+
+### Database
+- **MySQL** - Relational database for user data, transactions, and market information
+
+## Team
+
+### Frontend Development
+- **Falgun Patel** - UI/UX Implementation, Trading Interface
+- **Heet Chheda** - Authentication System, Dashboard Components
+
+### Backend Development
+- **Pushpendra Singh Rathod** - API Development, Database Architecture
+- **Shardul Dalvi** - Server Configuration, Authentication Logic
+- **Veer Dodiya** - Data Integration, Market APIs
+
+### Documentation & Presentation
+- **Aryan Jagadish Keni** - README, PPT, Video Documentation
+
+## Installation
 
 ### Prerequisites
-- Node.js (LTS version recommended)
-- MySQL database instance
+- Node.js (v14 or higher)
+- MySQL (v8.0 or higher)
+- npm or yarn package manager
 
-### Installation
+### Setup Instructions
 
-1. Clone the repository or extract the project files.
-2. Navigate to the project directory in your terminal.
-3. Install the required dependencies by running:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/trademaster-pro.git
+   cd trademaster-pro
+   ```
 
-    ```bash
-    npm install
-    ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-### Database Configuration
+3. **Configure database**
+   - Create a MySQL database named `trademaster_db`
+   - Update database credentials in `config/database.js`
+   ```javascript
+   module.exports = {
+     host: 'localhost',
+     user: 'your_username',
+     password: 'your_password',
+     database: 'trademaster_db'
+   };
+   ```
 
-1. Set up a MySQL database.
-2. Update the database connection details in `servers.js` or `schemaa.js` to match your local setup.
+4. **Run database migrations**
+   ```bash
+   npm run migrate
+   ```
 
-### Running the Application
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-1. Start the server by running:
+6. **Access the application**
+   - Open your browser and navigate to `http://localhost:3000`
 
-    ```bash
-    node servers.js
-    ```
+## Project Structure
 
-2. The application will be accessible at `https://paisabuddy-xzcz.onrender.com/` (or the port defined in your `servers.js` file).
+```
+trademaster-pro/
+├── frontend/
+│   ├── assets/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   ├── pages/
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   ├── dashboard.html
+│   │   ├── trading.html
+│   │   ├── ai-assistant.html
+│   │   ├── quiz.html
+│   │   └── courses.html
+│   └── components/
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── config/
+├── database/
+│   ├── migrations/
+│   └── seeds/
+├── docs/
+│   ├── presentation.pptx
+│   └── demo-video.mp4
+└── README.md
+```
+
+## Key Functionalities
+
+### Virtual Trading System
+- Buy and sell stocks with virtual currency
+- Real-time profit/loss calculations
+- Transaction history tracking
+- Portfolio performance analytics
+
+### Market Analysis
+- Technical indicators and chart patterns
+- Historical data visualization
+- Price prediction algorithms
+- Momentum and volatility scoring
+
+### Learning Management
+- Structured course modules
+- Progress tracking
+- Token-based reward system
+- Quiz assessments
+
+## Future Enhancements
+
+- Mobile application (iOS & Android)
+- Social trading features
+- Advanced charting tools
+- Options and futures trading
+- Cryptocurrency integration
+- Community forums
+- Live webinars and workshops
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Contact
+
+For questions or support, please contact any team member:
+- Falgun Patel - [falgunpatel2007@gmail.com](mailto:falgunpatel2007@gmail.com)
+- Project Repository - [GitHub](https://github.com/yourusername/trademaster-pro)
+
+## Acknowledgments
+
+- Market data providers
+- Open-source community
+- Educational resources and mentors
+- All team members for their dedicated efforts
+
+---
+
+**Disclaimer**: This is an educational platform for learning trading concepts. Virtual trading results do not guarantee real-world trading success. Always consult with financial advisors before making investment decisions.
