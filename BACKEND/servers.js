@@ -176,7 +176,7 @@ app.get("/game", (req, res) => {
   });
 });
 
-app.get("/dashboard", requireAuth, (req, res) => {
+app.get("/dashboard",(req, res) => {
   res.render("dashboard", {
     errors: res.locals.errors,
     success: res.locals.success,
@@ -184,7 +184,7 @@ app.get("/dashboard", requireAuth, (req, res) => {
   });
 });
 
-app.get("/trading", requireAuth, (req, res) => {
+app.get("/trading",(req, res) => {
   res.render("trading", {
     errors: res.locals.errors,
     success: res.locals.success,
@@ -192,7 +192,7 @@ app.get("/trading", requireAuth, (req, res) => {
   });
 });
 
-app.get("/course", requireAuth, (req, res) => {
+app.get("/course",(req, res) => {
   res.render("course", {
     errors: res.locals.errors,
     success: res.locals.success,
@@ -233,7 +233,7 @@ app.get("/api/user/balance", async (req, res) => {
   }
 });
 
-app.get("/api/user/balance", requireAuth, async (req, res) => {
+app.get("/api/user/balance",  async (req, res) => {
   try {
     const balance = await getUserBalance(req.user.user_id);
     res.json({ balance });
@@ -244,7 +244,7 @@ app.get("/api/user/balance", requireAuth, async (req, res) => {
 });
 
 // Get user portfolio
-app.get("/api/portfolio", requireAuth, async (req, res) => {
+app.get("/api/portfolio", async (req, res) => {
   try {
     const holdings = await getPortfolio(req.user.user_id);
     res.json({ holdings });
@@ -255,7 +255,7 @@ app.get("/api/portfolio", requireAuth, async (req, res) => {
 });
 
 // Get user trades
-app.get("/api/trades", requireAuth, async (req, res) => {
+app.get("/api/trades", async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 50;
     const trades = await getUserTrades(req.user.user_id, limit);
@@ -267,7 +267,7 @@ app.get("/api/trades", requireAuth, async (req, res) => {
 });
 
 // Execute trade (BUY/SELL)
-app.post("/api/trade", requireAuth, async (req, res) => {
+app.post("/api/trade",  async (req, res) => {
   try {
     const { type, side, symbol, name, qty, price } = req.body;
 
@@ -283,7 +283,7 @@ app.post("/api/trade", requireAuth, async (req, res) => {
 });
 
 // Get watchlist
-app.get("/api/watchlist", requireAuth, async (req, res) => {
+app.get("/api/watchlist",  async (req, res) => {
   try {
     const watchlist = await getUserWatchlist(req.user.user_id);
     res.json({ watchlist });
@@ -294,7 +294,7 @@ app.get("/api/watchlist", requireAuth, async (req, res) => {
 });
 
 // Add to watchlist
-app.post("/api/watchlist", requireAuth, async (req, res) => {
+app.post("/api/watchlist", async (req, res) => {
   try {
     const { type, symbol, name } = req.body;
 
@@ -311,7 +311,7 @@ app.post("/api/watchlist", requireAuth, async (req, res) => {
 });
 
 // Remove from watchlist
-app.delete("/api/watchlist/:symbol", requireAuth, async (req, res) => {
+app.delete("/api/watchlist/:symbol",  async (req, res) => {
   try {
     const { symbol } = req.params;
     await removeFromWatchlist(req.user.user_id, symbol);
