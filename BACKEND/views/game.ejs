@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Detective's Ledger</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Special+Elite&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="CSS/game.css" />
+  </head>
+  <body>
+    <div class="case-file-container">
+      <div class="left-panel">
+        <div class="header-main">
+          <h1 class="title">The Ledger</h1>
+          <div class="progress-tracker">
+            <div class="progress-item">
+              <div class="label">Cases Solved</div>
+              <div class="value" id="cases-solved">0</div>
+            </div>
+            <div class="progress-item">
+              <div class="label">Accuracy</div>
+              <div class="value" id="accuracy">0%</div>
+            </div>
+            <div class="progress-item">
+              <div class="label">Flags Found</div>
+              <div class="value" id="total-red-flags">0</div>
+            </div>
+          </div>
+        </div>
+        <div class="report-section case-details">
+          <h2 class="section-header">
+            <i class="fas fa-folder"></i> Case File
+          </h2>
+          <dl>
+            <dt>Case ID:</dt>
+            <dd id="case-id"></dd>
+            <dt>Victim:</dt>
+            <dd id="case-victim"></dd>
+            <dt>Amount:</dt>
+            <dd id="case-amount"></dd>
+            <dt>Timeframe:</dt>
+            <dd id="case-timeframe"></dd>
+            <dt>Location:</dt>
+            <dd id="case-location"></dd>
+          </dl>
+          <p id="case-intro"></p>
+        </div>
+        <div class="report-section suspects-list">
+          <h2 class="section-header"><i class="fas fa-users"></i> Suspects</h2>
+          <div
+            id="suspects-container"
+            style="display: flex; flex-direction: column; gap: 15px"
+          ></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="analysis-toolbar">
+          <button class="button" onclick="checkForRedFlags()">
+            <i class="fas fa-flag"></i> Red Flags
+          </button>
+          <button class="button" onclick="highlightLargeTransactions()">
+            <i class="fas fa-search-dollar"></i> Large Txns
+          </button>
+          <button class="button" onclick="identifyUnknownParties()">
+            <i class="fas fa-question"></i> Unknown Parties
+          </button>
+          <button class="button accuse-btn" onclick="accuseSuspect()">
+            <i class="fas fa-gavel"></i> Accuse
+          </button>
+        </div>
+        <h3 style="margin-bottom: 10px">
+          Ledger for: <span id="current-suspect"></span>
+        </h3>
+        <div class="transactions-view">
+          <div class="table-container">
+            <table class="transaction-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody id="transaction-data"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="customModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle" class="modal-header"></h2>
+        <div id="modalBody" class="modal-body"></div>
+        <div id="modalButtons" class="modal-buttons"></div>
+      </div>
+    </div>
+    <div id="accusation-result" class="accusation-result"></div>
+
+    <script src="JS/game.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Alerts (API style from 1st snippet) -->
+    <script>
+       <% if (errors && errors.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
+        });
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
+        });
+      <% } %>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance Trading Quiz - Test Your Knowledge</title>
+    <meta
+      name="description"
+      content="Test your finance and trading knowledge with our interactive quiz covering stocks, options, banking, and more. Dark mode with beautiful UI."
+    />
+    <link rel="stylesheet" href="CSS/Quiz.css" />
+    k
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-chart-line"></i>
+          <span>TradeMaster Pro</span>
+        </div>
+
+        <div class="nav-menu" id="navMenu">
+          <a href="/landing" class="nav-link ">Home</a>
+          <a href="/dashboard" class="nav-link">Dashboard</a>
+          <a href="/trading" class="nav-link">Trading</a>
+          <a href="/chatbot" class="nav-link">AI Assistant</a>
+          <a href="/Quiz" class="nav-link active">Daily Quiz</a>
+          <a href="/course" class="nav-link">Courses</a>
+        </div>
+
+        <div class="nav-actions">
+          <a href="/login">
+            <button class="btn-primary">Get Started</button>
+          </a>
+
+          <div class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="card">
+        <div id="quiz-container">
+          <h1>Finance &amp; Trading Quiz</h1>
+          <p class="subtitle">
+            Test your knowledge of finance, trading, and banking
+          </p>
+
+          <div class="progress-container">
+            <div class="progress-label">
+              <span
+                >Question <span id="current-question">1</span> of
+                <span id="total-questions">15</span></span
+              >
+              <span id="progress-percentage">7%</span>
+            </div>
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                id="progress-fill"
+                style="width: 6.66667%"
+              ></div>
+            </div>
+          </div>
+
+          <div id="question-container">
+            <h2 class="question-title" id="question-text">
+              What is a 'bull market'?
+            </h2>
+            <div class="options" id="options-container">
+              <div class="option">A market where prices are falling</div>
+              <div class="option">A market where prices are rising</div>
+              <div class="option">A market with high volatility</div>
+              <div class="option">A market with low trading volume</div>
+            </div>
+            <div id="explanation-container"></div>
+          </div>
+
+          <button
+            class="button button-primary"
+            id="next-button"
+            style="display: none"
+          >
+            Next Question
+          </button>
+        </div>
+
+        <div id="results-container" style="display: none"></div>
+      </div>
+    </div>
+
+    <script src="JS/Quiz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Alerts (API style from 1st snippet) -->
+    <script>
+       <% if (errors && errors.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
+        });
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
+        });
+      <% } %>
+    </script>
+  </body>
+</html>
